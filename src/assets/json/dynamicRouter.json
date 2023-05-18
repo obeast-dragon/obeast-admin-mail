@@ -1,0 +1,127 @@
+{
+	"code": 200,
+	"data": [
+		{
+			"id": "8999",
+			"parentId": "-1",
+			"weight": 1,
+			"path": "/home",
+			"name": "home",
+			"component": "/home/index",
+			"meta": {
+				"isLink": "",
+				"isKeepAlive": true,
+				"icon": "HomeFilled",
+				"isAffix": false,
+				"isFull": false,
+				"title": "首页",
+				"isHide": false
+			}
+		},
+		{
+			"id": "1000",
+			"parentId": "-1",
+			"weight": 1,
+			"name": "admin",
+			"path": "/admin",
+			"meta": {
+				"isLink": "",
+				"isKeepAlive": true,
+				"icon": "Lock",
+				"isAffix": false,
+				"isFull": false,
+				"title": "权限管理",
+				"isHide": false
+			},
+			"children": [
+				{
+					"id": "1100",
+					"parentId": "1000",
+					"weight": 0,
+					"name": "/admin/user",
+					"path": "/admin/user",
+					"component": "/admin/user/index",
+					"meta": {
+						"isLink": "",
+						"isKeepAlive": true,
+						"icon": "Menu",
+						"isAffix": false,
+						"isFull": false,
+						"title": "用户管理",
+						"isHide": false
+					}
+				},
+				{
+					"id": "1200",
+					"parentId": "1000",
+					"weight": 1,
+					"name": "/admin/menu",
+					"path": "/admin/menu",
+					"component": "/admin/menu/index",
+					"meta": {
+						"isLink": "",
+						"isKeepAlive": true,
+						"icon": "Menu",
+						"isAffix": false,
+						"isFull": false,
+						"title": "菜单管理",
+						"isHide": false
+					}
+				},
+				{
+					"id": "1300",
+					"parentId": "1000",
+					"weight": 2,
+					"name": "/admin/role",
+					"path": "/admin/role",
+					"component": "/admin/role/index",
+					"meta": {
+						"isLink": "",
+						"isKeepAlive": true,
+						"icon": "Menu",
+						"isAffix": false,
+						"isFull": false,
+						"title": "角色管理",
+						"isHide": false
+					}
+				},
+				{
+					"id": "1400",
+					"parentId": "1000",
+					"weight": 3,
+					"name": "/admin/dept",
+					"path": "/admin/dept",
+					"component": "/admin/dept/index",
+					"meta": {
+						"isLink": "",
+						"isKeepAlive": true,
+						"icon": "Menu",
+						"isAffix": false,
+						"isFull": false,
+						"title": "部门管理",
+						"isHide": false
+					}
+				},
+				{
+					"id": "1500",
+					"parentId": "1000",
+					"weight": 4,
+					"name": "/admin/post",
+					"path": "/admin/post",
+					"component": "/admin/post/index",
+					"meta": {
+						"isLink": "",
+						"isKeepAlive": true,
+						"icon": "Menu",
+						"isAffix": false,
+						"isFull": false,
+						"title": "岗位管理",
+						"isHide": false
+					}
+				}
+			]
+		}
+	],
+	"success": true,
+	"msg": "成功"
+}

@@ -1,0 +1,172 @@
+{
+	"code": 200,
+	"msg": "成功",
+	"success": true,
+	"data": {
+		"list": [
+			{
+				"id": "617997513565436413",
+				"username": "汪娟",
+				"gender": 1,
+				"user": {
+					"detail": {
+						"age": 12
+					}
+				},
+				"idCard": "617997513565436413",
+				"email": "k.txqvvpssi@xtwg.gn",
+				"address": "北京 北京市",
+				"createTime": "2004-02-01 20:36:11",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QR57a.jpg"
+			},
+			{
+				"id": "810068188534528615",
+				"username": "蔡秀兰",
+				"gender": 2,
+				"user": {
+					"detail": {
+						"age": 11
+					}
+				},
+				"idCard": "810068188534528615",
+				"email": "r.nlirejgg@uqd.se",
+				"address": "江西省 吉安市",
+				"createTime": "1973-01-01 06:38:11",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QR57a.jpg"
+			},
+			{
+				"id": "681176413132256283",
+				"username": "顾娜",
+				"gender": 1,
+				"user": {
+					"detail": {
+						"age": 27
+					}
+				},
+				"idCard": "681176413132256283",
+				"email": "u.ljkeevebq@cxzlgjt.net",
+				"address": "宁夏回族自治区 固原市",
+				"createTime": "2007-07-01 19:05:29",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QR57a.jpg"
+			},
+			{
+				"id": "934321365985176428",
+				"username": "易杰",
+				"gender": 1,
+				"user": {
+					"detail": {
+						"age": 19
+					}
+				},
+				"idCard": "934321365985176428",
+				"email": "f.idhdtvplg@xupbxrx.pm",
+				"address": "甘肃省 白银市",
+				"createTime": "1975-10-07 17:13:30",
+				"status": 0,
+				"avatar": "https://i.imgtg.com/2023/01/16/QRqMK.jpg"
+			},
+			{
+				"id": "648814370427392487",
+				"username": "赖芳",
+				"gender": 2,
+				"user": {
+					"detail": {
+						"age": 28
+					}
+				},
+				"idCard": "648814370427392487",
+				"email": "v.gwtlncrja@jffdgdn.kh",
+				"address": "安徽省 巢湖市",
+				"createTime": "1989-04-29 00:12:22",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QRBHS.jpg"
+			},
+			{
+				"id": "140345425551882555",
+				"username": "白军",
+				"gender": 2,
+				"user": {
+					"detail": {
+						"age": 11
+					}
+				},
+				"idCard": "140345425551882555",
+				"email": "z.qmuhzwiykt@lrnucsn.za",
+				"address": "福建省 漳州市",
+				"createTime": "1977-03-14 21:11:51",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QRqMK.jpg"
+			},
+			{
+				"id": "439440653671132154",
+				"username": "杜明",
+				"gender": 2,
+				"user": {
+					"detail": {
+						"age": 29
+					}
+				},
+				"idCard": "439440653671132154",
+				"email": "e.twgfxcbwel@xnnu.an",
+				"address": "北京 北京市",
+				"createTime": "2009-03-11 14:08:30",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QRa0s.jpg"
+			},
+			{
+				"id": "845654952733436516",
+				"username": "白平",
+				"gender": 2,
+				"user": {
+					"detail": {
+						"age": 28
+					}
+				},
+				"idCard": "845654952733436516",
+				"email": "t.lngkfofucc@ecqc.mt",
+				"address": "湖北省 黄石市",
+				"createTime": "2013-10-25 12:38:24",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QR57a.jpg"
+			},
+			{
+				"id": "252669566119283537",
+				"username": "宋明",
+				"gender": 2,
+				"user": {
+					"detail": {
+						"age": 25
+					}
+				},
+				"idCard": "252669566119283537",
+				"email": "w.smu@knhytier.dj",
+				"address": "内蒙古自治区 呼和浩特市",
+				"createTime": "1978-06-30 19:19:36",
+				"status": 1,
+				"avatar": "https://i.imgtg.com/2023/01/16/QRBHS.jpg"
+			},
+			{
+				"id": "605142606906257911",
+				"username": "罗静",
+				"gender": 1,
+				"user": {
+					"detail": {
+						"age": 29
+					}
+				},
+				"idCard": "605142606906257911",
+				"email": "a.ilybv@owvbpucsb.uy",
+				"address": "湖南省 岳阳市",
+				"createTime": "1994-12-26 02:12:47",
+				"status": 0,
+				"avatar": "https://i.imgtg.com/2023/01/16/QRqMK.jpg"
+			}
+		],
+		"pageNum": 1,
+		"pageSize": 10,
+		"total": 2000
+	}
+}
