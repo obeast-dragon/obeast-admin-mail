@@ -11,6 +11,15 @@ export const getUserPages = (params: User.UserPageParams) => {
 };
 
 /**
+ * 查询用户 by token
+ */
+export const getUserVoByToken = () => {
+	return http.get<User.UserVO>(`${System.BASE}/user/info`, {
+		headers: { noLoading: true }
+	});
+};
+
+/**
  * 新增用户
  */
 export const addUser = (userVO: User.UserVO) => {

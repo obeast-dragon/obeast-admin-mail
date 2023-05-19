@@ -32,20 +32,20 @@ export namespace Login {
 		[key: string]: string[];
 	}
 	export interface LoginInfo {
-		password: string;
-		username: string;
-		authorities: Authority[];
-		accountNonExpired: boolean;
-		accountNonLocked: boolean;
-		credentialsNonExpired: boolean;
-		enabled: boolean;
-		attributes: [];
-		id: string;
-		deptId: string;
-		phone: string;
-		name: string;
-		avatar: string;
-		email: string;
+		password?: string;
+		username?: string;
+		authorities?: Authority[];
+		accountNonExpired?: boolean;
+		accountNonLocked?: boolean;
+		credentialsNonExpired?: boolean;
+		enabled?: boolean;
+		attributes?: [];
+		id?: string;
+		deptId?: string;
+		phone?: string;
+		name?: string;
+		avatar?: string;
+		email?: string;
 	}
 	export interface Authority {
 		authority: string;
