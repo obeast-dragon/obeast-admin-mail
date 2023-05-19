@@ -1,6 +1,6 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { Department } from "../interface/dept";
+import { System } from "../../config/serviceName";
+import { Department } from "@/api/interface/admin/dept";
 
 /**
  * @name 获取用户部门树

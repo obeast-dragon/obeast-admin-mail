@@ -1,7 +1,7 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { ResPage } from "../interface/common";
-import { Log } from "../interface/log";
+import { System } from "@/api/config/serviceName";
+import { Log } from "@/api/interface/admin/log";
+import { ResPage } from "@/api/interface/common";
 
 /**
  * 分页查询 日志 table

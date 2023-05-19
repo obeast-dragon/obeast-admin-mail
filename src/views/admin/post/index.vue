@@ -32,8 +32,8 @@ import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import PostDrawer from "@/views/admin/post/components/PostDrawer.vue";
 import { CirclePlus, Delete, View, EditPen } from "@element-plus/icons-vue";
-import { addPost, getPostPages, updatePost, deletePost } from "@/api/modules/post";
-import { Post } from "@/api/interface/post";
+import { addPost, getPostPages, updatePost, deletePost } from "@/api/modules/admin/post";
+import { Post } from "@/api/interface/admin/post";
 
 const proTable = ref();
 

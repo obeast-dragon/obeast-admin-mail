@@ -1,4 +1,4 @@
-import { BaseEntity } from "./common";
+import { BaseEntity } from "../common";
 
 export namespace SysFile {
     export interface Entity extends BaseEntity {

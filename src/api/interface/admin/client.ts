@@ -1,4 +1,4 @@
-import { BaseEntity, ReqPage } from "./common";
+import { BaseEntity, ReqPage } from "../common";
 
 export namespace Client {
     export interface Entity extends BaseEntity {

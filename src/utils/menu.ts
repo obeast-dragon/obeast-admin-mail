@@ -1,4 +1,4 @@
-import { Menu } from "@/api/interface/menu";
+import { Menu } from "@/api/interface/admin/menu";
 
 /**
  * @description 扁平化数组对象(主要用来处理路由菜单)

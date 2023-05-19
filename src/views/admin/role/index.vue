@@ -36,8 +36,8 @@ import ImportExcel from "@/components/ImportExcel/index.vue";
 import RoleDrawer from "@/views/admin/role/components/RoleDrawer.vue";
 import { CirclePlus, Delete, EditPen, TurnOff } from "@element-plus/icons-vue";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { addRole, authorizeMenu, deleteRole, getRolePages, updateRole } from "@/api/modules/role";
-import { Role } from "@/api/interface/role";
+import { addRole, authorizeMenu, deleteRole, getRolePages, updateRole } from "@/api/modules/admin/role";
+import { Role } from "@/api/interface/admin/role";
 
 // 获取 ProTable 元素，调用其获取刷新数据方法（还能获取到当前查询参数，方便导出携带参数）
 const proTable = ref();

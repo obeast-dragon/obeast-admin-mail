@@ -47,9 +47,9 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, ElTree, FormInstance } from "element-plus";
-import { Role } from "@/api/interface/role";
-import { Menu } from "@/api/interface/menu";
-import { getMenuRelsByRoleId, menuTree } from "@/api/modules/menu";
+import { Role } from "@/api/interface/admin/role";
+import { Menu } from "@/api/interface/admin/menu";
+import { getMenuRelsByRoleId, menuTree } from "@/api/modules/admin/menu";
 
 const treeRef = ref<InstanceType<typeof ElTree>>();
 

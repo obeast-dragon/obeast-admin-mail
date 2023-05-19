@@ -1,7 +1,7 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { SysDictItem, SysDict } from "../interface/dict";
-import { ResPage } from "../interface/common";
+import { System } from "../../config/serviceName";
+import { SysDict, SysDictItem } from "@/api/interface/admin/dict";
+import { ResPage } from "@/api/interface/common";
 
 /**
  * 根据key获取字典

@@ -46,9 +46,9 @@ import DictSelect from "@/views/admin/dict/components/DictSelect/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import DictDrawer from "@/views/admin/dict/components/DictDrawer.vue";
 import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
-import { deleteUser, updateUser, addUser } from "@/api/modules/user";
-import { SysDict, SysDictItem } from "@/api/interface/dict";
-import { getDictItemPages, getDictList } from "@/api/modules/dict";
+import { getDictItemPages, getDictList } from "@/api/modules/admin/dict";
+import { SysDict, SysDictItem } from "@/api/interface/admin/dict";
+import { addUser, deleteUser, updateUser } from "@/api/modules/admin/user";
 
 const proTable = ref();
 

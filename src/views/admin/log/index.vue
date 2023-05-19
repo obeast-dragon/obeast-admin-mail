@@ -34,8 +34,8 @@ import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import LogDrawer from "@/views/admin/log/components/LogDrawer.vue";
 import { Delete, View } from "@element-plus/icons-vue";
-import { getLogPages, deleteLog } from "@/api/modules/log";
-import { Log } from "@/api/interface/log";
+import { getLogPages, deleteLog } from "@/api/modules/admin/log";
+import { Log } from "@/api/interface/admin/log";
 
 const proTable = ref();
 

@@ -1,4 +1,4 @@
-import { ReqPage } from "./common";
+import { ReqPage } from "../common";
 
 export namespace SysToken {
     export interface Entity {

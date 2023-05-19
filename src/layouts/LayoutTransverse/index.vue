@@ -49,7 +49,7 @@ import { useRoute, useRouter } from "vue-router";
 import Main from "@/layouts/components/Main/index.vue";
 import ToolBarRight from "@/layouts/components/Header/ToolBarRight.vue";
 import SubMenu from "@/layouts/components/Menu/SubMenu.vue";
-import { Menu } from "@/api/interface/menu";
+import { Menu } from "@/api/interface/admin/menu";
 
 const route = useRoute();
 const router = useRouter();

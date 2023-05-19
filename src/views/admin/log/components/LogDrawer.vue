@@ -41,7 +41,7 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Log } from "@/api/interface/log";
+import { Log } from "@/api/interface/admin/log";
 
 const rules = reactive({
 	postCode: [{ required: true, message: "请填写日志编码" }],

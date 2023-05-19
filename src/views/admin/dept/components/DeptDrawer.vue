@@ -35,7 +35,7 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Department } from "@/api/interface/dept";
+import { Department } from "@/api/interface/admin/dept";
 
 const rules = reactive({
 	deptName: [{ required: true, message: "请填写上级部门" }],

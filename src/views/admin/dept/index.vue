@@ -37,8 +37,8 @@ import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import DeptDrawer from "@/views/admin/dept/components/DeptDrawer.vue";
 import { CirclePlus, Delete, EditPen, View } from "@element-plus/icons-vue";
-import { Department } from "@/api/interface/dept";
-import { addDept, deleteDept, deptTree, updateDept } from "@/api/modules/dept";
+import { addDept, deleteDept, deptTree, updateDept } from "@/api/modules/admin/dept";
+import { Department } from "@/api/interface/admin/dept";
 
 const proTable = ref();
 

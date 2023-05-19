@@ -89,13 +89,13 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { User } from "@/api/interface/user";
-import { deptTree } from "@/api/modules/dept";
-import { getPostList } from "@/api/modules/post";
-import { Post } from "@/api/interface/post";
-import { Department } from "@/api/interface/dept";
-import { Role } from "@/api/interface/role";
-import { getRoleList } from "@/api/modules/role";
+import { User } from "@/api/interface/admin/user";
+import { deptTree } from "@/api/modules/admin/dept";
+import { getPostList } from "@/api/modules/admin/post";
+import { Post } from "@/api/interface/admin/post";
+import { Department } from "@/api/interface/admin/dept";
+import { Role } from "@/api/interface/admin/role";
+import { getRoleList } from "@/api/modules/admin/role";
 import UploadImg from "@/components/Upload/Img.vue";
 
 onMounted(() => {

@@ -1,7 +1,7 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { ResPage } from "../interface/common";
-import { Client } from "../interface/client";
+import { System } from "../../config/serviceName";
+import { ResPage } from "../../interface/common";
+import { Client } from "../../interface/admin/client";
 
 /**
  * 分页查询 客户端 table

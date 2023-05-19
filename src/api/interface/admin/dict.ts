@@ -1,4 +1,4 @@
-import { BaseEntity, ReqPage } from "./common";
+import { BaseEntity, ReqPage } from "../common";
 
 export namespace SysDict {
     export interface Entity extends BaseEntity {

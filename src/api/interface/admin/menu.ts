@@ -1,4 +1,4 @@
-import { BaseEntity, ReqPage } from "./common";
+import { BaseEntity, ReqPage } from "../common";
 
 export namespace Menu {
     export interface Entity {

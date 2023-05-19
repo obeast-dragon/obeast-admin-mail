@@ -1,7 +1,10 @@
 import http from "@/api";
-import { ResPage } from "../interface/common";
-import { User } from "../interface/user";
-import { System } from "../config/serviceName";
+import { Login, User } from "@/api/interface/admin/user";
+import { CLIENTID_AND_SECRET } from "@/config/constant";
+import { Auth, System } from "@/api/config/serviceName";
+import qs from "qs";
+import { GrantType, Scope } from "@/enums/oauth";
+import { ResPage } from "@/api/interface/common";
 
 /**
  * 分页查询用户table
@@ -67,4 +70,30 @@ export const updateUser = (userVO: User.UserVO) => {
  */
 export const deleteUser = (params: { id: number[] }) => {
 	return http.delete(`${System.BASE}/user/${params.id}`);
+};
+
+/**
+ * @name 登录模块
+ */
+export const loginByPassword = (params: Login.From, randomStr: string) => {
+	const headers = {
+		headers: {
+			Authorization: "Basic " + window.btoa(CLIENTID_AND_SECRET)
+		}
+	};
+	return http.postToken<Login.Result>(
+		`${Auth.BASE}/oauth2/token?randomStr=${randomStr}&code=${params.code}&grant_type=${GrantType.password}&scope=${Scope.server}`,
+		qs.stringify({
+			username: params.username,
+			password: params.password
+		}),
+		headers
+	);
+};
+
+/**
+ * @name 用户退出登录
+ */
+export const logoutApi = () => {
+	return http.delete(`${Auth.BASE}/token/logout`);
 };

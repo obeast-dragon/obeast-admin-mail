@@ -32,8 +32,8 @@ import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import ClientDrawer from "@/views/admin/client/components/ClientDrawer.vue";
 import { CirclePlus, Delete, View, EditPen } from "@element-plus/icons-vue";
-import { getClientPages, addClient, updateClient, deleteClient } from "@/api/modules/client";
-import { Client } from "@/api/interface/client";
+import { getClientPages, addClient, updateClient, deleteClient } from "@/api/modules/admin/client";
+import { Client } from "@/api/interface/admin/client";
 
 const proTable = ref();
 

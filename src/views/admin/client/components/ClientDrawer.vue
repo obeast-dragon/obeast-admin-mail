@@ -40,7 +40,7 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Client } from "@/api/interface/client";
+import { Client } from "@/api/interface/admin/client";
 
 const curGantTypes = ref([]);
 

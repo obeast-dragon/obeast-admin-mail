@@ -47,9 +47,9 @@ import TreeFilter from "@/components/TreeFilter/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import UserDrawer from "@/views/admin/user/components/UserDrawer.vue";
 import { CirclePlus, Delete, EditPen, View } from "@element-plus/icons-vue";
-import { deleteUser, updateUser, addUser, getUserPages } from "@/api/modules/user";
-import { deptTree } from "@/api/modules/dept";
-import { User } from "@/api/interface/user";
+import { deleteUser, updateUser, addUser, getUserPages } from "@/api/modules/admin/user";
+import { deptTree } from "@/api/modules/admin/dept";
+import { User } from "@/api/interface/admin/user";
 
 const proTable = ref();
 

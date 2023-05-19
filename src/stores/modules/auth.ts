@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { AuthState } from "@/stores/interface";
-import { getMenuList } from "@/api/modules/menu";
+import { getMenuList } from "@/api/modules/admin/menu";
 import { getAllBreadcrumbList, getFlatArr, getShowMenuList } from "@/utils/menu";
 
 // AuthStore

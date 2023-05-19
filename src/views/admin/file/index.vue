@@ -29,8 +29,8 @@ import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
 import FileDialog from "@/views/admin/file/components/FileDialog.vue";
 import { CirclePlus, Delete, View } from "@element-plus/icons-vue";
-import { SysFile } from "@/api/interface/file";
-import { getFilePages, delFile, getFileUrl } from "@/api/modules/file";
+import { SysFile } from "@/api/interface//admin/file";
+import { getFilePages, delFile, getFileUrl } from "@/api/modules/admin/file";
 
 const proTable = ref();
 

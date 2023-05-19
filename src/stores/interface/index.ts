@@ -1,5 +1,5 @@
-import { Menu } from "@/api/interface/menu";
-import { Login } from "@/api/interface/user";
+import { Menu } from "@/api/interface/admin/menu";
+import { Login } from "@/api/interface/admin/user";
 
 /* GlobalState */
 export interface GlobalState {

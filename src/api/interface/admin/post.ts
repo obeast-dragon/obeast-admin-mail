@@ -1,4 +1,4 @@
-import { BaseEntity, ReqPage } from "./common";
+import { BaseEntity, ReqPage } from "../common";
 
 export namespace Post {
 	export interface Res extends BaseEntity {

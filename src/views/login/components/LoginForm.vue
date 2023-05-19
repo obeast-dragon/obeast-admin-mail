@@ -29,7 +29,7 @@
 import { ref, reactive, onMounted, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { ElNotification } from "element-plus";
-import { loginByPassword } from "@/api/modules/login";
+import { loginByPassword } from "@/api/modules/admin/user";
 import { GlobalStore } from "@/stores";
 import { TabsStore } from "@/stores/modules/tabs";
 import { KeepAliveStore } from "@/stores/modules/keepAlive";
@@ -39,7 +39,7 @@ import { initDynamicRouter } from "@/routers/modules/dynamicRouter";
 import { CircleClose, UserFilled } from "@element-plus/icons-vue";
 import type { ElForm } from "element-plus";
 import { VerificationCode } from "@/api/interface/common";
-import { Login } from "@/api/interface/user";
+import { Login } from "@/api/interface/admin/user";
 import { aes } from "@/utils/oauth";
 
 const router = useRouter();

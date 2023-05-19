@@ -1,6 +1,6 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { Menu } from "../interface/menu";
+import { System } from "@/api/config/serviceName";
+import { Menu } from "@/api/interface/admin/menu";
 
 /**
  * @name 获取前端菜单列表树

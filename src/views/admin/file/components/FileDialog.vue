@@ -23,8 +23,8 @@
 
 <script setup lang="ts" name="FileDrawer">
 import {  ref } from "vue";
-import { SysFile } from "@/api/interface/file";
 import UploadImg from "@/components/Upload/Img.vue";
+import { SysFile } from "@/api/interface/admin/file";
 
 interface DialogProps {
 	title: string;

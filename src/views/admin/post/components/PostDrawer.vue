@@ -32,7 +32,7 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Post } from "@/api/interface/post";
+import { Post } from "@/api/interface/admin/post";
 
 const rules = reactive({
 	postCode: [{ required: true, message: "请填写岗位编码" }],

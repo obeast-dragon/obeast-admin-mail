@@ -1,7 +1,7 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { ResPage } from "../interface/common";
-import { Post } from "../interface/post";
+import { System } from "@/api/config/serviceName";
+import { Post } from "@/api/interface/admin/post";
+import { ResPage } from "@/api/interface/common";
 
 /**
  * 分页查询 岗位 table

@@ -22,8 +22,8 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
 import { Delete } from "@element-plus/icons-vue";
-import { getTokenPages, deleteToken } from "@/api/modules/token";
-import { SysToken } from "@/api/interface/token";
+import { getTokenPages, deleteToken } from "@/api/modules/admin/token";
+import { SysToken } from "@/api/interface/admin/token";
 
 const proTable = ref();
 

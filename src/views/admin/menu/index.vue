@@ -42,8 +42,8 @@ import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import MenuDrawer from "@/views/admin/menu/components/MenuDrawer.vue";
 import { CirclePlus, Delete, EditPen, View } from "@element-plus/icons-vue";
-import { updateMenu, delMenu, menuTree, addMenu } from "@/api/modules/menu";
-import { Menu } from "@/api/interface/menu";
+import { updateMenu, delMenu, menuTree, addMenu } from "@/api/modules/admin/menu";
+import { Menu } from "@/api/interface/admin/menu";
 
 const proTable = ref();
 

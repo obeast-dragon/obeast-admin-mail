@@ -76,7 +76,7 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Menu } from "@/api/interface/admin/menu";
+import { Menu } from "@/api/interface/menu";
 import * as Icons from "@element-plus/icons-vue";
 
 const optionsIcon: any[] = [];

@@ -1,4 +1,4 @@
-import { ReqPage } from "./common";
+import { ReqPage } from "../common";
 import { Post } from "./post";
 import { Role } from "./role";
 

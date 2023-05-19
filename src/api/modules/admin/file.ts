@@ -1,7 +1,7 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { SysFile } from "../interface/file";
-import { ResPage } from "../interface/common";
+import { System } from "@/api/config/serviceName";
+import { SysFile } from "@/api/interface/admin/file";
+import { ResPage } from "@/api/interface/common";
 
 /**
  * @name 文件上传模块

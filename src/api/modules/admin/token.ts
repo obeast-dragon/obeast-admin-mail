@@ -1,7 +1,7 @@
 import http from "@/api";
-import { System } from "../config/serviceName";
-import { ResPage } from "../interface/common";
-import { SysToken } from "../interface/token";
+import { System } from "@/api/config/serviceName";
+import { SysToken } from "@/api/interface/admin/token";
+import { ResPage } from "@/api/interface/common";
 
 /**
  * 分页查询 token table
