@@ -1,14 +1,10 @@
 /**
- * System 服务
+ * 服务
  */
-export namespace System {
-	export const BASE = "/admin";
-	export const CODE = "/code";
+export namespace Server {
+	export const Admin = "/admin";
+	export const Code = "/code";
+	export const Auth = "/auth";
+
 }
 
-/**
- * Auth 服务
- */
-export namespace Auth {
-	export const BASE = "/auth";
-}

@@ -1,12 +1,12 @@
 import http from "@/api";
-import { System } from "../../config/serviceName";
+import { Server } from "../../config/serviceName";
 import { Department } from "@/api/interface/admin/dept";
 
 /**
  * @name 获取用户部门树
  */
 export const deptTree = (params: Department.DeptPageParams) => {
-	return http.get<Department.Res[]>(`${System.BASE}/dept/tree`, params, {
+	return http.get<Department.Res[]>(`${Server.Admin}/dept/tree`, params, {
 		headers: { noLoading: true }
 	});
 };
@@ -15,7 +15,7 @@ export const deptTree = (params: Department.DeptPageParams) => {
  * 新增 部门
  */
 export const addDept = (params: any) => {
-	return http.post(`${System.BASE}/dept/add`, params);
+	return http.post(`${Server.Admin}/dept/add`, params);
 };
 
 /**
@@ -28,12 +28,12 @@ export const updateDept = (params: Department.Res) => {
 		sortOrder: params.sortOrder,
 		parentId: params.parentId
 	}
-	return http.put(`${System.BASE}/dept/update`, sysDept);
+	return http.put(`${Server.Admin}/dept/update`, sysDept);
 };
 
 /**
  * 删除 部门
  */
 export const deleteDept = (params: { id: number[] }) => {
-	return http.delete(`${System.BASE}/dept/${params.id}`);
+	return http.delete(`${Server.Admin}/dept/${params.id}`);
 };

@@ -1,7 +1,7 @@
 import http from "@/api";
 import { Login, User } from "@/api/interface/admin/user";
 import { CLIENTID_AND_SECRET } from "@/config/constant";
-import { Auth, System } from "@/api/config/serviceName";
+import { Server } from "@/api/config/serviceName";
 import qs from "qs";
 import { GrantType, Scope } from "@/enums/oauth";
 import { ResPage } from "@/api/interface/common";
@@ -10,14 +10,14 @@ import { ResPage } from "@/api/interface/common";
  * 分页查询用户table
  */
 export const getUserPages = (params: User.UserPageParams) => {
-	return http.get<ResPage<User.UserVO>>(`${System.BASE}/user/page`, params);
+	return http.get<ResPage<User.UserVO>>(`${Server.Admin}/user/page`, params);
 };
 
 /**
  * 查询用户 by token
  */
 export const getUserVoByToken = () => {
-	return http.get<User.UserVO>(`${System.BASE}/user/info`, {
+	return http.get<User.UserVO>(`${Server.Admin}/user/info`, {
 		headers: { noLoading: true }
 	});
 };
@@ -40,7 +40,7 @@ export const addUser = (userVO: User.UserVO) => {
 		delFlag: userVO.delFlag,
 		userId: userVO.userId
 	}
-	return http.post(`${System.BASE}/user/add`, params);
+	return http.post(`${Server.Admin}/user/add`, params);
 };
 
 /**
@@ -62,14 +62,14 @@ export const updateUser = (userVO: User.UserVO) => {
 		userId: userVO.userId
 	}
 	// console.log(params);
-	return http.put(`${System.BASE}/user/update`, params);
+	return http.put(`${Server.Admin}/user/update`, params);
 };
 
 /**
  * 删除用户
  */
 export const deleteUser = (params: { id: number[] }) => {
-	return http.delete(`${System.BASE}/user/${params.id}`);
+	return http.delete(`${Server.Admin}/user/${params.id}`);
 };
 
 /**
@@ -82,7 +82,7 @@ export const loginByPassword = (params: Login.From, randomStr: string) => {
 		}
 	};
 	return http.postToken<Login.Result>(
-		`${Auth.BASE}/oauth2/token?randomStr=${randomStr}&code=${params.code}&grant_type=${GrantType.password}&scope=${Scope.server}`,
+		`${Server.Auth}/oauth2/token?randomStr=${randomStr}&code=${params.code}&grant_type=${GrantType.password}&scope=${Scope.server}`,
 		qs.stringify({
 			username: params.username,
 			password: params.password
@@ -95,5 +95,5 @@ export const loginByPassword = (params: Login.From, randomStr: string) => {
  * @name 用户退出登录
  */
 export const logoutApi = () => {
-	return http.delete(`${Auth.BASE}/token/logout`);
+	return http.delete(`${Server.Auth}/token/logout`);
 };

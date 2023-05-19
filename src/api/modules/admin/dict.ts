@@ -1,5 +1,5 @@
 import http from "@/api";
-import { System } from "../../config/serviceName";
+import { Server } from "../../config/serviceName";
 import { SysDict, SysDictItem } from "@/api/interface/admin/dict";
 import { ResPage } from "@/api/interface/common";
 
@@ -9,7 +9,7 @@ import { ResPage } from "@/api/interface/common";
  * @returns 
  */
 export const getDictionarys = (key: string) => {
-    return http.get<SysDict.Entity>(`${System.BASE}/dict/key${key}`, {
+    return http.get<SysDict.Entity>(`${Server.Admin}/dict/key${key}`, {
         headers: { noLoading: true }
     });
 };
@@ -18,14 +18,14 @@ export const getDictionarys = (key: string) => {
  * 查询 dict list
  */
 export const getDictList = (params: { "name"?: string }) => {
-    return http.get<SysDict.Entity[]>(`${System.BASE}/dict/list`, params);
+    return http.get<SysDict.Entity[]>(`${Server.Admin}/dict/list`, params);
 };
 
 /**
  * 分页查询 dictItem Page 
  */
 export const getDictItemPages = (params: SysDictItem.PageParams) => {
-    return http.get<ResPage<SysDictItem.Entity[]>>(`${System.BASE}/dict/item/page`, params, {
+    return http.get<ResPage<SysDictItem.Entity[]>>(`${Server.Admin}/dict/item/page`, params, {
         headers: { noLoading: true }
     });
 };

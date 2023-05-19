@@ -1,5 +1,5 @@
 import http from "@/api";
-import { System } from "@/api/config/serviceName";
+import { Server } from "@/api/config/serviceName";
 import { SysFile } from "@/api/interface/admin/file";
 import { ResPage } from "@/api/interface/common";
 
@@ -8,21 +8,21 @@ import { ResPage } from "@/api/interface/common";
  * @param param file
  */
 export const upload = (params: FormData) => {
-    return http.post<SysFile.Entity>(`${System.BASE}/sysFile/upload`, params);
+    return http.post<SysFile.Entity>(`${Server.Admin}/sysFile/upload`, params);
 };
 
 /**
  * 分页查询 文件 table
  */
 export const getFilePages = (params: any) => {
-    return http.get<ResPage<SysFile.Entity[]>>(`${System.BASE}/sysFile/page`, params);
+    return http.get<ResPage<SysFile.Entity[]>>(`${Server.Admin}/sysFile/page`, params);
 };
 
 /**
  * 分页查询 文件 table
  */
 export const delFile = (params: any) => {
-    return http.delete<boolean>(`${System.BASE}/sysFile/${params.id}`);
+    return http.delete<boolean>(`${Server.Admin}/sysFile/${params.id}`);
 };
 
 /**
@@ -31,5 +31,5 @@ export const delFile = (params: any) => {
  * @returns 
  */
 export const getFileUrl = (params: any) => {
-    return http.get<string>(`${System.BASE}/sysFile/online/${params.bucketName}/${params.fileName}`);
+    return http.get<string>(`${Server.Admin}/sysFile/online/${params.bucketName}/${params.fileName}`);
 };
