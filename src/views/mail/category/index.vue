@@ -1,121 +1,82 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
 	<div class="main-box">
 		<div class="table-box">
-			<ProTable
-				ref="proTable"
-				title="菜单管理"
-				rowKey="id"
-				:indent="30"
+			<el-table-v2
 				:columns="columns"
-				:requestApi="getTableList"
-				:initParam="initParam"
-				:pagination="false"
-				:searchCol="{ xs: 1, sm: 1, md: 2, lg: 3, xl: 3 }"
-			>
-				<!-- 表格 header 按钮 -->
-				<template #tableHeader>
-					<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
-				</template>
-				<template #icon="scope">
-					<el-icon :v-if="scope.row.icon !== null && scope.row.icon !== undefined" :size="50">
-						<component :is="scope.row.icon"></component>
-					</el-icon>
-				</template>
-				<!-- 表格操作 -->
-				<template #operation="scope">
-					<el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
-					<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-					<el-button type="primary" link :icon="Delete" @click="deleteMenuById(scope.row)">删除</el-button>
-				</template>
-			</ProTable>
-			<MenuDrawer ref="drawerRef" />
-			<ImportExcel ref="dialogRef" />
+				:data="data"
+				:width="700"
+				:expand-column-key="expandColumnKey"
+				:height="400"
+				fixed
+			/>
 		</div>
 	</div>
 </template>
 
 <script setup lang="tsx" name="treeProTable">
-import { reactive, ref } from "vue";
-import { ColumnProps } from "@/components/ProTable/interface";
-import { useHandleData } from "@/hooks/useHandleData";
-import ProTable from "@/components/ProTable/index.vue";
-import ImportExcel from "@/components/ImportExcel/index.vue";
-import MenuDrawer from "@/views/admin/menu/components/MenuDrawer.vue";
-import { CirclePlus, Delete, EditPen, View } from "@element-plus/icons-vue";
-import { updateMenu, delMenu, menuTree, addMenu } from "@/api/modules/menu";
-import { Menu } from "@/api/interface/menu";
+import { Category } from "@/api/interface/mail/category";
+import { categoryTree } from "@/api/modules/mail/category";
+import { onMounted, ref } from "vue";
 
-const proTable = ref();
+const expandColumnKey = 'id'
 
-const initParam = reactive({});
+const data = ref<Category.Entity[]>([]);
 
-const optionsParent = ref<any[]>([
+onMounted(() => {
+	getTableList();
+});
+
+const columns = [
 	{
-		id: "-1",
-		parentId: "-2",
-		name: "根节点",
-		label: "根节点",
-		children: null
+		key: "id",
+		dataKey: "id", //需要渲染当前列的数据字段，如{id:9527,name:'Mike'}，则填id
+		title: "id", //显示在单元格表头的文本
+		width: 80, //当前列的宽度，必须设置
+		fixed: true //是否固定列
+	},
+	{
+		key: "name",
+		dataKey: "name", //需要渲染当前列的数据字段，如{id:9527,name:'Mike'}，则填name
+		title: "名称",
+		width: 100,
+		fixed: true
+	},
+	{
+		key: "sort",
+		dataKey: "sort",
+		title: "排序",
+		width: 120
+	},
+	{
+		key: "icon",
+		dataKey: "icon",
+		title: "图标",
+		width: 120
+	},
+	{
+		key: "showStatus",
+		dataKey: "showStatus",
+		title: "状态",
+		width: 120
+	},
+	{
+		key: "handle",
+		title: "操作",
+		width: 100,
+		align: "center",
+		cellRenderer: () => (
+			<>
+				<el-button type="danger" icon="Delete" >
+					删除
+				</el-button>
+			</>
+		)
 	}
-]);
-
-const getTableList = async (params: any) => {
-	const apiMenuTree = await menuTree({
-		lazy: false,
-		menuName: params.name
-	});
-	optionsParent.value[0].children = apiMenuTree.data; 
-	return apiMenuTree;
-};
-
-// 表格配置项
-const columns: ColumnProps<Menu.Res>[] = [
-	{
-		prop: "name",
-		label: "菜单名称",
-		search: {
-			el: "input"
-		}
-	},
-	{ prop: "sortOrder", label: "排序" },
-	{
-		prop: "icon",
-		label: "图标"
-	},
-	{ prop: "path", label: "路由" },
-	{ prop: "keepAlive", label: "缓存" },
-	{
-		prop: "type",
-		label: "类型",
-		render: scope => {
-			return (
-				<>
-					<el-tag type={scope.row.type === "0" ? "" : "success"}>{scope.row.type === "0" ? "菜单" : "按钮"}</el-tag>
-				</>
-			);
-		}
-	},
-	{ prop: "permission", label: "权限标识" },
-	{ prop: "operation", label: "操作", width: 300, fixed: "right" }
 ];
 
-// 删除信息
-const deleteMenuById = async (params: Menu.Res) => {
-	await useHandleData(delMenu, params.menuId, `删除【${params.name}】菜单`);
-	proTable.value.getTableList();
-};
-
-// 打开 drawer(新增、查看、编辑)
-const drawerRef = ref<InstanceType<typeof MenuDrawer> | null>(null);
-const openDrawer = (title: string, rowData: Partial<Menu.Res> = {}) => {
-	const params = {
-		title,
-		rowData: { ...rowData },
-		isView: title === "查看",
-		api: title === "新增" ? addMenu : title === "编辑" ? updateMenu : undefined,
-		getTableList: proTable.value.getTableList,
-		options: optionsParent
-	};
-	drawerRef.value?.acceptParams(params);
+const getTableList = async () => {
+	const res = await categoryTree();
+	data.value = res.data;
 };
 </script>

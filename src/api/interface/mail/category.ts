@@ -5,6 +5,7 @@ export namespace Category {
         weight: number;
         name: string;
         icon: string;
+        sort: number;
         showStatus: number;
         productUnit: string;
         productCount: number;
