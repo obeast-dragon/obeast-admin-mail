@@ -1,82 +1,110 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
-	<div class="main-box">
-		<div class="table-box">
-			<el-table-v2
-				:columns="columns"
-				:data="data"
-				:width="700"
-				:expand-column-key="expandColumnKey"
-				:height="400"
-				fixed
-			/>
-		</div>
+	<div class="table-box">
+		<ProTableV2
+			ref="proTableV2"
+			title="岗位列表"
+			:columns="columns"
+			:requestApi="getTableList"
+			:initParam="initParam"
+			:pagination="false"
+			row-key="name"
+		>
+			<!-- 表格 header 按钮 -->
+			<template #tableHeader>
+				<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
+			</template>
+		</ProTableV2>
+		<CategoryDrawer ref="drawerRef" />
 	</div>
 </template>
 
 <script setup lang="tsx" name="treeProTable">
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Category } from "@/api/interface/mail/category";
-import { categoryTree } from "@/api/modules/mail/category";
-import { onMounted, ref } from "vue";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { categoryTree, addCategory, updateCategory, delCategory } from "@/api/modules/mail/category";
+import { reactive, ref } from "vue";
+import { CirclePlus } from "@element-plus/icons-vue";
+import { TableV2FixedDir } from "element-plus";
+import CategoryDrawer from "@/views/mail/category/components/CategoryDrawer.vue";
+import ProTableV2 from "@/components/ProTableV2/index.vue";
+import type { Column } from "element-plus";
 
-const expandColumnKey = 'id'
+const proTableV2 = ref();
 
-const data = ref<Category.Entity[]>([]);
+const initParam = reactive({});
 
-onMounted(() => {
-	getTableList();
-});
+const getTableList = (params: any) => {
+	return categoryTree(params);
+};
 
-const columns = [
-	{
-		key: "id",
-		dataKey: "id", //需要渲染当前列的数据字段，如{id:9527,name:'Mike'}，则填id
-		title: "id", //显示在单元格表头的文本
-		width: 80, //当前列的宽度，必须设置
-		fixed: true //是否固定列
-	},
+const columns: Column<any>[] = [
 	{
 		key: "name",
-		dataKey: "name", //需要渲染当前列的数据字段，如{id:9527,name:'Mike'}，则填name
+		dataKey: "name",
 		title: "名称",
-		width: 100,
-		fixed: true
+		align: "center",
+		width: 500,
+		label: "名称",
+		prop: "name",
+		search: {
+			el: "input"
+		}
 	},
 	{
 		key: "sort",
 		dataKey: "sort",
 		title: "排序",
+		align: "center",
 		width: 120
 	},
 	{
 		key: "icon",
 		dataKey: "icon",
 		title: "图标",
-		width: 120
+		align: "center",
+		width: 300
 	},
 	{
 		key: "showStatus",
 		dataKey: "showStatus",
+		align: "center",
 		title: "状态",
 		width: 120
 	},
 	{
 		key: "handle",
 		title: "操作",
-		width: 100,
+		width: 300,
 		align: "center",
 		cellRenderer: () => (
 			<>
-				<el-button type="danger" icon="Delete" >
+				<el-button type="primary" link icon="View" onClick={openDrawer.bind(this, "查看")} >
+					查看
+				</el-button>
+				<el-button type="primary" link icon="EditPen" onClick={openDrawer.bind(this, "编辑")}>
+					编辑
+				</el-button>
+				<el-button type="primary" link icon="Delete" onClick={openDrawer.bind(this, "删除")}>
 					删除
 				</el-button>
 			</>
-		)
+		),
+		fixed: TableV2FixedDir.RIGHT
 	}
 ];
 
-const getTableList = async () => {
-	const res = await categoryTree();
-	data.value = res.data;
+// 打开 drawer(新增、查看、编辑)
+const drawerRef = ref<InstanceType<typeof CategoryDrawer> | null>(null);
+const openDrawer = (title: string, props?: any) => {
+	const params = {
+		title,
+		isView: title === "查看",
+		rowData: { ...props.rowData },
+		api: title === "新增" ? addCategory : title === "编辑" ? updateCategory : undefined,
+		getTableList: proTableV2.value.getTableList
+	};
+	drawerRef.value?.acceptParams(params);
 };
 </script>

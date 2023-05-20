@@ -5,8 +5,8 @@ import { Category } from "@/api/interface/mail/category";
 /**
  * @name 获取 商品分类 树
  */
-export const categoryTree = () => {
-    return http.get<Category.Entity[]>(`${Server.Product}/category/tree`, {
+export const categoryTree = (params?: any) => {
+    return http.get<Category.Entity[]>(`${Server.Product}/category/tree`, params, {
         headers: { noLoading: true }
     });
 };
@@ -32,7 +32,7 @@ export const updateCategory = (params: Category.Entity) => {
 /**
  * @name 删除商品分类
  */
-export const delCategory = (id: number) => {
+export const delCategory = (id: any) => {
     return http.delete<boolean>(`${Server.Admin}/category/${id}`, {
         headers: { noLoading: true }
     });
