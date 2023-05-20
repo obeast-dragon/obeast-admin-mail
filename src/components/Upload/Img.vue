@@ -107,8 +107,8 @@ const handleHttpUpload = async (options: UploadRequestOptions) => {
 	try {
 		const api = props.api ?? upload;
 		const { data } = await api(formData);
-		emit("update:imageUrl", data.fileUrl);
-		props.successHandler(true);
+		emit("update:imageUrl", import.meta.env.VITE_HOST + data.url);
+		if(props.successHandler) props.successHandler(true);
 		// 调用 el-form 内部的校验方法（可自动校验）
 		formItemContext?.prop && formContext?.validateField([formItemContext.prop as string]);
 	} catch (error) {

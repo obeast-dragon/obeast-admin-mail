@@ -32,8 +32,6 @@ export const updateCategory = (params: Category.Entity) => {
 /**
  * @name 删除商品分类
  */
-export const delCategory = (id: any) => {
-    return http.delete<boolean>(`${Server.Admin}/category/${id}`, {
-        headers: { noLoading: true }
-    });
+export const delCategory = (params: any) => {
+    return http.delete<boolean>(`${Server.Product}/category/${params.id}`);
 };

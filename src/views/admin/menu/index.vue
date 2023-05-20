@@ -34,7 +34,7 @@
 	</div>
 </template>
 
-<script setup lang="tsx" name="treeProTable">
+<script setup lang="tsx" name="MenuProtable">
 import { reactive, ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";

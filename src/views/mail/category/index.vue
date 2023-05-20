@@ -22,8 +22,6 @@
 
 <script setup lang="tsx" name="treeProTable">
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Category } from "@/api/interface/mail/category";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { categoryTree, addCategory, updateCategory, delCategory } from "@/api/modules/mail/category";
 import { reactive, ref } from "vue";
 import { CirclePlus } from "@element-plus/icons-vue";
@@ -31,16 +29,38 @@ import { TableV2FixedDir } from "element-plus";
 import CategoryDrawer from "@/views/mail/category/components/CategoryDrawer.vue";
 import ProTableV2 from "@/components/ProTableV2/index.vue";
 import type { Column } from "element-plus";
+import { Category } from "@/api/interface/mail/category";
+import { useHandleData } from "@/hooks/useHandleData";
 
 const proTableV2 = ref();
 
 const initParam = reactive({});
 
-const getTableList = (params: any) => {
-	return categoryTree(params);
+const optionsCategory = ref<any[]>([
+	{
+		id: "-1",
+		parentId: "-2",
+		name: "根节点",
+		label: "根节点",
+		children: null
+	}
+]);
+
+const getTableList = async (params: any) => {
+	const res = await categoryTree(params);
+	optionsCategory.value[0].children = res.data;
+	return res;
 };
 
 const columns: Column<any>[] = [
+	{
+		key: "id",
+		dataKey: "id",
+		title: "#",
+		align: "center",
+		width: 120,
+		hidden: true
+	},
 	{
 		key: "name",
 		dataKey: "name",
@@ -68,14 +88,7 @@ const columns: Column<any>[] = [
 		cellRenderer: (data: any) => (
 			<>
 				{data.rowData.icon ? (
-					<el-image
-						style="width: 80px; height: 80px"
-						src={data.rowData.icon}
-						zoom-rate="1.2"
-						preview-src-list="srcList"
-						initial-index="4"
-						fit="cover"
-					/>
+					<el-image style="width: 80px; height: 80px" src={data.rowData.icon} fit="cover" />
 				) : (
 					<div style="width: 80px; height: 80px"></div>
 				)}
@@ -87,8 +100,13 @@ const columns: Column<any>[] = [
 		key: "showStatus",
 		dataKey: "showStatus",
 		align: "center",
-		title: "状态",
-		width: 120
+		title: "显示",
+		width: 120,
+		cellRenderer: (data: any) => (
+			<>
+				<el-tag type={data.rowData.showStatus === 0 ? "success" : "danger"}>{data.rowData.showStatus === 0 ? "正常" : "禁用"}</el-tag>
+			</>
+		),
 	},
 	{
 		key: "handle",
@@ -103,7 +121,7 @@ const columns: Column<any>[] = [
 				<el-button type="primary" link icon="EditPen" onClick={openDrawer.bind(this, "编辑", data)}>
 					编辑
 				</el-button>
-				<el-button type="primary" link icon="Delete" onClick={openDrawer.bind(this, "删除", data)}>
+				<el-button type="primary" link icon="Delete" onClick={remove.bind(this, data)}>
 					删除
 				</el-button>
 			</>
@@ -111,6 +129,11 @@ const columns: Column<any>[] = [
 		fixed: TableV2FixedDir.RIGHT
 	}
 ];
+
+const remove = async (props: { rowData: Category.Entity}) => {
+	await useHandleData(delCategory, { id: [props.rowData.id] }, `删除【${props.rowData.name}】商品分类`);
+	proTableV2.value.getTableList();
+};
 
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref<InstanceType<typeof CategoryDrawer> | null>(null);
@@ -120,7 +143,8 @@ const openDrawer = (title: string, props?: any) => {
 		isView: title === "查看",
 		rowData: title === "新增" ? {} : { ...props.rowData },
 		api: title === "新增" ? addCategory : title === "编辑" ? updateCategory : undefined,
-		getTableList: proTableV2.value.getTableList
+		getTableList: proTableV2.value.getTableList,
+		options: optionsCategory
 	};
 	drawerRef.value?.acceptParams(params);
 };
