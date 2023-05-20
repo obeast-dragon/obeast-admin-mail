@@ -9,6 +9,7 @@
 			:initParam="initParam"
 			:pagination="false"
 			row-key="name"
+			:rowHeight="100"
 		>
 			<!-- 表格 header 按钮 -->
 			<template #tableHeader>
@@ -64,6 +65,22 @@ const columns: Column<any>[] = [
 		dataKey: "icon",
 		title: "图标",
 		align: "center",
+		cellRenderer: (data: any) => (
+			<>
+				{data.rowData.icon ? (
+					<el-image
+						style="width: 80px; height: 80px"
+						src={data.rowData.icon}
+						zoom-rate="1.2"
+						preview-src-list="srcList"
+						initial-index="4"
+						fit="cover"
+					/>
+				) : (
+					<div style="width: 80px; height: 80px"></div>
+				)}
+			</>
+		),
 		width: 300
 	},
 	{
@@ -78,15 +95,15 @@ const columns: Column<any>[] = [
 		title: "操作",
 		width: 300,
 		align: "center",
-		cellRenderer: () => (
+		cellRenderer: (data: any) => (
 			<>
-				<el-button type="primary" link icon="View" onClick={openDrawer.bind(this, "查看")} >
+				<el-button type="primary" link icon="View" onClick={openDrawer.bind(this, "查看", data)}>
 					查看
 				</el-button>
-				<el-button type="primary" link icon="EditPen" onClick={openDrawer.bind(this, "编辑")}>
+				<el-button type="primary" link icon="EditPen" onClick={openDrawer.bind(this, "编辑", data)}>
 					编辑
 				</el-button>
-				<el-button type="primary" link icon="Delete" onClick={openDrawer.bind(this, "删除")}>
+				<el-button type="primary" link icon="Delete" onClick={openDrawer.bind(this, "删除", data)}>
 					删除
 				</el-button>
 			</>
@@ -101,7 +118,7 @@ const openDrawer = (title: string, props?: any) => {
 	const params = {
 		title,
 		isView: title === "查看",
-		rowData: { ...props.rowData },
+		rowData: title === "新增" ? {} : { ...props.rowData },
 		api: title === "新增" ? addCategory : title === "编辑" ? updateCategory : undefined,
 		getTableList: proTableV2.value.getTableList
 	};

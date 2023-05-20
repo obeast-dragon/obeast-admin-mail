@@ -20,7 +20,7 @@
 	</el-drawer>
 </template>
 
-<script setup lang="ts" name="UserDrawer">
+<script setup lang="ts" name="CategroyDrawer">
 import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import { Category } from "@/api/interface/mail/category";
