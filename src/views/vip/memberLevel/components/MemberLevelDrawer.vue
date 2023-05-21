@@ -45,6 +45,9 @@
 					<el-radio :label="1">否</el-radio>
 				</el-radio-group>
 			</el-form-item>
+			<el-form-item label="备注" prop="note">
+				<el-input v-model="drawerProps.rowData!.note" placeholder="请填写备注" clearable></el-input>
+			</el-form-item>
 		</el-form>
 		<template #footer>
 			<el-button @click="drawerVisible = false">取消</el-button>
