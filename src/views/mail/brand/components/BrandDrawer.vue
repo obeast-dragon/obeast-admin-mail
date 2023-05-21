@@ -26,7 +26,7 @@
 				<el-input v-model="drawerProps.rowData!.firstLetter" placeholder="请填写检索首字母" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="品牌排序" prop="sort">
-				<el-input-number v-model="drawerProps.rowData!.sort" :min="0" placeholder="0" clearable></el-input-number>
+				<el-input-number v-model="drawerProps.rowData!.sort" :min="0" clearable></el-input-number>
 			</el-form-item>
 			<el-form-item label="显示" prop="showStatus">
 				<el-radio-group v-model="drawerProps.rowData!.showStatus">
