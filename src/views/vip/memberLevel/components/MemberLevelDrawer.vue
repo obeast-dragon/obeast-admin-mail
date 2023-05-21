@@ -39,6 +39,12 @@
 					<el-radio :label="1">否</el-radio>
 				</el-radio-group>
 			</el-form-item>
+			<el-form-item label="生日特权" prop="priviledgeBirthday">
+				<el-radio-group v-model="drawerProps.rowData!.priviledgeBirthday">
+					<el-radio :label="0">是</el-radio>
+					<el-radio :label="1">否</el-radio>
+				</el-radio-group>
+			</el-form-item>
 		</el-form>
 		<template #footer>
 			<el-button @click="drawerVisible = false">取消</el-button>

@@ -47,8 +47,8 @@ const dataCallback = (data: any) => {
 	};
 };
 
-const getTableList =  (params: any) => {
-	return  memberLevelPages({
+const getTableList = (params: any) => {
+	return memberLevelPages({
 		size: params.pageSize,
 		current: params.pageNum,
 		name: params.name === undefined ? "" : params.name
@@ -90,61 +90,67 @@ const columns: ColumnProps<MemberLevel.Entity>[] = [
 	{ prop: "freeFreightPoint", label: "免运费标准" },
 	{ prop: "commentGrowthPoint", label: "评价获取的成长值" },
 	{
-		prop: "priviledgeFreeFreight",
-		label: "是否有免邮特权",
-		render: scope => {
-			return (
-				<>
-					{scope.row.priviledgeFreeFreight === 0 ? (
-						<el-icon size={"30px"} color={"#67c23a"}>
-							<SuccessFilled />
-						</el-icon>
-					) : (
-						<el-icon size={"30px"} color={"#f56c6c"}>
-							<CircleCloseFilled />
-						</el-icon>
-					)}
-				</>
-			);
-		}
-	},
-	{
-		prop: "priviledgeMemberPrice",
-		label: "会员价格特权",
-		render: scope => {
-			return (
-				<>
-					{scope.row.priviledgeMemberPrice === 0 ? (
-						<el-icon size={"30px"} color={"#67c23a"}>
-							<SuccessFilled />
-						</el-icon>
-					) : (
-						<el-icon size={"30px"} color={"#f56c6c"}>
-							<CircleCloseFilled />
-						</el-icon>
-					)}
-				</>
-			);
-		}
-	},
-	{
-		prop: "priviledgeBirthday",
-		label: "生日特权",
-		render: scope => {
-			return (
-				<>
-					{scope.row.priviledgeBirthday === 0 ? (
-						<el-icon size={"30px"} color={"#67c23a"}>
-							<SuccessFilled />
-						</el-icon>
-					) : (
-						<el-icon size={"30px"} color={"#f56c6c"}>
-							<CircleCloseFilled />
-						</el-icon>
-					)}
-				</>
-			);
-		}
+		prop: "vip",
+		label: "特权",
+		_children: [
+			{
+				prop: "priviledgeFreeFreight",
+				label: "是否有免邮特权",
+				render: scope => {
+					return (
+						<>
+							{scope.row.priviledgeFreeFreight === 0 ? (
+								<el-icon size={"30px"} color={"#67c23a"}>
+									<SuccessFilled />
+								</el-icon>
+							) : (
+								<el-icon size={"30px"} color={"#f56c6c"}>
+									<CircleCloseFilled />
+								</el-icon>
+							)}
+						</>
+					);
+				}
+			},
+			{
+				prop: "priviledgeMemberPrice",
+				label: "会员价格特权",
+				render: scope => {
+					return (
+						<>
+							{scope.row.priviledgeMemberPrice === 0 ? (
+								<el-icon size={"30px"} color={"#67c23a"}>
+									<SuccessFilled />
+								</el-icon>
+							) : (
+								<el-icon size={"30px"} color={"#f56c6c"}>
+									<CircleCloseFilled />
+								</el-icon>
+							)}
+						</>
+					);
+				}
+			},
+			{
+				prop: "priviledgeBirthday",
+				label: "生日特权",
+				render: scope => {
+					return (
+						<>
+							{scope.row.priviledgeBirthday === 0 ? (
+								<el-icon size={"30px"} color={"#67c23a"}>
+									<SuccessFilled />
+								</el-icon>
+							) : (
+								<el-icon size={"30px"} color={"#f56c6c"}>
+									<CircleCloseFilled />
+								</el-icon>
+							)}
+						</>
+					);
+				}
+			}
+		]
 	},
 	{ prop: "note", label: "备注" },
 	{ prop: "operation", label: "操作", fixed: "right", width: 220 }
