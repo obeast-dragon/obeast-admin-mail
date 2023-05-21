@@ -85,7 +85,7 @@ const columns: ColumnProps<Brand.Entity>[] = [
 		render: scope => {
 			return (
 				<>
-					<el-tag type={scope.row.showStatus === 0 ? "" : "danger"}>{scope.row.showStatus === 0 ? "正常" : "禁用"}</el-tag>
+					<el-tag type={scope.row.showStatus === 0 ? "success" : "danger"}>{scope.row.showStatus === 0 ? "正常" : "禁用"}</el-tag>
 				</>
 			);
 		}

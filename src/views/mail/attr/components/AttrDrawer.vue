@@ -9,17 +9,31 @@
 			:model="drawerProps.rowData"
 			:hide-required-asterisk="drawerProps.isView"
 		>
-			<el-form-item label="岗位编码" prop="postCode">
-				<el-input v-model="drawerProps.rowData!.postCode" placeholder="请填写岗位编码" clearable></el-input>
+			<el-form-item label="规格名称" prop="attrName">
+				<el-input v-model="drawerProps.rowData!.attrName" placeholder="请填写岗位描述" clearable></el-input>
 			</el-form-item>
-			<el-form-item label="岗位名称" prop="postName">
-				<el-input v-model="drawerProps.rowData!.postName" placeholder="请填写岗位名称" clearable></el-input>
+			<el-form-item label="排序" prop="sort">
+				<el-input-number v-model="drawerProps.rowData!.sort" :min="0" clearable></el-input-number>
 			</el-form-item>
-			<el-form-item label="岗位排序" prop="postSort">
-				<el-input-number :min="0" v-model="drawerProps.rowData!.postSort"></el-input-number>
+			<el-form-item label="可选值列表" prop="valueSelect">
+				<el-select
+					collapse-tags
+					:max-collapse-tags="2"
+					v-model="valueOptions"
+					multiple
+					filterable
+					default-first-option
+					allow-create
+					placeholder="请填写可选值"
+				>
+					<el-option v-for="(item, index) in valueOptions" :key="index" :label="item" :value="item" />
+				</el-select>
 			</el-form-item>
-			<el-form-item label="岗位描述" prop="remark">
-				<el-input v-model="drawerProps.rowData!.remark" placeholder="请填写岗位描述" clearable></el-input>
+			<el-form-item label="显示" prop="enable">
+				<el-radio-group v-model="drawerProps.rowData!.enable">
+					<el-radio :label="0">是</el-radio>
+					<el-radio :label="1">否</el-radio>
+				</el-radio-group>
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -32,17 +46,19 @@
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
-import { Post } from "@/api/interface/admin/post";
+import { MailAttr } from "@/api/interface/mail/attr";
+
+const valueOptions = ref<string[]>([]);
 
 const rules = reactive({
 	postCode: [{ required: true, message: "请填写岗位编码" }],
-	postName: [{ required: true, message: "请选择岗位名称" }],
+	postName: [{ required: true, message: "请选择岗位名称" }]
 });
 
 interface DrawerProps {
 	title: string;
 	isView: boolean;
-	rowData: Partial<Post.Res>;
+	rowData: Partial<MailAttr.Entity>;
 	api?: (params: any) => Promise<any>;
 	getTableList?: () => void;
 }
@@ -57,6 +73,10 @@ const drawerProps = ref<DrawerProps>({
 // 接收父组件传过来的参数
 const acceptParams = (params: DrawerProps) => {
 	drawerProps.value = params;
+	valueOptions.value = [];
+	if (params.rowData.valueSelect) {
+		valueOptions.value = params.rowData.valueSelect.split(";");
+	}
 	drawerVisible.value = true;
 };
 
@@ -65,6 +85,13 @@ const ruleFormRef = ref<FormInstance>();
 const handleSubmit = () => {
 	ruleFormRef.value!.validate(async valid => {
 		if (!valid) return;
+		if (valueOptions.value) {
+			let vals = valueOptions.value[0];
+			for (let i = 1; i < valueOptions.value.length; i++) {
+				vals = vals + ";" + valueOptions.value[i];
+			}
+			drawerProps.value.rowData.valueSelect = vals;
+		}
 		try {
 			await drawerProps.value.api!(drawerProps.value.rowData);
 			ElMessage.success({ message: `${drawerProps.value.title}岗位成功！` });

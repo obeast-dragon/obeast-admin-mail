@@ -12,6 +12,14 @@ export const upload = (params: FormData) => {
 };
 
 /**
+ * @name 文件上传模块
+ * @param param file
+ */
+export const uploads = (params: FormData) => {
+    return http.post<SysFile.Entity>(`${Server.Admin}/sysFile/uploads`, params);
+};
+
+/**
  * 分页查询 文件 table
  */
 export const getFilePages = (params: any) => {

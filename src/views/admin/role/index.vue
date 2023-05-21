@@ -109,7 +109,7 @@ const openDrawer = (title: string, rowData: Partial<Role.Res> = {}) => {
 		title,
 		isView: title === "查看",
 		rowData: { ...rowData },
-		api: title === "新增" ? addRole : title === "编辑" ? updateRole : title === "授权" ? authorizeMenu: undefined,
+		api: title === "新增" ? addRole : title === "编辑" ? updateRole : title === "授权" ? authorizeMenu : undefined,
 		getTableList: proTable.value.getTableList
 	};
 	drawerRef.value?.acceptParams(params);

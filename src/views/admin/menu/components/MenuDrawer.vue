@@ -19,7 +19,7 @@
 				<el-input v-model="drawerProps.rowData!.name" placeholder="请填写菜单名称"></el-input>
 			</el-form-item>
 			<el-form-item label="排序" prop="sortOrder">
-				<el-input-number controls-position="right" :min="0" v-model="drawerProps.rowData!.sortOrder" placeholder="0"></el-input-number>
+				<el-input-number controls-position="right" :min="0" v-model="drawerProps.rowData!.sortOrder"></el-input-number>
 			</el-form-item>
 			<el-form-item label="显示" prop="delFlag">
 				<el-radio-group v-model="drawerProps.rowData!.delFlag">

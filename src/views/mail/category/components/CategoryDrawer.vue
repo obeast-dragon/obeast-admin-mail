@@ -13,7 +13,7 @@
 				<el-input v-model="drawerProps.rowData!.name" placeholder="请填写名称" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="排序" prop="sort">
-				<el-input-number v-model="drawerProps.rowData!.sort" :min="0" placeholder="0" clearable></el-input-number>
+				<el-input-number v-model="drawerProps.rowData!.sort" :min="0" clearable></el-input-number>
 			</el-form-item>
 			<el-form-item label="上级分类" prop="parentId">
 				<el-tree-select

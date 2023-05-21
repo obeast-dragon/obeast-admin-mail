@@ -46,7 +46,7 @@
 <script setup lang="ts" name="UploadImgs">
 import { ref, computed, inject, watch } from "vue";
 import { Plus } from "@element-plus/icons-vue";
-import { upload } from "@/api/modules/admin/file";
+import { uploads } from "@/api/modules/admin/file";
 import type { UploadProps, UploadFile, UploadUserFile, UploadRequestOptions } from "element-plus";
 import { ElNotification, formContextKey, formItemContextKey } from "element-plus";
 
@@ -124,9 +124,9 @@ const beforeUpload: UploadProps["beforeUpload"] = rawFile => {
  * */
 const handleHttpUpload = async (options: UploadRequestOptions) => {
 	let formData = new FormData();
-	formData.append("file", options.file);
+	formData.append("files", options.file);
 	try {
-		const api = props.api ?? upload;
+		const api = props.api ?? uploads;
 		const { data } = await api(formData);
 		options.onSuccess(data);
 	} catch (error) {

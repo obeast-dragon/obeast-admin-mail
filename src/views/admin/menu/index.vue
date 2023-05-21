@@ -90,7 +90,7 @@ const columns: ColumnProps<Menu.Res>[] = [
 		render: scope => {
 			return (
 				<>
-					<el-tag type={scope.row.type === "0" ? "" : "success"}>{scope.row.type === "0" ? "菜单" : "按钮"}</el-tag>
+					<el-tag type={scope.row.type === "0" ? "success" : "success"}>{scope.row.type === "0" ? "菜单" : "按钮"}</el-tag>
 				</>
 			);
 		}
