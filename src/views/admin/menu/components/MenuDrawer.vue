@@ -9,7 +9,7 @@
 			:model="drawerProps.rowData"
 			:hide-required-asterisk="drawerProps.isView"
 		>
-			<el-form-item label="类型" prop="icon">
+			<el-form-item label="类型" prop="type">
 				<el-radio-group v-model="drawerProps.rowData!.type">
 					<el-radio label="0">菜单</el-radio>
 					<el-radio label="1">按钮</el-radio>
@@ -96,6 +96,7 @@ function initIcons() {
 
 const rules = reactive({
 	name: [{ required: true, message: "请填写菜单名称" }],
+	type: [{ required: true, message: "请选择菜单类型" }],
 });
 
 interface DrawerProps {
