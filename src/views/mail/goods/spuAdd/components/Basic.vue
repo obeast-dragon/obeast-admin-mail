@@ -1,4 +1,4 @@
-<!-- <template>
+<template>
 	<el-form ref="ruleFormRef" :model="ruleForm" label-width="140px">
 		<el-form-item label="商品名称" prop="name">
 			<el-input v-model="ruleForm.name" />
@@ -46,9 +46,44 @@
 
 <script setup lang="ts">
 import UploadImgs from "@/components/Upload/Imgs.vue";
+import { FormInstance } from "element-plus";
+import { reactive, ref } from "vue";
 
-interface BasicInfoProps extends Partial<any> {
-}
+const fileList = ref([
+	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }
+]);
+
+const ruleForm = reactive({
+	name: "Geeker-Admin",
+	phone: "",
+	region: "",
+	date1: "",
+	date2: "",
+	delivery: false,
+	resource: "",
+	desc: ""
+});
+
+const ruleFormRef = ref<FormInstance>();
+
+// interface BasicInfoProps {
+
+// }
+
+// 	// 接受父组件参数
+// const props = withDefaults(defineProps<BasicInfoProps>(), {
+// 	imageUrl: "",
+// 	drag: true,
+// 	disabled: false,
+// 	fileSize: 5,
+// 	fileType: () => ["image/jpeg", "image/png", "image/gif"],
+// 	height: "150px",
+// 	width: "150px",
+// 	borderRadius: "8px"
+// });
 
 </script>
- -->
+
