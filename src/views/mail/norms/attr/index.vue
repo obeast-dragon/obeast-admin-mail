@@ -33,7 +33,7 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
-import AttrDrawer from "@/views/mail/attr/components/AttrDrawer.vue";
+import AttrDrawer from "@/views/mail/norms/attr/components/AttrDrawer.vue";
 import { CirclePlus, Delete, View, EditPen } from "@element-plus/icons-vue";
 import { attrPages, addAttr, updateAttr, delAttr } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";

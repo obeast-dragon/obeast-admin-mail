@@ -22,7 +22,7 @@
 				<el-input v-model="drawerProps.rowData!.icon" placeholder="请填写图标" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="所属分类" prop="catelogId">
-				<el-input v-model="drawerProps.rowData!.catelogId" placeholder="请填写邮箱" clearable></el-input>
+				<SelectV2Tree v-model:catelogId="drawerProps.rowData!.catelogId" :data="treeFilterData" label="name" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
@@ -33,14 +33,27 @@
 </template>
 
 <script setup lang="ts" name="UserDrawer">
-import { ref, reactive } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import { ElMessage, FormInstance } from "element-plus";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
+import SelectV2Tree from "@/components/SelectTreeV2/index.vue"
+import { categoryTree } from "@/api/modules/mail/category";
+
+onMounted(() => {
+	getTreeFilter();
+})
 
 const rules = reactive({
 	email: [{ required: true, message: "请填写邮箱" }],
 	address: [{ required: true, message: "请填写居住地址" }]
 });
+
+const treeFilterData = ref<any>([]);
+
+const getTreeFilter = async () => {
+	const { data } = await categoryTree({});
+	treeFilterData.value = data;
+};
 
 interface DrawerProps {
 	title: string;

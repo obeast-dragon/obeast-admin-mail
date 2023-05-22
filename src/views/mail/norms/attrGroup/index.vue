@@ -27,7 +27,6 @@
 				</template>
 				<!-- 表格操作 -->
 				<template #operation="scope">
-					<el-button type="primary" link :icon="View" @click="openDrawer('查看', scope.row)">查看</el-button>
 					<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
 					<el-button type="danger" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
 				</template>
@@ -46,7 +45,7 @@ import ProTable from "@/components/ProTable/index.vue";
 import TreeFilterV2 from "@/components/TreeFilterV2/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import AttrGroupDrawer from "@/views/mail/norms/attrGroup/components/AttrGroupDrawer.vue";
-import { CirclePlus, Delete, EditPen, View } from "@element-plus/icons-vue";
+import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
 import { attrGroupPages, addAttrGroup, updateAttrGroup, delAttrGroup } from "@/api/modules/mail/attrGroup";
 import { categoryTree } from "@/api/modules/mail/category";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
@@ -70,7 +69,8 @@ const getTableList = (params: any) => {
 	return attrGroupPages({
 		size: params.pageSize,
 		current: params.pageNum,
-		catelogId: params.catelogId
+		catelogId: params.catelogId,
+		attrGroupName: params.attrGroupName === undefined ?  "" :  params.attrGroupName 
 	});
 };
 
@@ -84,7 +84,7 @@ const changeTreeFilter = (val: string) => {
 };
 
 /**
- * 部门树初始化
+ * 商品分类树初始化
  */
 const getTreeFilter = async () => {
 	const { data } = await categoryTree({});
@@ -96,7 +96,13 @@ const getTreeFilter = async () => {
 const columns: ColumnProps<MailAttrGroup.Entity>[] = [
 	{ type: "selection", fixed: "left", width: 40 },
 	{ type: "index", label: "#", width: 40 },
-	{ prop: "attrGroupName", label: "组名" },
+	{
+		prop: "attrGroupName",
+		label: "组名",
+		search: {
+			el: "input"
+		}
+	},
 	{ prop: "sort", label: "排序" },
 	{ prop: "descript", label: "描述" },
 	{
