@@ -22,7 +22,7 @@
 				<el-input v-model="drawerProps.rowData!.icon" placeholder="请填写图标" clearable></el-input>
 			</el-form-item>
 			<el-form-item label="所属分类" prop="catelogId">
-				<SelectV2Tree v-model:catelogId="drawerProps.rowData!.catelogId" :data="treeFilterData" label="name" />
+				<SelectV2Tree v-model:modelId="drawerProps.rowData!.catelogId" :data="treeFilterData" label="name" />
 			</el-form-item>
 		</el-form>
 		<template #footer>
