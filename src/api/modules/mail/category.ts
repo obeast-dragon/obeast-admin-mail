@@ -6,9 +6,7 @@ import { Category } from "@/api/interface/mail/category";
  * @name 获取 商品分类 树
  */
 export const categoryTree = (params?: any) => {
-    return http.get<Category.Entity[]>(`${Server.Product}/category/tree`, params, {
-        headers: { noLoading: true }
-    });
+    return http.get<Category.Entity[]>(`${Server.Product}/category/tree`, params);
 };
 
 /**

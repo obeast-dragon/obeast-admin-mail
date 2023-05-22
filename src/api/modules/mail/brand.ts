@@ -4,6 +4,15 @@ import { ResPage } from "@/api/interface/common";
 import { Brand } from "@/api/interface/mail/brand";
 
 /**
+ * @name 获取 查询 所有 品牌 
+ */
+export const brandList = () => {
+    return http.get<Brand.Entity[]>(`${Server.Product}/brand/list`, {
+        headers: { noLoading: true }
+    });
+};
+
+/**
  * @name 获取 品牌 分页
  */
 export const brandPages = (params?: any) => {

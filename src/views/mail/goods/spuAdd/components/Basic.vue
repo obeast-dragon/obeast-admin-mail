@@ -1,40 +1,49 @@
 <template>
-	<el-form ref="ruleFormRef" :model="ruleForm" label-width="140px">
+	<el-form :inline="true" ref="basicFormRef" :model="basicForm">
 		<el-form-item label="商品名称" prop="name">
-			<el-input v-model="ruleForm.name" />
+			<el-input v-model="basicForm.name" placeholder="请填写商品名称"  clearable />
 		</el-form-item>
-		<el-form-item label="商品描述" prop="phone">
-			<el-input v-model="ruleForm.phone" placeholder="Activity phone" />
+		<el-form-item label="商品描述" prop="desc">
+			<el-input v-model="basicForm.desc" placeholder="请填写商品描述"  clearable />
 		</el-form-item>
-		<el-form-item label="选择分类" prop="region">
-			<el-select v-model="ruleForm.region" placeholder="Activity zone">
-				<el-option label="Zone one" value="shanghai" />
-				<el-option label="Zone two" value="beijing" />
+		<el-form-item label="商品分类" prop="categroyTree">
+			<div id="categroy-tree">
+				<el-select ref="selectRef" v-model="selectTreeV2Prop.currentNodeLabel" placeholder="请选择分类">
+					<el-option style="height: auto; padding: 0">
+						<el-tree-v2
+							@node-click="nodeClick"
+							:current-node-key="selectTreeV2Prop.currentNodeKey"
+							:data="categoryTreeRef"
+							:props="{ value: 'id', label: 'name' }"
+						/>
+					</el-option>
+				</el-select>
+			</div>
+		</el-form-item>
+		<el-form-item label="选择品牌" prop="brand">
+			<el-select v-model="basicForm.brand" placeholder="请选择品牌">
+				<el-option v-for="item in brandListRef" :key="item.brandId" :label="item.name" :value="item.brandId" />
 			</el-select>
 		</el-form-item>
-		<el-form-item label="选择品牌" prop="region">
-			<el-select v-model="ruleForm.region" placeholder="Activity zone">
-				<el-option label="Zone one" value="shanghai" />
-				<el-option label="Zone two" value="beijing" />
-			</el-select>
+		<el-form-item label="商品重量(kg)" prop="weight">
+			<el-input-number v-model="basicForm.weight" :precision="3" :step="0.001" />
 		</el-form-item>
-		<el-form-item label="商品重量(kg)" prop="phone">
-			<el-input-number v-model="ruleForm.phone" :precision="3" :step="0.001" />
+		<el-form-item label="设置积分">
+			<div>
+				金币 <el-input-number v-model="basicForm.species" controls-position="right" /> 成长值
+				<el-input-number v-model="basicForm.growthValue" controls-position="right" />
+			</div>
 		</el-form-item>
-		<el-form-item label="设置积分" prop="phone">
-			<el-input-number v-model="ruleForm.phone" controls-position="right" />
-			<el-input-number v-model="ruleForm.phone" controls-position="right" />
-		</el-form-item>
-		<el-form-item label="商品介绍" prop="phone">
-			<UploadImgs v-model:fileList="fileList" height="100px" width="100px">
+		<el-form-item label="商品介绍" prop="descImgs">
+			<UploadImgs v-model:fileList="basicForm.descImgs" height="100px" width="100px">
 				<template #empty>
 					<el-icon><Picture /></el-icon>
 					<span>上传照片(可拖拽)</span>
 				</template>
 			</UploadImgs>
 		</el-form-item>
-		<el-form-item label="商品图集" prop="phone">
-			<UploadImgs v-model:fileList="fileList" height="100px" width="100px">
+		<el-form-item label="商品图集" prop="goodsImgs">
+			<UploadImgs v-model:fileList="basicForm.goodsImgs" height="100px" width="100px">
 				<template #empty>
 					<el-icon><Picture /></el-icon>
 					<span>上传照片(可拖拽)</span>
@@ -45,45 +54,67 @@
 </template>
 
 <script setup lang="ts">
+import { Brand } from "@/api/interface/mail/brand";
+import { Category } from "@/api/interface/mail/category";
+import { brandList } from "@/api/modules/mail/brand";
+import { categoryTree } from "@/api/modules/mail/category";
 import UploadImgs from "@/components/Upload/Imgs.vue";
 import { FormInstance } from "element-plus";
-import { reactive, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
+import { TreeNodeData } from "element-plus/es/components/tree/src/tree.type";
 
-const fileList = ref([
-	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-	{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }
-]);
-
-const ruleForm = reactive({
-	name: "Geeker-Admin",
-	phone: "",
-	region: "",
-	date1: "",
-	date2: "",
-	delivery: false,
-	resource: "",
-	desc: ""
+const selectTreeV2Prop = reactive({
+	currentNodeKey: 1,
+	currentNodeLabel: ""
 });
 
-const ruleFormRef = ref<FormInstance>();
+const selectRef = ref();
 
-// interface BasicInfoProps {
+const brandListRef = ref<Brand.Entity[]>([]);
 
-// }
+const categoryTreeRef = ref<Category.Entity[]>([]);
 
-// 	// 接受父组件参数
-// const props = withDefaults(defineProps<BasicInfoProps>(), {
-// 	imageUrl: "",
-// 	drag: true,
-// 	disabled: false,
-// 	fileSize: 5,
-// 	fileType: () => ["image/jpeg", "image/png", "image/gif"],
-// 	height: "150px",
-// 	width: "150px",
-// 	borderRadius: "8px"
-// });
+const basicFormRef = ref<FormInstance>();
 
+const nodeClick = (data: TreeNodeData) => {
+	selectTreeV2Prop.currentNodeKey = data.id;
+	selectTreeV2Prop.currentNodeLabel = data.name;
+	selectRef.value.blur();
+};
+
+const basicForm = reactive({
+	name: "",
+	desc: "",
+	categroyTree: null,
+	brand: "",
+	weight: 0,
+	species: 0,
+	growthValue: 0,
+	descImgs: [
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }
+	],
+	goodsImgs: [
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
+		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }
+	]
+});
+
+const handleBrandList = async () => {
+	const { data } = await brandList();
+	brandListRef.value = data;
+};
+const handleCategoryTree = async () => {
+	const { data } = await categoryTree();
+	categoryTreeRef.value = data;
+};
+
+onMounted(() => {
+	handleBrandList();
+	handleCategoryTree();
+});
 </script>
-

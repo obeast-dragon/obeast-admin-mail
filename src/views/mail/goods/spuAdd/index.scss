@@ -1,14 +1,21 @@
 .el-form {
-	width: 91%;
+	width: 100%;
 	.text-center {
 		text-align: center;
 	}
 }
-.form-box {
+.form-box-parent {
 	height: 100%;
-	width: 91%;
+	width: 100%;
 	margin-top: 32px;
 	box-shadow: 0px 0px 10px 10px rgb(189 189 189 / 53%);
+}
+.form-box {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 50px;
 }
 .form-title {
 	height: 60px;
