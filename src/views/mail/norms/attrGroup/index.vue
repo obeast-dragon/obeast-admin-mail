@@ -4,7 +4,7 @@
 			label="name"
 			title="商品分类"
 			:data="treeFilterData"
-			:defaultValue="initParam.departmentId"
+			:defaultValue="initParam.catelogId"
 			@change="changeTreeFilter"
 		/>
 		<div class="table-box">
@@ -53,7 +53,7 @@ import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 
 const proTable = ref();
 
-const initParam = reactive({ departmentId: "" });
+const initParam = reactive({ catelogId: null });
 
 const treeFilterData = ref<any>([]);
 
@@ -70,7 +70,7 @@ const getTableList = (params: any) => {
 	return attrGroupPages({
 		size: params.pageSize,
 		current: params.pageNum,
-		attrGroupName: params.attrGroupName
+		catelogId: params.catelogId
 	});
 };
 
@@ -80,7 +80,7 @@ const getTableList = (params: any) => {
  */
 const changeTreeFilter = (val: string) => {
 	proTable.value.pageable.pageNum = 1;
-	initParam.departmentId = val;
+	initParam.catelogId = val;
 };
 
 /**
@@ -89,7 +89,7 @@ const changeTreeFilter = (val: string) => {
 const getTreeFilter = async () => {
 	const { data } = await categoryTree({});
 	treeFilterData.value = data;
-	initParam.departmentId = null;
+	initParam.catelogId = null;
 };
 
 // 表格配置项

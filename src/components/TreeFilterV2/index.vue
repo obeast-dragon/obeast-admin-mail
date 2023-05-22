@@ -15,7 +15,7 @@
 				:expand-on-click-node="false"
 				:check-on-click-node="multiple"
 				:props="defaultProps"
-				:filter-method="filterMethod"
+				:filter-method="(value, data) => filterMethod(value, data)"
 				:default-checked-keys="multiple ? selected : []"
 				@node-click="handleNodeClick"
 			/>
@@ -26,7 +26,6 @@
 <script setup lang="ts" name="TreeFilter">
 import { ref, watch, onBeforeMount, nextTick } from "vue";
 import { ElTreeV2 } from "element-plus";
-import { FilterMethod } from "element-plus/es/components/tree-v2/src/types";
 
 // 接收父组件参数并设置默认值
 interface TreeFilterProps {
@@ -64,7 +63,7 @@ onBeforeMount(async () => {
 	if (props.requestApi) {
 		const { data } = await props.requestApi!();
 		treeData.value = data;
-		treeAllData.value = [{ id: "", [props.label]: "全部" }, ...data];
+		treeAllData.value = [{ id: "", [props.label]: "全部" },  ...data];
 	}
 });
 
@@ -87,19 +86,13 @@ watch(
 );
 
 const filterText = ref("");
-watch(filterText, val => {
-	treeRefV2.value!.filter(val);
-});
 
-const inputChanged = () => {
-	treeRefV2.value!.filter(filterText.value);
+const inputChanged = (query: string) => {
+	treeRefV2.value!.filter(query);
 };
 // 过滤
-const filterMethod = (value: string, data: any, node: any) => {
-	console.log(value);
-	console.log(data);
-	console.log(node);
-	return node.label!.includes(value) as FilterMethod;
+const filterMethod = (value: string, node: any) => {
+	return node.name!.includes(value);
 };
 
 interface FilterEmits {
