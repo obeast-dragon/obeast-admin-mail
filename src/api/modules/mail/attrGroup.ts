@@ -14,7 +14,7 @@ export const attrGroupPages = (params?: any) => {
  * @name 新增规格属性分组
  */
 export const addAttrGroup = (params: MailAttrGroup.Entity) => {
-    return http.post<boolean>(`${Server.Product}/attrGroup/add2`, params, {
+    return http.post<boolean>(`${Server.Product}/attrGroup/add`, params, {
         headers: { noLoading: true }
     });
 };
@@ -23,7 +23,7 @@ export const addAttrGroup = (params: MailAttrGroup.Entity) => {
  * @name 修改规格属性分组``
  */
 export const updateAttrGroup = (params: MailAttrGroup.Entity) => {
-    return http.put<boolean>(`${Server.Product}/attrGroup/update2`, params, {
+    return http.put<boolean>(`${Server.Product}/attrGroup/update`, params, {
         headers: { noLoading: true }
     });
 };
