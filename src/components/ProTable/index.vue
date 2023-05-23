@@ -21,7 +21,7 @@
 			<div class="header-button-ri">
 				<slot name="toolButton">
 					<el-button :icon="Refresh" circle @click="getTableList" />
-					<el-button :icon="Printer" circle v-if="columns.length" @click="handlePrint" />
+					<el-button :icon="Printer" circle v-if="columns.length !== 0 && props.showPrintJS" @click="handlePrint" />
 					<el-button :icon="Operation" circle v-if="columns.length" @click="openColSetting" />
 					<el-button :icon="Search" circle v-if="searchColumns.length" @click="isShowSearch = !isShowSearch" />
 				</slot>
@@ -114,6 +114,7 @@ interface ProTableProps extends Partial<Omit<TableProps<any>, "data">> {
 	toolButton?: boolean; // 是否显示表格功能按钮 ==> 非必传（默认为true）
 	rowKey?: string; // 行数据的 Key，用来优化 Table 的渲染，当表格数据多选时，所指定的 id ==> 非必传（默认为 id）
 	searchCol?: number | Record<BreakPoint, number>; // 表格搜索项 每列占比配置 ==> 非必传 { xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }
+	showPrintJS?: boolean; //是否显示printJS工具
 }
 
 // 接受父组件参数，配置默认值
@@ -125,7 +126,8 @@ const props = withDefaults(defineProps<ProTableProps>(), {
 	border: true,
 	toolButton: true,
 	rowKey: "id",
-	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 })
+	searchCol: () => ({ xs: 1, sm: 2, md: 2, lg: 3, xl: 4 }),
+	showPrintJS: true
 });
 
 // 是否显示搜索模块

@@ -76,7 +76,6 @@ import UploadImg from "@/components/Upload/Img.vue";
 import { categoryTree } from "@/api/modules/mail/category";
 import { Category } from "@/api/interface/mail/category";
 import { ElMessage, FormInstance } from "element-plus";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { updateCategoryBrandRel } from "@/api/modules/mail/brand";
 
 const cascaderRef = ref();

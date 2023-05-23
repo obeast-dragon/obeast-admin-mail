@@ -1,5 +1,5 @@
 <template>
-	<el-drawer v-model="drawerVisible" :destroy-on-close="true" size="450px" :title="`${drawerProps.title}用户`">
+	<el-drawer v-model="drawerVisible" :destroy-on-close="true" size="600px" :title="`${drawerProps.title}用户`">
 		<el-form
 			ref="ruleFormRef"
 			label-width="100px"
@@ -8,6 +8,7 @@
 			:disabled="drawerProps.isView"
 			:model="drawerProps.rowData"
 			:hide-required-asterisk="drawerProps.isView"
+			v-if="drawerProps.title !== '关联'"
 		>
 			<el-form-item label="组名" prop="attrGroupName">
 				<el-input v-model="drawerProps.rowData!.attrGroupName" placeholder="请填写组名" clearable></el-input>
@@ -25,6 +26,28 @@
 				<SelectV2Tree v-model:modelId="drawerProps.rowData!.catelogId" :data="treeFilterData" label="name" />
 			</el-form-item>
 		</el-form>
+		<div v-else>
+			<div style="margin-bottom: 10px">
+				<el-button type="success" @click="addRels">新增关联</el-button>
+			</div>
+			<el-table :data="drawerProps.relsList" style="width: 100%">
+				<el-table-column fixed type="selection" width="50" />
+				<el-table-column fixed prop="attrId" label="id" width="50" />
+				<el-table-column prop="attrName" label="属性名" width="100" />
+				<el-table-column prop="valueSelect" label="可选择值" width="280">
+					<template #default="scope">
+						<el-tag :key="index" v-for="(item, index) in handleValueSelect(scope.row.valueSelect)">{{ item }}</el-tag>
+					</template>
+				</el-table-column>
+				<el-table-column fixed="right" label="操作" width="80">
+					<!-- <template #default="scope"> -->
+					<template #default>
+						<el-button type="danger" size="small">删除</el-button>
+					</template>
+				</el-table-column>
+			</el-table>
+		</div>
+		<DialogTable ref="dialogRef" :get-table-list="attrPages" />
 		<template #footer>
 			<el-button @click="drawerVisible = false">取消</el-button>
 			<el-button type="primary" v-show="!drawerProps.isView" @click="handleSubmit">确定</el-button>
@@ -34,14 +57,17 @@
 
 <script setup lang="ts" name="UserDrawer">
 import { ref, reactive, onMounted } from "vue";
-import { ElMessage, FormInstance } from "element-plus";
+import { ElMessage, FormInstance, ElTag } from "element-plus";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
-import SelectV2Tree from "@/components/SelectTreeV2/index.vue"
+import SelectV2Tree from "@/components/SelectTreeV2/index.vue";
 import { categoryTree } from "@/api/modules/mail/category";
+import { MailAttr } from "@/api/interface/mail/attr";
+import { attrPages } from "@/api/modules/mail/attr";
+import DialogTable from "@/views/mail/norms/attrGroup/components/DialogTable.vue";
 
 onMounted(() => {
 	getTreeFilter();
-})
+});
 
 const rules = reactive({
 	email: [{ required: true, message: "请填写邮箱" }],
@@ -61,13 +87,15 @@ interface DrawerProps {
 	rowData: Partial<MailAttrGroup.Entity>;
 	api?: (params: any) => Promise<any>;
 	getTableList?: () => void;
+	relsList: MailAttr.Entity[];
 }
 
 const drawerVisible = ref(false);
 const drawerProps = ref<DrawerProps>({
 	isView: false,
 	title: "",
-	rowData: {}
+	rowData: {},
+	relsList: []
 });
 
 // 接收父组件传过来的参数
@@ -91,6 +119,15 @@ const handleSubmit = () => {
 		}
 	});
 };
+
+const handleValueSelect = (valueSelect: string) => {
+	return valueSelect.split(";");
+};
+
+const dialogRef = ref<InstanceType<typeof DialogTable> | null>(null);
+const addRels = () => {
+	dialogRef.value.acceptDialogParams();
+}
 
 defineExpose({
 	acceptParams

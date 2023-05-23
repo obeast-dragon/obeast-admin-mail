@@ -23,12 +23,12 @@
 				<!-- 表格 header 按钮 -->
 				<template #tableHeader>
 					<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
-					<el-button type="danger" :icon="Delete" plain> 删除 </el-button>
 				</template>
 				<!-- 表格操作 -->
 				<template #operation="scope">
+					<el-button type="primary" link :icon="Switch" @click="openDrawer('关联', scope.row)">关联</el-button>
 					<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-					<el-button type="danger" link :icon="Delete" @click="deleteAccount(scope.row)">删除</el-button>
+					<el-button type="danger" link :icon="Delete" @click="remove(scope.row)">删除</el-button>
 				</template>
 			</ProTable>
 			<AttrGroupDrawer ref="drawerRef" />
@@ -37,7 +37,7 @@
 	</div>
 </template>
 
-<script setup lang="tsx" name="treeProTable">
+<script setup lang="tsx" name="AttrGroupProTable">
 import { onMounted, reactive, ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
@@ -45,8 +45,8 @@ import ProTable from "@/components/ProTable/index.vue";
 import TreeFilterV2 from "@/components/TreeFilterV2/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import AttrGroupDrawer from "@/views/mail/norms/attrGroup/components/AttrGroupDrawer.vue";
-import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
-import { attrGroupPages, addAttrGroup, updateAttrGroup, delAttrGroup } from "@/api/modules/mail/attrGroup";
+import { CirclePlus, Delete, EditPen, Switch } from "@element-plus/icons-vue";
+import { attrGroupPages, addAttrGroup, updateAttrGroup, delAttrGroup, listRelsByAttrGroupId } from "@/api/modules/mail/attrGroup";
 import { categoryTree } from "@/api/modules/mail/category";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 
@@ -70,7 +70,7 @@ const getTableList = (params: any) => {
 		size: params.pageSize,
 		current: params.pageNum,
 		catelogId: params.catelogId,
-		attrGroupName: params.attrGroupName === undefined ?  "" :  params.attrGroupName 
+		attrGroupName: params.attrGroupName === undefined ? "" : params.attrGroupName
 	});
 };
 
@@ -124,20 +124,22 @@ const columns: ColumnProps<MailAttrGroup.Entity>[] = [
 ];
 
 // 删除规格属性分组信息
-const deleteAccount = async (params: MailAttrGroup.Entity) => {
+const remove = async (params: MailAttrGroup.Entity) => {
 	await useHandleData(delAttrGroup, { id: [params.attrGroupId] }, `删除【${params.attrGroupName}】规格属性分组`);
 	proTable.value.getTableList();
 };
 
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref<InstanceType<typeof AttrGroupDrawer> | null>(null);
-const openDrawer = (title: string, rowData: Partial<MailAttrGroup.Entity> = {}) => {
+const openDrawer = async (title: string, rowData: Partial<MailAttrGroup.Entity> = {}) => {
+	const { data } = await listRelsByAttrGroupId(rowData.attrGroupId);
 	const params = {
 		title,
 		rowData: { ...rowData },
 		isView: title === "查看",
 		api: title === "新增" ? addAttrGroup : title === "编辑" ? updateAttrGroup : undefined,
-		getTableList: proTable.value.getTableList
+		getTableList: proTable.value.getTableList,
+		relsList: data
 	};
 	drawerRef.value?.acceptParams(params);
 };

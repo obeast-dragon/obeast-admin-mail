@@ -7,5 +7,11 @@ export namespace MailAttrGroup {
         icon: string,
         catelogId: number
     }
+    export interface AttrAttrGroupRels {
+        id?: number,
+        attrId: number,
+        attrGroupId: number,
+        attrSort: number
+    }
 
 }
