@@ -45,3 +45,23 @@ export const updateBrand = (params: Brand.Entity) => {
 export const delBrand = (params: any) => {
     return http.delete<boolean>(`${Server.Product}/brand/${params.id}`);
 };
+
+/**
+ * @name 更新品牌管理属性
+ */
+export const updateCategoryBrandRel = (brandId: number, categoryBrandRels: Brand.BrandCategoryRels[]) => {
+    let params = {
+        brandId,
+        categoryBrandRels: categoryBrandRels
+    }
+    return http.put<boolean>(`${Server.Product}/categoryBrandRel/updateRels`, params);
+}
+
+/**
+ * @name 查询品牌管理属性
+ */
+export const listRelsByBrandId = (brandId: number) => {
+    return http.get<Brand.BrandCategoryRels[]>(`${Server.Product}/categoryBrandRel/listRel`, { brandId }, {
+        headers: { noLoading: true }
+    });
+}

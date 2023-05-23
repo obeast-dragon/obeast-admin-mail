@@ -8,5 +8,11 @@ export namespace Brand {
         firstLetter: string,
         sort: number
     }
-
+    export interface BrandCategoryRels {
+        id?: number;
+        brandId: number;
+        catelogId: number;
+        catelogName: string;
+        brandName: string;
+    }
 }

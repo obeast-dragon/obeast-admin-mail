@@ -1,19 +1,13 @@
 <template>
 	<div class="table-box">
-		<ProTable
-			ref="proTable"
-			title="品牌列表"
-			:columns="columns"
-			:requestApi="getTableList"
-			:initParam="initParam"
-			:dataCallback="dataCallback"
-		>
+		<ProTable ref="proTable" title="品牌列表" :columns="columns" :requestApi="getTableList" :dataCallback="dataCallback">
 			<!-- 表格 header 按钮 -->
 			<template #tableHeader>
 				<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
 			</template>
 			<!-- 表格操作 -->
 			<template #operation="scope">
+				<el-button type="primary" link :icon="Switch" @click="openDrawer('关联', scope.row)">关联</el-button>
 				<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
 				<el-button type="primary" link :icon="Delete" @click="remove(scope.row)">删除</el-button>
 			</template>
@@ -24,19 +18,17 @@
 </template>
 
 <script setup lang="tsx" name="useProTable">
-import { ref, reactive } from "vue";
+import { ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import BrandDrawer from "@/views/mail/brand/components/BrandDrawer.vue";
-import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
-import { brandPages, addBrand, updateBrand, delBrand } from "@/api/modules/mail/brand";
+import { CirclePlus, Delete, EditPen, Switch } from "@element-plus/icons-vue";
+import { brandPages, addBrand, updateBrand, delBrand, listRelsByBrandId } from "@/api/modules/mail/brand";
 import { Brand } from "@/api/interface/mail/brand";
 
 const proTable = ref();
-
-const initParam = reactive({ type: 1 });
 
 const dataCallback = (data: any) => {
 	return {
@@ -71,11 +63,7 @@ const columns: ColumnProps<Brand.Entity>[] = [
 		prop: "logo",
 		label: "品牌logo",
 		render: scope => {
-			return (
-				<>
-					<el-image  src={scope.row.logo} fit="cover" />
-				</>
-			);
+			return <>{scope.row.logo ? <el-image style="height: 50px" src={scope.row.logo} fit="cover" /> : ""}</>;
 		}
 	},
 	{ prop: "description", label: "品牌描述" },
@@ -90,9 +78,9 @@ const columns: ColumnProps<Brand.Entity>[] = [
 			);
 		}
 	},
-	{ prop: "firstLetter", label: "检索首字母" },
-	{ prop: "sort", label: "品牌排序" },
-	{ prop: "operation", label: "操作", fixed: "right", width: 220 }
+	{ prop: "firstLetter", label: "检索首字母", width: 100 },
+	{ prop: "sort", label: "品牌排序", width: 100 },
+	{ prop: "operation", label: "操作", fixed: "right", width: 280 }
 ];
 
 // 删除品牌信息
@@ -103,13 +91,15 @@ const remove = async (params: Brand.Entity) => {
 
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref<InstanceType<typeof BrandDrawer> | null>(null);
-const openDrawer = (title: string, rowData: Partial<Brand.Entity> = {}) => {
+const openDrawer = async (title: string, rowData: Partial<Brand.Entity> = {}) => {
+	const { data } = await listRelsByBrandId(rowData.brandId);
 	const params = {
 		title,
 		isView: title === "查看",
 		rowData: { ...rowData },
 		api: title === "新增" ? addBrand : title === "编辑" ? updateBrand : undefined,
-		getTableList: proTable.value.getTableList
+		getTableList: proTable.value.getTableList,
+		relsList: data
 	};
 	drawerRef.value?.acceptParams(params);
 };
