@@ -46,7 +46,7 @@ import TreeFilterV2 from "@/components/TreeFilterV2/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
 import AttrGroupDrawer from "@/views/mail/norms/attrGroup/components/AttrGroupDrawer.vue";
 import { CirclePlus, Delete, EditPen, Switch } from "@element-plus/icons-vue";
-import { attrGroupPages, addAttrGroup, updateAttrGroup, delAttrGroup, listRelsByAttrGroupId } from "@/api/modules/mail/attrGroup";
+import { attrGroupPages, addAttrGroup, updateAttrGroup, delAttrGroup } from "@/api/modules/mail/attrGroup";
 import { categoryTree } from "@/api/modules/mail/category";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 
@@ -129,24 +129,15 @@ const remove = async (params: MailAttrGroup.Entity) => {
 	proTable.value.getTableList();
 };
 
-const relsList = ref<MailAttrGroup.AttrAttrGroupRels[]>([]);
-const handleRels = async (attrGroupId: number) => {
-	const { data } = await listRelsByAttrGroupId(attrGroupId);
-	relsList.value = data;
-}
-
 // 打开 drawer(新增、查看、编辑)
 const drawerRef = ref<InstanceType<typeof AttrGroupDrawer> | null>(null);
 const openDrawer = async (title: string, rowData: Partial<MailAttrGroup.Entity> = {}) => {
-	handleRels(rowData.attrGroupId);
 	const params = {
 		title,
 		rowData: { ...rowData },
 		isView: title === "查看",
 		api: title === "新增" ? addAttrGroup : title === "编辑" ? updateAttrGroup : undefined,
 		getTableList: proTable.value.getTableList,
-		relsList: relsList.value,
-		getRelsList: handleRels
 	};
 	drawerRef.value?.acceptParams(params);
 };

@@ -27,7 +27,6 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { attrPages } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";
-import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 
 const proTable = ref();
 
@@ -39,8 +38,6 @@ interface DialogProps {
 	attrGroupId: number;
 	api?: (params: any) => Promise<any>;
 	getTableList?: () => void;
-	relsList?: MailAttrGroup.AttrAttrGroupRels[];
-	getRelsList?: (params: any) => Promise<any>;
 }
 
 const dialogProps = ref<DialogProps>({
@@ -113,21 +110,13 @@ const acceptDialogParams = (params: any) => {
 	dialogVisible.value = true;
 };
 
+interface EmitType {
+	(e: "selectListParams", params: MailAttr.Entity[]): void;
+}
+const emit = defineEmits<EmitType>();
 const submitClick = () => {
-	// console.log(proTable.value.selectedList);
-	// proTable.value.selectedList
 	if (proTable.value.isSelected) {
-		let selectedList =  proTable.value.selectedList as MailAttr.Entity[] ;
-		let updateParams = selectedList.map(item => {
-			return {
-				attrId: item.attrId,
-				attrGroupId: dialogProps.value.attrGroupId,
-				attrSort: item.sort
-			} as MailAttrGroup.AttrAttrGroupRels 
-		});
-		console.log("updateParams", updateParams);
-		console.log("dialogProps.value.relsList", dialogProps.value.relsList);
-		dialogProps.value.getRelsList(dialogProps.value.attrGroupId);
+		emit("selectListParams", proTable.value.selectedList);
 	}
 	dialogVisible.value = false;
 	proTable.value.element.clearSelection();

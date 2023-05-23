@@ -38,10 +38,10 @@ export const delAttrGroup = (params: any) => {
 /**
  * @name 更新属性属性分组关联
  */
-export const updateAttrAttrGroupRel = (attrGroupId: number, categoryBrandRels: MailAttrGroup.AttrAttrGroupRels[]) => {
+export const updateAttrAttrGroupRel = (attrGroupId: number, attrAttrGroupRels: MailAttrGroup.AttrAttrGroupRels[]) => {
     let params = {
         attrGroupId,
-        categoryBrandRels: categoryBrandRels
+        attrAttrGroupRels: attrAttrGroupRels
     }
     return http.put<boolean>(`${Server.Product}/attrAttrGroupRel/updateRels`, params);
 }
@@ -50,7 +50,7 @@ export const updateAttrAttrGroupRel = (attrGroupId: number, categoryBrandRels: M
  * @name 查询属性属性分组关联
  */
 export const listRelsByAttrGroupId = (attrGroupId: number) => {
-    return http.get<MailAttrGroup.AttrAttrGroupRels[]>(`${Server.Product}/attrAttrGroupRel/listRel`, { attrGroupId }, {
+    return http.get<MailAttrGroup.AttrAttrGroupRelsDTO[]>(`${Server.Product}/attrAttrGroupRel/listRel`, { attrGroupId }, {
         headers: { noLoading: true }
     });
 }
