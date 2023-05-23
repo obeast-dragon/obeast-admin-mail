@@ -15,12 +15,7 @@
 		<template #footer>
 			<span class="dialog-footer">
 				<el-button @click="dialogVisible = false">取消</el-button>
-				<el-button
-					type="primary"
-					@click="submitClick"
-				>
-					新增
-				</el-button>
+				<el-button type="primary" @click="submitClick"> 确定 </el-button>
 			</span>
 		</template>
 	</el-dialog>
@@ -32,12 +27,25 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import { attrPages } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";
+import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 
 const proTable = ref();
 
 const initParam = reactive({});
 
 const dialogVisible = ref<boolean>(false);
+
+interface DialogProps {
+	attrGroupId: number;
+	api?: (params: any) => Promise<any>;
+	getTableList?: () => void;
+	relsList?: MailAttrGroup.AttrAttrGroupRels[];
+	getRelsList?: (params: any) => Promise<any>;
+}
+
+const dialogProps = ref<DialogProps>({
+	attrGroupId: null
+});
 
 const dataCallback = (data: any) => {
 	return {
@@ -100,15 +108,30 @@ const columns: ColumnProps<MailAttr.Entity>[] = [
 	},
 	{ prop: "sort", label: "排序", width: 80 }
 ];
-const acceptDialogParams = () => {
+const acceptDialogParams = (params: any) => {
+	dialogProps.value = params;
 	dialogVisible.value = true;
 };
 
 const submitClick = () => {
+	// console.log(proTable.value.selectedList);
+	// proTable.value.selectedList
+	if (proTable.value.isSelected) {
+		let selectedList =  proTable.value.selectedList as MailAttr.Entity[] ;
+		let updateParams = selectedList.map(item => {
+			return {
+				attrId: item.attrId,
+				attrGroupId: dialogProps.value.attrGroupId,
+				attrSort: item.sort
+			} as MailAttrGroup.AttrAttrGroupRels 
+		});
+		console.log("updateParams", updateParams);
+		console.log("dialogProps.value.relsList", dialogProps.value.relsList);
+		dialogProps.value.getRelsList(dialogProps.value.attrGroupId);
+	}
 	dialogVisible.value = false;
-	console.log(proTable.value.selectedList);
 	proTable.value.element.clearSelection();
-}
+};
 
 defineExpose({
 	acceptDialogParams

@@ -1,7 +1,6 @@
 import http from "@/api";
 import { Server } from "@/api/config/serviceName";
 import { ResPage } from "@/api/interface/common";
-import { MailAttr } from "@/api/interface/mail/attr";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 
 /**
@@ -51,7 +50,7 @@ export const updateAttrAttrGroupRel = (attrGroupId: number, categoryBrandRels: M
  * @name 查询属性属性分组关联
  */
 export const listRelsByAttrGroupId = (attrGroupId: number) => {
-    return http.get<MailAttr.Entity[]>(`${Server.Product}/attrAttrGroupRel/listRel`, { attrGroupId }, {
+    return http.get<MailAttrGroup.AttrAttrGroupRels[]>(`${Server.Product}/attrAttrGroupRel/listRel`, { attrGroupId }, {
         headers: { noLoading: true }
     });
 }

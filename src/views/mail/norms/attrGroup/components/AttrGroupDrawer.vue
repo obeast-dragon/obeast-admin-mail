@@ -1,5 +1,6 @@
 <template>
 	<el-drawer v-model="drawerVisible" :destroy-on-close="true" size="600px" :title="`${drawerProps.title}用户`">
+		<DialogTable ref="dialogRef" :get-table-list="attrPages" />
 		<el-form
 			ref="ruleFormRef"
 			label-width="100px"
@@ -47,7 +48,6 @@
 				</el-table-column>
 			</el-table>
 		</div>
-		<DialogTable ref="dialogRef" :get-table-list="attrPages" />
 		<template #footer>
 			<el-button @click="drawerVisible = false">取消</el-button>
 			<el-button type="primary" v-show="!drawerProps.isView" @click="handleSubmit">确定</el-button>
@@ -61,7 +61,6 @@ import { ElMessage, FormInstance, ElTag } from "element-plus";
 import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
 import SelectV2Tree from "@/components/SelectTreeV2/index.vue";
 import { categoryTree } from "@/api/modules/mail/category";
-import { MailAttr } from "@/api/interface/mail/attr";
 import { attrPages } from "@/api/modules/mail/attr";
 import DialogTable from "@/views/mail/norms/attrGroup/components/DialogTable.vue";
 
@@ -87,7 +86,8 @@ interface DrawerProps {
 	rowData: Partial<MailAttrGroup.Entity>;
 	api?: (params: any) => Promise<any>;
 	getTableList?: () => void;
-	relsList: MailAttr.Entity[];
+	relsList: MailAttrGroup.AttrAttrGroupRels[];
+	getRelsList?: (params: any) => Promise<any>;
 }
 
 const drawerVisible = ref(false);
@@ -111,7 +111,7 @@ const handleSubmit = () => {
 		if (!valid) return;
 		try {
 			await drawerProps.value.api!(drawerProps.value.rowData);
-			ElMessage.success({ message: `${drawerProps.value.title}用户成功！` });
+			ElMessage.success({ message: `${drawerProps.value.title}属性分组成功！` });
 			drawerProps.value.getTableList!();
 			drawerVisible.value = false;
 		} catch (error) {
@@ -121,13 +121,18 @@ const handleSubmit = () => {
 };
 
 const handleValueSelect = (valueSelect: string) => {
-	return valueSelect.split(";");
+	return valueSelect === null ? "" : valueSelect.split(";");
 };
 
 const dialogRef = ref<InstanceType<typeof DialogTable> | null>(null);
 const addRels = () => {
-	dialogRef.value.acceptDialogParams();
-}
+	const params = {
+		attrGroupId: drawerProps.value.rowData.attrGroupId,
+		relsList: drawerProps.value.relsList,
+		getRelsList: drawerProps.value.getRelsList
+	};
+	dialogRef.value.acceptDialogParams(params);
+};
 
 defineExpose({
 	acceptParams
