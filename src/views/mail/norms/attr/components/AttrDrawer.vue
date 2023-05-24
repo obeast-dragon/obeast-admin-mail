@@ -15,8 +15,20 @@
 			<el-form-item label="排序" prop="sort">
 				<el-input-number v-model="drawerProps.rowData!.sort" :min="0" clearable></el-input-number>
 			</el-form-item>
-			<el-form-item label="可选值列表" prop="valueSelect">
+			<el-form-item label="值类型" prop="valueType">
+				<el-radio-group v-model="drawerProps.rowData!.valueType">
+					<el-switch
+						v-model="drawerProps.rowData!.valueType"
+						:active-value="1"
+						active-text="多选"
+						:inactive-value="0"
+						inactive-text="单选"
+					/>
+				</el-radio-group>
+			</el-form-item>
+			<el-form-item v-if="drawerProps.rowData!.valueType === 1" label="可选值列表" prop="valueSelect">
 				<el-select
+					
 					collapse-tags
 					:max-collapse-tags="2"
 					v-model="valueOptions"
@@ -31,6 +43,13 @@
 			</el-form-item>
 			<el-form-item label="显示" prop="enable">
 				<el-radio-group v-model="drawerProps.rowData!.enable">
+					<el-radio :label="0">是</el-radio>
+					<el-radio :label="1">否</el-radio>
+				</el-radio-group>
+			</el-form-item>
+
+			<el-form-item label="快速展示" prop="searchType">
+				<el-radio-group v-model="drawerProps.rowData!.searchType">
 					<el-radio :label="0">是</el-radio>
 					<el-radio :label="1">否</el-radio>
 				</el-radio-group>
