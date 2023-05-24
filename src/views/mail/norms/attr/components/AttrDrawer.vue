@@ -47,9 +47,14 @@
 					<el-radio :label="1">否</el-radio>
 				</el-radio-group>
 			</el-form-item>
-
-			<el-form-item label="快速展示" prop="searchType">
+			<el-form-item label="可检索" prop="searchType">
 				<el-radio-group v-model="drawerProps.rowData!.searchType">
+					<el-radio :label="0">是</el-radio>
+					<el-radio :label="1">否</el-radio>
+				</el-radio-group>
+			</el-form-item>
+			<el-form-item label="快速展示" prop="showDesc">
+				<el-radio-group v-model="drawerProps.rowData!.showDesc">
 					<el-radio :label="0">是</el-radio>
 					<el-radio :label="1">否</el-radio>
 				</el-radio-group>
