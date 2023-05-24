@@ -5,7 +5,7 @@ export namespace MailAttr {
         searchType?: number,
         valueType?: number,
         valueSelect?: string,
-        valueSelectList?: string[],
+        valueSelectList?: string[] | string,
         attrType?: number,
         enable?: number,
         catelogId?: number,

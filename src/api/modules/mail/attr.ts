@@ -36,3 +36,12 @@ export const updateAttr = (params: MailAttr.Entity) => {
 export const delAttr = (params: any) => {
     return http.delete<boolean>(`${Server.Product}/attr/${params.id}`);
 };
+
+/**
+ * @name 获取 规格属性 分页
+ */
+export const attrSaleListCategoryId = (categoryId: number) => {
+    return http.get<MailAttr.Entity[]>(`${Server.Product}/attr//sale/list/${categoryId}`, {
+        headers: { noLoading: true }
+    });
+};

@@ -1,76 +1,92 @@
 <template>
-	<el-tabs tab-position="left" style="height: 200px">
-		<el-tab-pane :key="index" v-for="(item, index) in attrGroupDTOsRef" :label="item.attrGroup.attrGroupName">
-			<el-form ref="formRef" :model="dynamicValidateForm" label-width="150px">
-				<el-form-item
-					v-for="domain in item.attrs"
-					:key="domain.attrId"
-					:label="domain.attrName"
-					:prop="domain.attrName"
-				>
-					<div v-if="domain.valueSelect !== ''">
-						<el-select
-							v-model="domain.valueSelectList"
-							filterable
-							allow-create
-							multiple
-							collapse-tags
-							:max-collapse-tags="2"
-							:placeholder="`请输入${domain.attrName}`"
-							style="width: 240px"
-						>
-							<el-option
-								v-for="(value, valueKey) in domain.valueSelect.split(';')"
-								:key="valueKey"
-								:label="value"
-								:value="value"
-							/>
-						</el-select>
-					</div>
-					<div v-else>
-						<el-input v-model="domain.valueSelect" />
-					</div>
-					<el-checkbox style="margin-left: 10px" :true-label=1 :false-label=0 v-model="domain.showDesc" label="快速展示" size="small" />
-				</el-form-item>
-			</el-form>
-		</el-tab-pane>
-	</el-tabs>
+	<div class="sales-main">
+		<div class="sales-box" :key="item.attrId" v-for="(item, index) in saleAttrsRef">
+			<span class="sales-box-title">{{ item.attrName }}</span>
+			<div v-if="item.valueSelect">
+				<el-checkbox-group v-model="item.valueSelectList" @change="handlecheckboxChange">
+					<el-checkbox v-for="(valueSelect, valueIndex) in item.valueSelect.split(';')" :key="valueIndex" :label="valueSelect" />
+				</el-checkbox-group>
+			</div>
+			<div style="display: flex; width: 150px; margin-left: 20px">
+				<el-input
+					v-if="inputVisibles[index]"
+					v-model="inputValue"
+					size="small"
+					@keyup.enter="handleInputConfirm(index)"
+					@blur="handleInputConfirm(index)"
+				/>
+				<el-button @click="showInput(index)">+自定义</el-button>
+			</div>
+		</div>
+	</div>
+	<div>
+		<el-button type="primary" @click="rollbackStepClick">上一步</el-button>
+		<el-button type="success" @click="nextStepClick">下一步</el-button>
+	</div>
 </template>
+
 <script lang="ts" setup>
-import { MailAttrGroup } from "@/api/interface/mail/attrGroup";
-import { listAttrGroupDTOByCateGory } from "@/api/modules/mail/attrGroup";
-import { onMounted, ref, reactive } from "vue";
-import type { FormInstance } from "element-plus";
+import { ref, onMounted } from "vue";
+import { ElInput } from "element-plus";
+import { attrSaleListCategoryId } from "@/api/modules/mail/attr";
+import { MailAttr } from "@/api/interface/mail/attr";
 
 // 接收父组件参数并设置默认值
 interface SalesProps {
-	// category?: { categroyId: number; categroyName: string; categroyText: string };
-	categroyId?: any;
-
+	basicForm?: any;
 }
 const props = withDefaults(defineProps<SalesProps>(), {});
 
-const attrGroupDTOsRef = ref<MailAttrGroup.AttrGroupDTO[]>([]);
+const inputValue = ref("");
+const inputVisibles = ref<boolean[]>([]);
+const showInput = (index: number) => {
+	inputVisibles.value[index] = true;
+};
 
-const formRef = ref<FormInstance>();
-const dynamicValidateForm = reactive<{
-	domains: DomainItem[];
-}>({
-	domains: []
-});
+const handleInputConfirm = (index: number) => {
+	if (inputValue.value) {
+		if (saleAttrsRef.value[index].valueSelect  === "") {
+			saleAttrsRef.value[index].valueSelect = inputValue.value;
+		} else {
+			saleAttrsRef.value[index].valueSelect = saleAttrsRef.value[index].valueSelect + ";" + inputValue.value;
+		}
+	}
+	inputVisibles.value[index] = false;
+	inputValue.value = "";
+};
 
-interface DomainItem {
-	key: number;
-	value: string;
-}
+const saleAttrsRef = ref<MailAttr.Entity[]>([]);
+const initSaleAttrData = async () => {
+	const { data } = await attrSaleListCategoryId(props.basicForm.spu.categoryId);
+	saleAttrsRef.value = data;
+	data.forEach(() => {
+		inputVisibles.value.push(false);
+	});
+};
 
-const initSales = async () => {
-	const { data } = await listAttrGroupDTOByCateGory(props.categroyId);
-	attrGroupDTOsRef.value = data;
+const nextStepClick = () => {
+	props.basicForm.activeStep = 3;
+};
+
+const rollbackStepClick = () => {
+	props.basicForm.activeStep = props.basicForm.activeStep - 1;
+};
+
+const handlecheckboxChange = (value: string[]) => {
+	console.log(value);
 };
 
 onMounted(() => {
-	initSales();
+	initSaleAttrData();
 });
 </script>
-<style></style>
+<style lang="scss">
+.sales-box {
+	display: flex;
+	margin-bottom: 20px;
+}
+.sales-box-title {
+	margin-top: 4px;
+	margin-right: 26px;
+}
+</style>

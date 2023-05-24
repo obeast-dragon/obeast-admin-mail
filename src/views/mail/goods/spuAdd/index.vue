@@ -1,25 +1,21 @@
 <template>
 	<div class="card content-box">
-		<el-steps style="width: 100%" :active="activeStep" finish-status="success">
-			<el-step :title="stepTitle[0]" />
-			<el-step :title="stepTitle[1]" />
-			<el-step :title="stepTitle[2]" />
-			<el-step :title="stepTitle[3]" />
-			<el-step :title="stepTitle[4]" />
+		<el-steps style="width: 100%" :active="basicForm.activeStep" finish-status="success">
+			<el-step :title="basicForm.stepTitle[0]" />
+			<el-step :title="basicForm.stepTitle[1]" />
+			<el-step :title="basicForm.stepTitle[2]" />
+			<el-step :title="basicForm.stepTitle[3]" />
+			<el-step :title="basicForm.stepTitle[4]" />
 		</el-steps>
 		<div class="form-box-parent">
 			<div class="form-box">
 				<div class="form-title">
-					<span>{{ stepTitle[activeStep] }}</span>
+					<span>{{ basicForm.stepTitle[basicForm.activeStep] }}</span>
 				</div>
-				<BasicInfo :basic-form="basicForm" ref="basicRef" v-if="activeStep === 0" />
-				<Sales :categroy-id="basicForm.categroyId" ref="salesRef" v-else-if="activeStep === 1" />
-				<SkuInfo ref="" v-else-if="activeStep === 2" />
-				<Specification ref="" v-else-if="activeStep === 3" />
-				<div>
-					<el-button type="primary" @click="rollbackStepClick">上一步</el-button>
-					<el-button type="success" @click="nextStepClick">{{ `下一步${": " + stepTitle[activeStep + 1]}` }}</el-button>
-				</div>
+				<BasicInfo :basic-form="basicForm" ref="basicRef" v-if="basicForm.activeStep === 0" />
+				<Specification :basic-form="basicForm" ref="salesRef" v-else-if="basicForm.activeStep === 1" />
+				<Sales :basic-form="basicForm" ref="" v-else-if="basicForm.activeStep === 2" />
+				<SkuInfo ref="" v-else-if="basicForm.activeStep === 3" />
 			</div>
 		</div>
 	</div>
@@ -27,51 +23,38 @@
 
 <script setup lang="ts" name="dynamicForm">
 import BasicInfo from "@/views/mail/goods/spuAdd/components/Basic.vue";
-import Sales from "@/views/mail/goods/spuAdd/components/Sales.vue";
-import SkuInfo from "@/views/mail/goods/spuAdd/components/SkuInfo.vue";
 import Specification from "@/views/mail/goods/spuAdd/components/Specification.vue";
+import SkuInfo from "@/views/mail/goods/spuAdd/components/SkuInfo.vue";
+import Sales from "@/views/mail/goods/spuAdd/components/Sales.vue";
 import { ref, reactive } from "vue";
 
-const activeStep = ref<number>(0);
-
 const basicForm = reactive({
-	name: "",
-	desc: "",
-	categroyId: null,
-	brand: "",
-	weight: 0,
-	species: 0,
-	growthValue: 0,
-	descImgs: [],
-	goodsImgs: []
+	stepTitle: ["基本信息", "规格参数", "销售属性", "SKU信息", "保存完成"],
+	activeStep: 0,
+	saleAttrs: [],
+	spu: {
+		//要提交的数据
+		spuName: "",
+		spuDesc: "",
+		categoryId: "",
+		brandId: "",
+		weight: 0,
+		publishStatus: 0,
+		descImgs: [], //商品详情
+		goodsImgs: [], //商品图集，最后sku也可以新增
+		bounds: {
+			//积分
+			buyBounds: 0,
+			growBounds: 0
+		},
+		baseAttrs: [], //基本属性
+		skus: [] //所有sku信息
+	}
 });
 
-const stepTitle = ["基本信息", "规格参数", "销售属性", "SKU信息", "保存完成"];
-
-const nextStepClick = () => {
-	console.log(activeStep.value);
-	switch (activeStep.value) {
-		case 0:
-			basicRef.value.basicFormRef!.validate(async (valid: any) => {
-				if (!valid) return;
-				if (activeStep.value < 5) {
-					activeStep.value = activeStep.value + 1;
-				}
-			});
-			break;
-		default:
-			if (activeStep.value < 5) {
-				activeStep.value = activeStep.value + 1;
-			}
-			break;
-	}
-};
-
-const rollbackStepClick = () => {
-	if (activeStep.value > 0) {
-		activeStep.value = activeStep.value - 1;
-	}
-};
+// const resetFrom = () => {
+// 	basicForm.const;
+// };
 
 const basicRef = ref();
 
