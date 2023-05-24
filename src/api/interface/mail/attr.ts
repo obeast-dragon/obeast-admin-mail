@@ -5,11 +5,11 @@ export namespace MailAttr {
         searchType?: number,
         valueType?: number,
         valueSelect?: string,
+        valueSelectList?: string[],
         attrType?: number,
         enable?: number,
         catelogId?: number,
         showDesc?: number,
         sort?: number
     }
-
 }

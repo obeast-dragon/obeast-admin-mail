@@ -1,24 +1,19 @@
 <template>
 	<el-form :inline="true" ref="basicFormRef" :model="basicForm">
 		<el-form-item label="商品名称" prop="name">
-			<el-input v-model="basicForm.name" placeholder="请填写商品名称"  clearable />
+			<el-input v-model="basicForm.name" placeholder="请填写商品名称" clearable />
 		</el-form-item>
 		<el-form-item label="商品描述" prop="desc">
-			<el-input v-model="basicForm.desc" placeholder="请填写商品描述"  clearable />
+			<el-input v-model="basicForm.desc" placeholder="请填写商品描述" clearable />
 		</el-form-item>
 		<el-form-item label="商品分类" prop="categroyTree">
-			<div id="categroy-tree">
-				<el-select ref="selectRef" v-model="selectTreeV2Prop.currentNodeLabel" placeholder="请选择分类">
-					<el-option style="height: auto; padding: 0">
-						<el-tree-v2
-							@node-click="nodeClick"
-							:current-node-key="selectTreeV2Prop.currentNodeKey"
-							:data="categoryTreeRef"
-							:props="{ value: 'id', label: 'name' }"
-						/>
-					</el-option>
-				</el-select>
-			</div>
+			<el-cascader
+				ref="cascaderRef"
+				style="width: 300px"
+				:props="{ label: 'name', value: 'id', emitPath: false }"
+				:options="categoryTreeRef"
+				@change="handleCascader"
+			/>
 		</el-form-item>
 		<el-form-item label="选择品牌" prop="brand">
 			<el-select v-model="basicForm.brand" placeholder="请选择品牌">
@@ -59,62 +54,40 @@ import { Category } from "@/api/interface/mail/category";
 import { brandList } from "@/api/modules/mail/brand";
 import { categoryTree } from "@/api/modules/mail/category";
 import UploadImgs from "@/components/Upload/Imgs.vue";
-import { FormInstance } from "element-plus";
-import { onMounted, reactive, ref } from "vue";
-import { TreeNodeData } from "element-plus/es/components/tree/src/tree.type";
-
-const selectTreeV2Prop = reactive({
-	currentNodeKey: 1,
-	currentNodeLabel: ""
-});
-
-const selectRef = ref();
+import { onMounted, ref } from "vue";
 
 const brandListRef = ref<Brand.Entity[]>([]);
-
-const categoryTreeRef = ref<Category.Entity[]>([]);
-
-const basicFormRef = ref<FormInstance>();
-
-const nodeClick = (data: TreeNodeData) => {
-	selectTreeV2Prop.currentNodeKey = data.id;
-	selectTreeV2Prop.currentNodeLabel = data.name;
-	selectRef.value.blur();
-};
-
-const basicForm = reactive({
-	name: "",
-	desc: "",
-	categroyTree: null,
-	brand: "",
-	weight: 0,
-	species: 0,
-	growthValue: 0,
-	descImgs: [
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }
-	],
-	goodsImgs: [
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" },
-		{ name: "img", url: "https://i.imgtg.com/2023/01/16/QRBHS.jpg" }
-	]
-});
-
 const handleBrandList = async () => {
 	const { data } = await brandList();
 	brandListRef.value = data;
 };
+
+const categoryTreeRef = ref<Category.Entity[]>([]);
 const handleCategoryTree = async () => {
 	const { data } = await categoryTree();
 	categoryTreeRef.value = data;
 };
 
+const cascaderRef = ref();
+const handleCascader = () => {
+	let item = cascaderRef.value.getCheckedNodes()[0];
+	props.basicForm.categroyTree = {
+		categroyId: item.value,
+		categroyName: item.label,
+		categroyText: item.text
+	};
+};
+
+// 接收父组件参数并设置默认值
+interface BasicProps {
+	basicForm?: any;
+}
+const props = withDefaults(defineProps<BasicProps>(), {
+});
+
 onMounted(() => {
 	handleBrandList();
 	handleCategoryTree();
 });
+
 </script>

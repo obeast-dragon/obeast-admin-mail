@@ -54,3 +54,12 @@ export const listRelsByAttrGroupId = (attrGroupId: number) => {
         headers: { noLoading: true }
     });
 }
+
+/**
+ * @name 获取分类下所有分组
+ */
+export const listAttrGroupDTOByCateGory = (catelogId: number) => {
+    return http.get<MailAttrGroup.AttrGroupDTO[]>(`${Server.Product}/attrGroup/${catelogId}/withAttr`, {
+        headers: { noLoading: true }
+    });
+}

@@ -1,3 +1,5 @@
+import { MailAttr } from "./attr";
+
 export namespace MailAttrGroup {
     export interface Entity {
         attrGroupId: number,
@@ -22,6 +24,10 @@ export namespace MailAttrGroup {
          * 可选值列表[用逗号分隔]
          */
         valueSelect: string;
+    }
+    export interface AttrGroupDTO {
+        attrGroup: MailAttrGroup.Entity;
+        attrs: MailAttr.Entity[];
     }
 
 }

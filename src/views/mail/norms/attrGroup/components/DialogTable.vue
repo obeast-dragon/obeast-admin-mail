@@ -34,16 +34,6 @@ const initParam = reactive({});
 
 const dialogVisible = ref<boolean>(false);
 
-interface DialogProps {
-	attrGroupId: number;
-	api?: (params: any) => Promise<any>;
-	getTableList?: () => void;
-}
-
-const dialogProps = ref<DialogProps>({
-	attrGroupId: null
-});
-
 const dataCallback = (data: any) => {
 	return {
 		list: data.records,
@@ -105,6 +95,16 @@ const columns: ColumnProps<MailAttr.Entity>[] = [
 	},
 	{ prop: "sort", label: "排序", width: 80 }
 ];
+
+interface DialogProps {
+	attrGroupId: number;
+	api?: (params: any) => Promise<any>;
+	getTableList?: () => void;
+}
+
+const dialogProps = ref<DialogProps>({
+	attrGroupId: null
+});
 const acceptDialogParams = (params: any) => {
 	dialogProps.value = params;
 	dialogVisible.value = true;
