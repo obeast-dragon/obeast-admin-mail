@@ -65,3 +65,12 @@ export const listRelsByBrandId = (brandId: number) => {
         headers: { noLoading: true }
     });
 }
+
+/**
+ * @name 查询品牌管理属性
+ */
+export const listRelsByCategoryId = (categoryId: number) => {
+    return http.get<Brand.BrandCategoryRels[]>(`${Server.Product}/categoryBrandRel/listRel/category/${categoryId}`, {
+        headers: { noLoading: true }
+    });
+}

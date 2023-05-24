@@ -1,14 +1,15 @@
 <template>
-	<el-form :inline="true" ref="basicFormRef" :model="basicForm">
+	<el-form :rules="rules" :inline="true" ref="basicFormRef" :model="props.basicForm">
 		<el-form-item label="商品名称" prop="name">
 			<el-input v-model="basicForm.name" placeholder="请填写商品名称" clearable />
 		</el-form-item>
 		<el-form-item label="商品描述" prop="desc">
 			<el-input v-model="basicForm.desc" placeholder="请填写商品描述" clearable />
 		</el-form-item>
-		<el-form-item label="商品分类" prop="categroyTree">
+		<el-form-item label="商品分类" prop="categroyId">
 			<el-cascader
 				ref="cascaderRef"
+				v-model="basicForm.categroyId"
 				style="width: 300px"
 				:props="{ label: 'name', value: 'id', emitPath: false }"
 				:options="categoryTreeRef"
@@ -17,7 +18,7 @@
 		</el-form-item>
 		<el-form-item label="选择品牌" prop="brand">
 			<el-select v-model="basicForm.brand" placeholder="请选择品牌">
-				<el-option v-for="item in brandListRef" :key="item.brandId" :label="item.name" :value="item.brandId" />
+				<el-option v-for="item in brandListRef" :key="item.brandId" :label="item.brandName" :value="item.brandId" />
 			</el-select>
 		</el-form-item>
 		<el-form-item label="商品重量(kg)" prop="weight">
@@ -51,15 +52,28 @@
 <script setup lang="ts">
 import { Brand } from "@/api/interface/mail/brand";
 import { Category } from "@/api/interface/mail/category";
-import { brandList } from "@/api/modules/mail/brand";
+import { listRelsByCategoryId} from "@/api/modules/mail/brand";
 import { categoryTree } from "@/api/modules/mail/category";
 import UploadImgs from "@/components/Upload/Imgs.vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, reactive } from "vue";
+import type { FormInstance } from "element-plus";
 
-const brandListRef = ref<Brand.Entity[]>([]);
-const handleBrandList = async () => {
-	const { data } = await brandList();
+const rules = reactive({
+	categroyId: [{ required: true, message: "请选择商品分类", trigger: "blur" }],
+	brand: [{ required: true, message: "请选择品牌", trigger: "blur" }],
+	name: [{ required: true, message: "请填写商品名称" }]
+});
+const basicFormRef = ref<FormInstance>();
+
+const brandListRef = ref<Brand.BrandCategoryRels[]>([]);
+const handleBrandList = async (categoryId: number) => {
+	const { data } = await listRelsByCategoryId(categoryId);
 	brandListRef.value = data;
+};
+
+const handleCascader = () => {
+	let item = cascaderRef.value.getCheckedNodes()[0];
+	if(item.value) handleBrandList(item.value);
 };
 
 const categoryTreeRef = ref<Category.Entity[]>([]);
@@ -69,25 +83,15 @@ const handleCategoryTree = async () => {
 };
 
 const cascaderRef = ref();
-const handleCascader = () => {
-	let item = cascaderRef.value.getCheckedNodes()[0];
-	props.basicForm.categroyTree = {
-		categroyId: item.value,
-		categroyName: item.label,
-		categroyText: item.text
-	};
-};
 
 // 接收父组件参数并设置默认值
 interface BasicProps {
 	basicForm?: any;
 }
-const props = withDefaults(defineProps<BasicProps>(), {
-});
+const props = withDefaults(defineProps<BasicProps>(), {});
 
 onMounted(() => {
-	handleBrandList();
 	handleCategoryTree();
 });
-
+defineExpose({ basicFormRef });
 </script>

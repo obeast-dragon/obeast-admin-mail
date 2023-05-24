@@ -7,11 +7,6 @@
 					:key="domain.attrId"
 					:label="domain.attrName"
 					:prop="domain.attrName"
-					:rules="{
-						required: true,
-						message: `${domain.attrName}不能为空`,
-						trigger: 'blur'
-					}"
 				>
 					<div v-if="domain.valueSelect !== ''">
 						<el-select
@@ -32,7 +27,10 @@
 							/>
 						</el-select>
 					</div>
-					<el-input v-else v-model="domain.valueSelect" />
+					<div v-else>
+						<el-input v-model="domain.valueSelect" />
+					</div>
+					<el-checkbox style="margin-left: 10px" :true-label=1 :false-label=0 v-model="domain.showDesc" label="快速展示" size="small" />
 				</el-form-item>
 			</el-form>
 		</el-tab-pane>
@@ -46,7 +44,9 @@ import type { FormInstance } from "element-plus";
 
 // 接收父组件参数并设置默认值
 interface SalesProps {
-	category?: { categroyId: number; categroyName: string; categroyText: string };
+	// category?: { categroyId: number; categroyName: string; categroyText: string };
+	categroyId?: any;
+
 }
 const props = withDefaults(defineProps<SalesProps>(), {});
 
@@ -65,7 +65,7 @@ interface DomainItem {
 }
 
 const initSales = async () => {
-	const { data } = await listAttrGroupDTOByCateGory(props.category.categroyId);
+	const { data } = await listAttrGroupDTOByCateGory(props.categroyId);
 	attrGroupDTOsRef.value = data;
 };
 
