@@ -1,5 +1,5 @@
 <template>
-	<el-form :rules="rules" :inline="true" ref="basicFormRef" :model="props.basicForm.spu">
+	<el-form :rules="rules" ref="basicFormRef" :model="props.basicForm.spu">
 		<el-form-item label="商品名称" prop="spuName">
 			<el-input v-model="basicForm.spu.spuName" placeholder="请填写商品名称" clearable />
 		</el-form-item>
@@ -31,7 +31,7 @@
 			</div>
 		</el-form-item>
 		<el-form-item label="商品介绍" prop="descImgs">
-			<UploadImgs v-model:fileList="basicForm.spu.descImgs" height="100px" width="100px">
+			<UploadImgs v-model:fileList="basicForm.descImgsTemp" height="100px" width="100px">
 				<template #empty>
 					<el-icon><Picture /></el-icon>
 					<span>上传照片(可拖拽)</span>
@@ -39,7 +39,7 @@
 			</UploadImgs>
 		</el-form-item>
 		<el-form-item label="商品图集" prop="goodsImgs">
-			<UploadImgs v-model:fileList="basicForm.spu.goodsImgs" height="100px" width="100px">
+			<UploadImgs v-model:fileList="basicForm.goodsImgsTemp" height="100px" width="100px">
 				<template #empty>
 					<el-icon><Picture /></el-icon>
 					<span>上传照片(可拖拽)</span>
@@ -96,8 +96,10 @@ const props = withDefaults(defineProps<BasicProps>(), {});
 const nextStepClick = () => {
 	basicFormRef.value.validate(async (valid: any) => {
 		if (!valid) return;
+		props.basicForm.spu.descImgs = props.basicForm.descImgsTemp.flatMap((item: any) => item.url);
+		props.basicForm.spu.goodsImgs = props.basicForm.goodsImgsTemp.flatMap((item: any) => item.url);
 		props.basicForm.activeStep = 1;
-		console.log(props.basicForm);
+		console.log("basicForm", props.basicForm);
 	});
 };
 

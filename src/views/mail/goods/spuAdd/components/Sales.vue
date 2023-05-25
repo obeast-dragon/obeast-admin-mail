@@ -1,6 +1,6 @@
 <template>
 	<div class="sales-main">
-		<el-form ref="formRef" :model="dynamicForm" label-width="120px" class="demo-dynamic">
+		<el-form ref="salesFormRef" :model="dynamicForm" label-width="120px" class="demo-dynamic">
 			<el-form-item v-for="(item, index) in saleAttrsRef" :key="item.attrId" :label="item.attrName" :prop="item.attrName">
 				<div v-if="item.valueSelect">
 					<el-checkbox-group v-model="dynamicForm.salesAttrs[index].attrValue">
@@ -25,7 +25,7 @@
 		</el-form>
 	</div>
 	<div>
-		<el-button type="primary" @click="rollbackStepClick">上一步</el-button>
+		<el-button type="primary" @click="rollbackStepClick(salesFormRef)">上一步</el-button>
 		<el-button type="success" @click="nextStepClick">下一步</el-button>
 	</div>
 </template>
@@ -36,6 +36,9 @@ import { ElInput } from "element-plus";
 import { attrSaleListCategoryId } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";
 import { descartes } from "@/utils/util";
+import type { FormInstance } from 'element-plus'
+
+const salesFormRef = ref<FormInstance>()
 
 // 接收父组件参数并设置默认值
 interface SalesProps {
@@ -75,7 +78,9 @@ const nextStepClick = () => {
 	props.basicForm.activeStep = 3;
 };
 
-const rollbackStepClick = () => {
+const rollbackStepClick = (formEl: FormInstance | undefined) => {
+	if (!formEl) return;
+	formEl.resetFields();
 	props.basicForm.activeStep = props.basicForm.activeStep - 1;
 };
 
@@ -116,6 +121,11 @@ const generateSkus = () => {
 	});
 	console.log("tableAttrColumn", props.basicForm.tableAttrColumn);
 
+	let imgs: any = [];
+	props.basicForm.spu.goodsImgs.forEach(() => {
+		imgs.push({ url: "", defaultImg: 0 });
+	});
+
 	// sku
 	descartesList.forEach((item: any) => {
 		props.basicForm.spu.skus.push({
@@ -124,7 +134,7 @@ const generateSkus = () => {
 			price: 0,
 			skuTitle: props.basicForm.spu.spuName + " " + item.join(" "),
 			skuSubtitle: "",
-			images: [],
+			images: imgs,
 			descar: item,
 			fullCount: 0,
 			discount: 0,
@@ -136,6 +146,7 @@ const generateSkus = () => {
 		});
 	});
 	console.log("sku", props.basicForm.spu.skus);
+	console.log("props.basicForm", props.basicForm);
 };
 
 interface SalesAttrItem {

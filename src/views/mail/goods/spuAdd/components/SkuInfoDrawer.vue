@@ -1,21 +1,6 @@
 <template>
 	<el-drawer v-model="drawerVisible" :destroy-on-close="true" size="600px" :title="`SKU详情`">
 		<el-form ref="ruleFormRef" label-width="100px" label-suffix=" :" :rules="rules" :model="drawerProps.rowData">
-			<!-- <el-form-item label="选择图集">
-				<UploadImgs
-					v-model:fileList="drawerProps.basicForm.spu.goodsImgs"
-					height="100px"
-					width="100px"
-					style="float: left; margin-left: 10px"
-				>
-					<el-checkbox v-model="drawerProps.basicForm.spu.descImgs[0].url" :true-label="'img'" false-label></el-checkbox>
-					<template #empty>
-						<el-icon><Picture /></el-icon>
-						<span>上传照片(可拖拽)</span>
-					</template>
-				</UploadImgs>
-			</el-form-item> -->
-
 			<!-- 折扣，满减，会员价 -->
 			<el-form-item label="设置折扣">
 				<label>满 </label>
@@ -75,18 +60,18 @@
 					></el-input-number>
 				</el-form-item>
 			</el-form-item>
-            <el-button>上传图片</el-button>
-			<div style="display: flex; flex-flow: wrap; overflow: auto;">
+			<el-button>选择图集</el-button>
+			<div style="display: flex; flex-flow: wrap; overflow: auto">
 				<el-card
 					style="width: 170px; height: 170px"
 					:body-style="{ padding: '0px' }"
-					v-for="(img, index) in drawerProps.basicForm.spu.descImgs"
+					v-for="(img, index) in drawerProps.basicForm.spu.goodsImgs"
 					:key="index"
 				>
-					<img :src="img.url" style="width: 170px; height: 120px" />
+					<img :src="img" style="width: 170px; height: 120px" />
 					<div style="padding: 14px">
-						<el-checkbox v-model="drawerProps.basicForm.spu.descImgs[index].url" :true-label="img" false-label></el-checkbox>
-						<el-tag style="margin-left: 10px;" v-if="drawerProps.basicForm.spu.descImgs[index].url == 1">
+						<el-checkbox v-model="drawerProps.rowData.images[index].url" :true-label="img" false-label=""></el-checkbox>
+						<el-tag style="margin-left: 10px" v-if="drawerProps.basicForm.spu.goodsImgs[index] == 1">
 							<input
 								type="radio"
 								checked
@@ -94,7 +79,7 @@
 								@change="checkDefaultImg(drawerProps.rowData, index, img)"
 							/>设为默认
 						</el-tag>
-						<el-tag v-else style="margin-left: 10px;">
+						<el-tag v-else style="margin-left: 10px">
 							<input
 								type="radio"
 								:name="drawerProps.rowData.skuName"
@@ -136,7 +121,18 @@ const drawerProps = ref<DrawerProps>({
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const checkDefaultImg = (row: any, index: number, img: string) => {};
+const checkDefaultImg = (row: any, index: number, img: string) => {
+	console.log("默认图片", row, index);
+	//这个图片被选中了，
+	row.images[index].url = img; //默认选中
+	row.images[index].defaultImg = 1; //修改标志位;
+	//修改其他人的标志位
+	row.images.forEach((item: any, idx: any) => {
+		if (idx != index) {
+			row.images[idx].defaultImg = 0;
+		}
+	});
+};
 
 // 接收父组件传过来的参数
 const acceptParams = (params: DrawerProps) => {

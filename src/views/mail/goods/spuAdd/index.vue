@@ -33,15 +33,10 @@ const basicForm = reactive({
 	stepTitle: ["基本信息", "规格参数", "销售属性", "SKU信息", "保存完成"],
 	activeStep: 0,
 	saleAttrs: [],
-	uploadImages: [
-		{
-			url: "",
-			defaultImg: 0
-		}
-	],
-
 	memberLevels: [],
 	tableAttrColumn: [],
+	descImgsTemp: [], //商品详情
+	goodsImgsTemp: [], //商品图集，最后sku也可以新增
 	spu: {
 		//要提交的数据
 		spuName: "",
