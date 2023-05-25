@@ -36,9 +36,9 @@ import { ElInput } from "element-plus";
 import { attrSaleListCategoryId } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";
 import { descartes } from "@/utils/util";
-import type { FormInstance } from 'element-plus'
+import type { FormInstance } from "element-plus";
 
-const salesFormRef = ref<FormInstance>()
+const salesFormRef = ref<FormInstance>();
 
 // 接收父组件参数并设置默认值
 interface SalesProps {
@@ -74,6 +74,7 @@ const nextStepClick = () => {
 		}
 	});
 	props.basicForm.saleAttrs = res;
+	console.log(props.basicForm.saleAttrs);
 	generateSkus();
 	props.basicForm.activeStep = 3;
 };
@@ -93,22 +94,9 @@ const generateSkus = () => {
 	props.basicForm.saleAttrs.forEach((item: any) => {
 		attrTemp.push(item.attrValue);
 	});
+	
 	let descartesList = descartes(attrTemp);
 	console.log("descartesList", descartesList);
-	// 会员价
-	let memberPrices: any = [];
-	if (props.basicForm.memberLevels.length > 0) {
-		for (let i = 0; i < props.basicForm.memberLevels.length; i++) {
-			if (props.basicForm.memberLevels[i].priviledgeMemberPrice == 1) {
-				memberPrices.push({
-					id: props.basicForm.memberLevels[i].id,
-					name: props.basicForm.memberLevels[i].name,
-					price: 0
-				});
-			}
-		}
-	}
-	console.log("memberPrices", memberPrices);
 
 	props.basicForm.saleAttrs.forEach((item: any) => {
 		props.basicForm.tableAttrColumn.push({
@@ -119,17 +107,41 @@ const generateSkus = () => {
 			attr: descartesList
 		});
 	});
-	console.log("tableAttrColumn", props.basicForm.tableAttrColumn);
-
-	let imgs: any = [];
-	props.basicForm.spu.goodsImgs.forEach(() => {
-		imgs.push({ url: "", defaultImg: 0 });
-	});
 
 	// sku
 	descartesList.forEach((item: any) => {
+		let attrArray: any = []; //sku属性组
+        item.forEach((value: any, index: any) => {
+          //构造saleAttr信息
+          let saleAttrItem = {
+            attrId: props.basicForm.tableAttrColumn[index].attrId,
+            attrName: props.basicForm.tableAttrColumn[index].attrName,
+            attrValue: value
+          };
+          attrArray.push(saleAttrItem);
+        });
+		
+		//图片
+		let imgs: any = [];
+		props.basicForm.spu.goodsImgs.forEach(() => {
+			imgs.push({ url: "", defaultImg: 0 });
+		});
+		
+		// 会员价
+		let memberPrices: any = [];
+		if (props.basicForm.memberLevels.length > 0) {
+			for (let i = 0; i < props.basicForm.memberLevels.length; i++) {
+				if (props.basicForm.memberLevels[i].priviledgeMemberPrice == 1) {
+					memberPrices.push({
+						id: props.basicForm.memberLevels[i].id,
+						name: props.basicForm.memberLevels[i].name,
+						price: 0
+					});
+				}
+			}
+		}
 		props.basicForm.spu.skus.push({
-			attr: item,
+			attr: attrArray,
 			skuName: props.basicForm.spu.spuName + " " + item.join(" "),
 			price: 0,
 			skuTitle: props.basicForm.spu.spuName + " " + item.join(" "),

@@ -136,7 +136,6 @@ const checkDefaultImg = (row: any, index: number, img: string) => {
 
 // 接收父组件传过来的参数
 const acceptParams = (params: DrawerProps) => {
-	console.log(params);
 	drawerProps.value = params;
 	drawerVisible.value = true;
 };
@@ -147,6 +146,7 @@ const handleSubmit = () => {
 	console.log(drawerProps.value.rowData);
 	drawerProps.value.basicForm.spu.skus[drawerProps.value.rowIndex] = drawerProps.value.rowData;
 	console.log(drawerProps.value.basicForm.spu.skus);
+	drawerVisible.value = false;
 };
 
 defineExpose({

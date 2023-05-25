@@ -1,5 +1,5 @@
 <template>
-	<el-table :data="props.basicForm.spu.skus" style="width: 100%">
+	<el-table :data="props.basicForm.spu.skus" style="width: 100%" row-key="skuName">
 		<el-table-column label="属性组合">
 			<el-table-column :label="item.attrName" v-for="(item, index) in props.basicForm.tableAttrColumn" :key="item.attrId">
 				<template #default="scope">
@@ -63,7 +63,6 @@ const rollbackStepClick = () => {
 // 打开 drawer
 const drawerRef = ref<InstanceType<typeof SkuInfoDrawer> | null>(null);
 const openDrawer = (rowIndex: number, rowData: Partial<any> = {}) => {
-	console.log(rowIndex);
 	const params = {
 		rowData: { ...rowData },
 		basicForm: props.basicForm,
