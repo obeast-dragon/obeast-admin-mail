@@ -1,23 +1,28 @@
 <template>
 	<div class="sales-main">
-		<div class="sales-box" :key="item.attrId" v-for="(item, index) in saleAttrsRef">
-			<span class="sales-box-title">{{ item.attrName }}</span>
-			<div v-if="item.valueSelect">
-				<el-checkbox-group v-model="item.valueSelectList" @change="handlecheckboxChange">
-					<el-checkbox v-for="(valueSelect, valueIndex) in item.valueSelect.split(';')" :key="valueIndex" :label="valueSelect" />
-				</el-checkbox-group>
-			</div>
-			<div style="display: flex; width: 150px; margin-left: 20px">
-				<el-input
-					v-if="inputVisibles[index]"
-					v-model="inputValue"
-					size="small"
-					@keyup.enter="handleInputConfirm(index)"
-					@blur="handleInputConfirm(index)"
-				/>
-				<el-button @click="showInput(index)">+自定义</el-button>
-			</div>
-		</div>
+		<el-form ref="formRef" :model="dynamicForm" label-width="120px" class="demo-dynamic">
+			<el-form-item v-for="(item, index) in saleAttrsRef" :key="item.attrId" :label="item.attrName" :prop="item.attrName">
+				<div v-if="item.valueSelect">
+					<el-checkbox-group v-model="dynamicForm.salesAttrs[index].attrValue">
+						<el-checkbox
+							v-for="(valueSelect, valueIndex) in item.valueSelect.split(';')"
+							:key="valueIndex"
+							:label="valueSelect"
+						/>
+					</el-checkbox-group>
+				</div>
+				<div style="display: flex; width: 150px; margin-left: 20px">
+					<el-input
+						v-if="inputVisibles[index]"
+						v-model="inputValue"
+						size="small"
+						@keyup.enter="handleInputConfirm(index)"
+						@blur="handleInputConfirm(index)"
+					/>
+					<el-button @click="showInput(index)">+自定义</el-button>
+				</div>
+			</el-form-item>
+		</el-form>
 	</div>
 	<div>
 		<el-button type="primary" @click="rollbackStepClick">上一步</el-button>
@@ -26,7 +31,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive } from "vue";
 import { ElInput } from "element-plus";
 import { attrSaleListCategoryId } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";
@@ -45,7 +50,7 @@ const showInput = (index: number) => {
 
 const handleInputConfirm = (index: number) => {
 	if (inputValue.value) {
-		if (saleAttrsRef.value[index].valueSelect  === "") {
+		if (saleAttrsRef.value[index].valueSelect === "") {
 			saleAttrsRef.value[index].valueSelect = inputValue.value;
 		} else {
 			saleAttrsRef.value[index].valueSelect = saleAttrsRef.value[index].valueSelect + ";" + inputValue.value;
@@ -55,16 +60,17 @@ const handleInputConfirm = (index: number) => {
 	inputValue.value = "";
 };
 
-const saleAttrsRef = ref<MailAttr.Entity[]>([]);
-const initSaleAttrData = async () => {
-	const { data } = await attrSaleListCategoryId(props.basicForm.spu.categoryId);
-	saleAttrsRef.value = data;
-	data.forEach(() => {
-		inputVisibles.value.push(false);
-	});
-};
-
 const nextStepClick = () => {
+	let res: any = [];
+	dynamicForm.salesAttrs.forEach(item => {
+		if (item.attrValue !== null) {
+			if (item.attrValue.length > 0) {
+				res.push(item);
+			}
+		}
+	});
+	console.log(res);
+	props.basicForm.saleAttrs = res;
 	props.basicForm.activeStep = 3;
 };
 
@@ -72,10 +78,32 @@ const rollbackStepClick = () => {
 	props.basicForm.activeStep = props.basicForm.activeStep - 1;
 };
 
-const handlecheckboxChange = (value: string[]) => {
-	console.log(value);
-};
+interface SalesAttrItem {
+	attrId?: number;
+	attrName?: string;
+	attrValue: string | string[];
+	attrSort?: number;
+}
+const dynamicForm = reactive<{
+	salesAttrs: SalesAttrItem[];
+}>({
+	salesAttrs: []
+});
 
+const saleAttrsRef = ref<MailAttr.Entity[]>([]);
+const initSaleAttrData = async () => {
+	const { data } = await attrSaleListCategoryId(props.basicForm.spu.categoryId);
+	saleAttrsRef.value = data;
+	data.forEach(item => {
+		inputVisibles.value.push(false);
+		dynamicForm.salesAttrs.push({
+			attrId: item.attrId,
+			attrName: item.attrName,
+			attrValue: [],
+			attrSort: item.sort
+		});
+	});
+};
 onMounted(() => {
 	initSaleAttrData();
 });

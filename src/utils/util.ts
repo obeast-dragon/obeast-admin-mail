@@ -1,6 +1,25 @@
 import { isArray } from "@/utils/is";
 
 /**
+ * 计算笛卡尔积
+ * @param array
+ */
+export function descartes(array: any[]) {
+	if (array.length < 2) return array[0] || [];
+
+	return array.reduce((total, currentValue) => {
+		let res: any = [];
+		total.forEach((t: any) => {
+			currentValue.forEach((cv: any) => {
+				if (t instanceof Array) res.push([...t, cv]);
+				else res.push([t, cv]);
+			});
+		});
+		return res;
+	});
+}
+
+/**
  * @description 获取localStorage
  * @param {String} key Storage名称
  * @return string

@@ -12,10 +12,10 @@
 				<div class="form-title">
 					<span>{{ basicForm.stepTitle[basicForm.activeStep] }}</span>
 				</div>
-				<BasicInfo :basic-form="basicForm" ref="basicRef" v-if="basicForm.activeStep === 0" />
-				<Specification :basic-form="basicForm" ref="salesRef" v-else-if="basicForm.activeStep === 1" />
+				<BasicInfo :basic-form="basicForm" v-if="basicForm.activeStep === 0" />
+				<Specification :basic-form="basicForm" v-else-if="basicForm.activeStep === 1" />
 				<Sales :basic-form="basicForm" ref="" v-else-if="basicForm.activeStep === 2" />
-				<SkuInfo ref="" v-else-if="basicForm.activeStep === 3" />
+				<SkuInfo :basic-form="basicForm" ref="" v-else-if="basicForm.activeStep === 3" />
 			</div>
 		</div>
 	</div>
@@ -26,12 +26,16 @@ import BasicInfo from "@/views/mail/goods/spuAdd/components/Basic.vue";
 import Specification from "@/views/mail/goods/spuAdd/components/Specification.vue";
 import SkuInfo from "@/views/mail/goods/spuAdd/components/SkuInfo.vue";
 import Sales from "@/views/mail/goods/spuAdd/components/Sales.vue";
-import { ref, reactive } from "vue";
+import { memberLevelList } from "@/api/modules/vip/memberLevel";
+import { reactive, onMounted } from "vue";
 
 const basicForm = reactive({
 	stepTitle: ["基本信息", "规格参数", "销售属性", "SKU信息", "保存完成"],
 	activeStep: 0,
 	saleAttrs: [],
+	uploadImages: [],
+	memberLevels: [],
+	tableAttrColumn: [],
 	spu: {
 		//要提交的数据
 		spuName: "",
@@ -52,13 +56,13 @@ const basicForm = reactive({
 	}
 });
 
-// const resetFrom = () => {
-// 	basicForm.const;
-// };
-
-const basicRef = ref();
-
-const salesRef = ref();
+const initMemberLevels = async () => {
+	const { data } = await memberLevelList();
+	basicForm.memberLevels = data;
+};
+onMounted(() => {
+	initMemberLevels();
+});
 </script>
 <style scoped lang="scss">
 @import "./index.scss";

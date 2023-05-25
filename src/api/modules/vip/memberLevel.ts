@@ -36,3 +36,12 @@ export const updateMemberLevel = (params: MemberLevel.Entity) => {
 export const delMemberLevel = (params: any) => {
     return http.delete<boolean>(`${Server.Member}/memberLevel/${params.id}`);
 };
+
+/**
+ * @name 获取 会员等级 
+ */
+export const memberLevelList = () => {
+    return http.get<MemberLevel.Entity[]>(`${Server.Member}/memberLevel/list`, {
+        headers: { noLoading: true }
+    });
+};
