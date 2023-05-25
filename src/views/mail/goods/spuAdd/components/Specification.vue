@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<SpecificationProps>(), {});
 const attrGroupDTOsRef = ref<MailAttrGroup.AttrGroupDTO[]>([]);
 
 interface BasicAttrItem {
-	showDesc: string;
+	showDesc: number;
 	attrValue: string[] | string;
 	attrSort?: number;
 }
@@ -82,8 +82,8 @@ const nextStepClick = () => {
 			}
 		}
 	});
-	console.log(attrs);
 	props.basicForm.spu.baseAttrs = attrs;
+	console.log(props.basicForm.spu.baseAttrs);
 	props.basicForm.activeStep = 2;
 };
 
@@ -99,7 +99,7 @@ const initSpecification = async () => {
 	data.forEach(item => {
 		item.attrs.forEach((attr) => {
 			dynamicForm.basicAttr.push({
-				showDesc: "0",
+				showDesc: 0,
 				attrValue: null,
 				attrSort: attr.sort
 			});

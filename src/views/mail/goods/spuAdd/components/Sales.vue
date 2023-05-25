@@ -35,6 +35,7 @@ import { ref, onMounted, reactive } from "vue";
 import { ElInput } from "element-plus";
 import { attrSaleListCategoryId } from "@/api/modules/mail/attr";
 import { MailAttr } from "@/api/interface/mail/attr";
+import { descartes } from "@/utils/util";
 
 // 接收父组件参数并设置默认值
 interface SalesProps {
@@ -69,13 +70,72 @@ const nextStepClick = () => {
 			}
 		}
 	});
-	console.log(res);
 	props.basicForm.saleAttrs = res;
+	generateSkus();
 	props.basicForm.activeStep = 3;
 };
 
 const rollbackStepClick = () => {
 	props.basicForm.activeStep = props.basicForm.activeStep - 1;
+};
+
+/**
+ * 根据笛卡尔积运算进行生成sku
+ */
+const generateSkus = () => {
+	//根据笛卡尔积运算进行生成sku
+	let attrTemp: any = [];
+	props.basicForm.saleAttrs.forEach((item: any) => {
+		attrTemp.push(item.attrValue);
+	});
+	let descartesList = descartes(attrTemp);
+	console.log("descartesList", descartesList);
+	// 会员价
+	let memberPrices: any = [];
+	if (props.basicForm.memberLevels.length > 0) {
+		for (let i = 0; i < props.basicForm.memberLevels.length; i++) {
+			if (props.basicForm.memberLevels[i].priviledgeMemberPrice == 1) {
+				memberPrices.push({
+					id: props.basicForm.memberLevels[i].id,
+					name: props.basicForm.memberLevels[i].name,
+					price: 0
+				});
+			}
+		}
+	}
+	console.log("memberPrices", memberPrices);
+
+	props.basicForm.saleAttrs.forEach((item: any) => {
+		props.basicForm.tableAttrColumn.push({
+			attrId: item.attrId,
+			attrName: item.attrName,
+			attrValue: item.attrValue,
+			attrSort: item.sort,
+			attr: descartesList
+		});
+	});
+	console.log("tableAttrColumn", props.basicForm.tableAttrColumn);
+
+	// sku
+	descartesList.forEach((item: any) => {
+		props.basicForm.spu.skus.push({
+			attr: item,
+			skuName: props.basicForm.spu.spuName + " " + item.join(" "),
+			price: 0,
+			skuTitle: props.basicForm.spu.spuName + " " + item.join(" "),
+			skuSubtitle: "",
+			images: [],
+			descar: item,
+			fullCount: 0,
+			discount: 0,
+			countStatus: 0,
+			fullPrice: 0.0,
+			reducePrice: 0.0,
+			priceStatus: 0,
+			memberPrice: [].concat(memberPrices)
+		});
+	});
+	console.log("sku", props.basicForm.spu.skus);
 };
 
 interface SalesAttrItem {

@@ -33,7 +33,13 @@ const basicForm = reactive({
 	stepTitle: ["基本信息", "规格参数", "销售属性", "SKU信息", "保存完成"],
 	activeStep: 0,
 	saleAttrs: [],
-	uploadImages: [],
+	uploadImages: [
+		{
+			url: "",
+			defaultImg: 0
+		}
+	],
+
 	memberLevels: [],
 	tableAttrColumn: [],
 	spu: {
@@ -52,7 +58,7 @@ const basicForm = reactive({
 			growBounds: 0
 		},
 		baseAttrs: [], //基本属性
-		skus: [] //所有sku信息
+		skus: []
 	}
 });
 
