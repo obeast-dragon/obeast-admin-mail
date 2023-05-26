@@ -9,18 +9,19 @@
 					:prop="domain.attrName"
 				>
 					<el-select
-						v-model="dynamicForm.basicAttr[domainIndex].attrValue"
+						v-model="dynamicForm.basicAttr[domainIndex].attrValues"
 						:multiple="domain.valueType === 1"
 						collapse-tags
 						:max-collapse-tags="1"
 						:placeholder="`请输入${domain.attrName}`"
 						style="width: 240px"
 						v-if="domain.valueSelect !== ''"
+						@change="selectChange(dynamicForm.basicAttr[domainIndex], domain.attrId)"
 					>
 						<el-option v-for="(value, valueKey) in domain.valueSelect.split(';')" :key="valueKey" :label="value" :value="value" />
 					</el-select>
 					<div v-else>
-						<el-input v-model="dynamicForm.basicAttr[domainIndex].attrValue" />
+						<el-input v-model="dynamicForm.basicAttr[domainIndex].attrValues" />
 					</div>
 					<el-checkbox
 						style="margin-left: 10px"
@@ -55,8 +56,8 @@ const attrGroupDTOsRef = ref<MailAttrGroup.AttrGroupDTO[]>([]);
 
 interface BasicAttrItem {
 	showDesc: number;
-	attrValue: string[] | string;
-	attrSort?: number;
+	attrValues: string[] | string;
+	attrId?: number;
 }
 const formRef = ref<FormInstance>();
 const dynamicForm = reactive<{
@@ -68,13 +69,13 @@ const dynamicForm = reactive<{
 const nextStepClick = () => {
 	let attrs: any = [];
 	dynamicForm.basicAttr.forEach(item => {
-		if (item.attrValue !== null) {
-			if (Array.isArray(item.attrValue)) {
-				if (item.attrValue.length > 0) {
-					let reduceValue =  item.attrValue.reduce((total: string, currentValue: string) => {
+		if (item.attrValues !== "") {
+			if (Array.isArray(item.attrValues)) {
+				if (item.attrValues.length > 0) {
+					let reduceValue =  item.attrValues.reduce((total: string, currentValue: string) => {
 						return total + ";" + currentValue;
 					});
-					item.attrValue = reduceValue;
+					item.attrValues = reduceValue;
 					attrs.push(item);
 				}
 			} else {
@@ -83,8 +84,8 @@ const nextStepClick = () => {
 		}
 	});
 	props.basicForm.spu.baseAttrs = attrs;
-	console.log(props.basicForm.spu.baseAttrs);
-	props.basicForm.activeStep = 2;
+	console.log(attrs);
+	// props.basicForm.activeStep = 2;
 };
 
 const rollbackStepClick = () => {
@@ -93,15 +94,20 @@ const rollbackStepClick = () => {
 	props.basicForm.spu.categoryId = "";
 };
 
+const selectChange = (attrItem: BasicAttrItem, attrId: number) => {
+	attrItem.attrId = attrId;
+}
+
 const initSpecification = async () => {
 	const { data } = await listAttrGroupDTOByCateGory(props.basicForm.spu.categoryId);
 	attrGroupDTOsRef.value = data;
+	console.log(data);
 	data.forEach(item => {
-		item.attrs.forEach((attr) => {
+		item.attrs.forEach(() => {
 			dynamicForm.basicAttr.push({
 				showDesc: 0,
-				attrValue: null,
-				attrSort: attr.sort
+				attrValues: "",
+				attrId: null
 			});
 		});
 	});

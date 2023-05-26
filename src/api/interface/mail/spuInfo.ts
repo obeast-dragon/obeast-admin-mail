@@ -9,7 +9,7 @@ export namespace SpuInfo {
         descImgs: string[];
         goodsImgs: string[];
         bounds: Bounds;
-        baseAttrs: [];
+        baseAttrs: BaseAttrs[];
         skus: Sku[];
     }
     export interface Bounds {
