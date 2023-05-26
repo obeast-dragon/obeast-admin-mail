@@ -39,7 +39,7 @@
 			</UploadImgs>
 		</el-form-item>
 		<el-form-item label="商品图集" prop="goodsImgs">
-			<UploadImgs :file-size="10" v-model:fileList="basicForm.goodsImgsTemp" height="100px" width="100px">
+			<UploadImgs :limit="20" v-model:fileList="basicForm.goodsImgsTemp" height="100px" width="100px">
 				<template #empty>
 					<el-icon><Picture /></el-icon>
 					<span>上传照片(可拖拽)</span>

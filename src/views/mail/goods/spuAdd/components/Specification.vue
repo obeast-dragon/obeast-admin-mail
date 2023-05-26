@@ -105,8 +105,17 @@ const selectChange = (attrItem: BasicAttrItem, attrDomain: any) => {
 const initSpecification = async () => {
 	const { data } = await listAttrGroupDTOByCateGory(props.basicForm.spu.categoryId);
 	attrGroupDTOsRef.value = data;
+	let attrTemps: any = [];
 	data.forEach(item => {
+		let attrs: any = [];
 		item.attrs.forEach(() => {
+			attrs.push({
+				showDesc: 0,
+				attrValue: "",
+				attrId: null,
+				attrSort: 0,
+				attrName: ""
+			});
 			dynamicForm.basicAttr.push({
 				showDesc: 0,
 				attrValue: "",
@@ -115,7 +124,10 @@ const initSpecification = async () => {
 				attrName: ""
 			});
 		});
+		attrTemps.push(attrs);
 	});
+	console.log(attrTemps);
+
 };
 onMounted(() => {
 	initSpecification();
