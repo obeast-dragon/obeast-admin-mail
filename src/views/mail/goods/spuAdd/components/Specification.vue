@@ -9,25 +9,27 @@
 					:prop="domain.attrName"
 				>
 					<el-select
-						v-model="dynamicForm.basicAttr[domainIndex].attrValue"
+						v-model="dynamicForm.basicAttr[index][domainIndex].attrValue"
 						:multiple="domain.valueType === 1"
 						collapse-tags
+						filterable
+						allow-create
 						:max-collapse-tags="1"
 						:placeholder="`请输入${domain.attrName}`"
 						style="width: 240px"
 						v-if="domain.valueSelect !== ''"
-						@change="selectChange(dynamicForm.basicAttr[domainIndex], domain)"
+						@change="selectChange(dynamicForm.basicAttr[index][domainIndex], domain)"
 					>
 						<el-option v-for="(value, valueKey) in domain.valueSelect.split(';')" :key="valueKey" :label="value" :value="value" />
 					</el-select>
 					<div v-else>
-						<el-input v-model="dynamicForm.basicAttr[domainIndex].attrValue" />
+						<el-input v-model="dynamicForm.basicAttr[index][domainIndex].attrValue" />
 					</div>
 					<el-checkbox
 						style="margin-left: 10px"
 						:true-label="1"
 						:false-label="0"
-						v-model="dynamicForm.basicAttr[domainIndex].showDesc"
+						v-model="dynamicForm.basicAttr[index][domainIndex].showDesc"
 						label="快速展示"
 						size="small"
 					/>
@@ -63,30 +65,33 @@ interface BasicAttrItem {
 }
 const formRef = ref<FormInstance>();
 const dynamicForm = reactive<{
-	basicAttr: BasicAttrItem[];
+	basicAttr: any[];
 }>({
 	basicAttr: []
 });
 
 const nextStepClick = () => {
 	let attrs: any = [];
-	dynamicForm.basicAttr.forEach(item => {
-		if (item.attrValue !== "") {
-			if (Array.isArray(item.attrValue)) {
-				if (item.attrValue.length > 0) {
-					let reduceValue = item.attrValue.reduce((total: string, currentValue: string) => {
-						return total + ";" + currentValue;
-					});
-					item.attrValue = reduceValue;
-					attrs.push(item);
+	dynamicForm.basicAttr.forEach((item: BasicAttrItem[]) => {
+		item.forEach(basicAttr => {
+			if (basicAttr.attrValue !== "") {
+				if (Array.isArray(basicAttr.attrValue)) {
+					if (basicAttr.attrValue.length > 0) {
+						let reduceValue = basicAttr.attrValue.reduce((total: string, currentValue: string) => {
+							return total + ";" + currentValue;
+						});
+						basicAttr.attrValue = reduceValue;
+						attrs.push(basicAttr);
+					}
+				} else {
+					attrs.push(basicAttr);
 				}
-			} else {
-				attrs.push(item);
 			}
-		}
+		});
 	});
+
 	props.basicForm.spu.baseAttrs = attrs;
-	console.log("props.basicForm.spu.baseAttrs", attrs);
+	console.log("baseAttrs", props.basicForm.spu.baseAttrs);
 	props.basicForm.activeStep = 2;
 };
 
@@ -105,18 +110,10 @@ const selectChange = (attrItem: BasicAttrItem, attrDomain: any) => {
 const initSpecification = async () => {
 	const { data } = await listAttrGroupDTOByCateGory(props.basicForm.spu.categoryId);
 	attrGroupDTOsRef.value = data;
-	let attrTemps: any = [];
 	data.forEach(item => {
-		let attrs: any = [];
+		let attrTemps: any = [];
 		item.attrs.forEach(() => {
-			attrs.push({
-				showDesc: 0,
-				attrValue: "",
-				attrId: null,
-				attrSort: 0,
-				attrName: ""
-			});
-			dynamicForm.basicAttr.push({
+			attrTemps.push({
 				showDesc: 0,
 				attrValue: "",
 				attrId: null,
@@ -124,10 +121,8 @@ const initSpecification = async () => {
 				attrName: ""
 			});
 		});
-		attrTemps.push(attrs);
+		dynamicForm.basicAttr.push(attrTemps);
 	});
-	console.log(attrTemps);
-
 };
 onMounted(() => {
 	initSpecification();
