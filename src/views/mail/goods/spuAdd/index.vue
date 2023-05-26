@@ -40,7 +40,7 @@ const basicForm = reactive({
 	spu: {
 		//要提交的数据
 		spuName: "",
-		spuDesc: "",
+		spuDescription: "",
 		categoryId: "",
 		brandId: "",
 		weight: 0,

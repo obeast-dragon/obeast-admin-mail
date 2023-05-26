@@ -1,7 +1,7 @@
 export namespace SpuInfo {
     export interface Vo {
         spuName: string;
-        spuDesc: string;
+        spuDescription: string;
         categoryId: number;
         brandId: number;
         weight: number;

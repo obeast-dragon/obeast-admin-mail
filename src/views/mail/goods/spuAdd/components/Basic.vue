@@ -3,8 +3,8 @@
 		<el-form-item label="商品名称" prop="spuName">
 			<el-input v-model="basicForm.spu.spuName" placeholder="请填写商品名称" clearable />
 		</el-form-item>
-		<el-form-item label="商品描述" prop="spuDesc">
-			<el-input v-model="basicForm.spu.spuDesc" placeholder="请填写商品描述" clearable />
+		<el-form-item label="商品描述" prop="spuDescription">
+			<el-input v-model="basicForm.spu.spuDescription" placeholder="请填写商品描述" clearable />
 		</el-form-item>
 		<el-form-item label="商品分类" prop="categoryId">
 			<el-cascader
@@ -63,7 +63,7 @@ import type { FormInstance } from "element-plus";
 
 const rules = reactive({
 	spuName: [{ required: true, message: "请填写商品名称" }],
-	spuDesc: [{ required: true, message: "请选择品牌" }],
+	spuDescription: [{ required: true, message: "请选择品牌" }],
 	categoryId: [{ required: true, message: "请选择商品分类" }],
 	brandId: [{ required: true, message: "请选择品牌" }],
 });

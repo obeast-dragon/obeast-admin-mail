@@ -45,6 +45,7 @@ import { ref } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 import { ElMessageBox } from "element-plus";
 import SkuInfoDrawer from "@/views/mail/goods/spuAdd/components/SkuInfoDrawer.vue";
+import { saveSpuInfo } from "@/api/modules/mail/spuInfo";
 
 // 接收父组件参数并设置默认值
 interface SalesProps {
@@ -53,8 +54,9 @@ interface SalesProps {
 const props = withDefaults(defineProps<SalesProps>(), {});
 
 const nextStepClick = () => {
-	handleClose(() => {
-		console.log(props.basicForm);
+	handleClose(async () => {
+		console.log(props.basicForm.spu);
+		await saveSpuInfo(props.basicForm.spu);
 		// props.basicForm.activeStep = 4;
 	});
 };
