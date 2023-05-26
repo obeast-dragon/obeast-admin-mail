@@ -54,7 +54,7 @@ const basicForm = reactive({
 		},
 		baseAttrs: [], //基本属性
 		skus: []
-	}
+	} 
 });
 
 const initMemberLevels = async () => {

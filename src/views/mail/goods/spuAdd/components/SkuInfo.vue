@@ -3,7 +3,7 @@
 		<el-table-column label="属性组合">
 			<el-table-column :label="item.attrName" v-for="(item, index) in props.basicForm.tableAttrColumn" :key="item.attrId">
 				<template #default="scope">
-					<span style="margin-left: 10px">{{ scope.row.attr[index] }}</span>
+					<span style="margin-left: 10px">{{ scope.row.attr[index].attrValue }}</span>
 				</template>
 			</el-table-column>
 		</el-table-column>
@@ -57,8 +57,14 @@ const nextStepClick = () => {
 };
 
 const rollbackStepClick = () => {
+	resetFrom();
 	props.basicForm.activeStep = props.basicForm.activeStep - 1;
 };
+
+const resetFrom = () => {
+	props.basicForm.tableAttrColumn = [];
+	props.basicForm.spu.skus = []
+}
 
 // 打开 drawer
 const drawerRef = ref<InstanceType<typeof SkuInfoDrawer> | null>(null);

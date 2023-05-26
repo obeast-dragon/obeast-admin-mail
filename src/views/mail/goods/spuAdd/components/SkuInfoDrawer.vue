@@ -1,6 +1,6 @@
 <template>
 	<el-drawer v-model="drawerVisible" :destroy-on-close="true" size="600px" :title="`SKU详情`">
-		<el-form ref="ruleFormRef" label-width="100px" label-suffix=" :" :rules="rules" :model="drawerProps.rowData">
+		<el-form label-width="100px" label-suffix=" :" :model="drawerProps.rowData">
 			<!-- 折扣，满减，会员价 -->
 			<el-form-item label="设置折扣">
 				<label>满 </label>
@@ -60,7 +60,9 @@
 					></el-input-number>
 				</el-form-item>
 			</el-form-item>
-			<el-button>选择图集</el-button>
+			<div @click.once="uploadBefore">
+				<BtnUpload :is-files="true" :image-urls="drawerProps.basicForm.spu.goodsImgs" />
+			</div>
 			<div style="display: flex; flex-flow: wrap; overflow: auto">
 				<el-card
 					style="width: 170px; height: 170px"
@@ -91,21 +93,18 @@
 			</div>
 		</el-form>
 		<template #footer>
-			<el-button @click="drawerVisible = false">取消</el-button>
-			<el-button type="primary" @click="handleSubmit">确定</el-button>
+			<el-button type="primary" @click="drawerVisible = false">确定</el-button>
 		</template>
 	</el-drawer>
 </template>
 
 <script setup lang="ts" name="UserDrawer">
-import { ref, reactive } from "vue";
-import { FormInstance } from "element-plus";
-// import UploadImgs from "@/components/Upload/Imgs.vue";
+import { ref } from "vue";
+import BtnUpload from "@/components/Upload/Btn.vue";
 
-const rules = reactive({
-	postCode: [{ required: true, message: "请填写岗位编码" }],
-	postName: [{ required: true, message: "请选择岗位名称" }]
-});
+const uploadBefore = () => {
+	drawerProps.value.rowData.images.push({ url: "", defaultImg: 0 });
+}
 
 interface DrawerProps {
 	rowData: Partial<any>;
@@ -120,7 +119,6 @@ const drawerProps = ref<DrawerProps>({
 	rowIndex: null
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const checkDefaultImg = (row: any, index: number, img: string) => {
 	console.log("默认图片", row, index);
 	//这个图片被选中了，
@@ -138,15 +136,6 @@ const checkDefaultImg = (row: any, index: number, img: string) => {
 const acceptParams = (params: DrawerProps) => {
 	drawerProps.value = params;
 	drawerVisible.value = true;
-};
-
-// 提交数据（新增/编辑）
-const ruleFormRef = ref<FormInstance>();
-const handleSubmit = () => {
-	console.log(drawerProps.value.rowData);
-	drawerProps.value.basicForm.spu.skus[drawerProps.value.rowIndex] = drawerProps.value.rowData;
-	console.log(drawerProps.value.basicForm.spu.skus);
-	drawerVisible.value = false;
 };
 
 defineExpose({
