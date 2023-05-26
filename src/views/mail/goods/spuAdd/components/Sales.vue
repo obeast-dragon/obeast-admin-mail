@@ -148,6 +148,7 @@ const generateSkus = () => {
 			skuSubtitle: "",
 			images: imgs,
 			descar: item,
+			skuDesc: "",
 			fullCount: 0,
 			discount: 0,
 			countStatus: 0,

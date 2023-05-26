@@ -25,6 +25,7 @@ export namespace SpuInfo {
         images: Images[];
         descar: string[];
         fullCount: number;
+        skuDesc: string;
         discount: number;
         countStatus: number;
         fullPrice: number;
@@ -34,8 +35,9 @@ export namespace SpuInfo {
     }
     export interface BaseAttrs {
         attrId: number;
-        attrValues: string;
+        attrValue: string;
         showDesc: number;
+        attrSort: number;
     }
     export interface Attr {
         attrId: number;

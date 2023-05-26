@@ -1,6 +1,9 @@
 <template>
 	<el-drawer destroy-on-close v-model="drawerVisible" :show-close="false" size="600px" :title="`SKU详情`">
-		<el-form label-width="100px" label-suffix=" :" :model="drawerProps.rowData">
+		<el-form label-width="120px" label-suffix=" :" :model="drawerProps.rowData">
+			<el-form-item label="SKU介绍描述">
+				<el-input v-model="drawerProps.rowData.skuDesc" type="textarea" />
+			</el-form-item>
 			<!-- 折扣，满减，会员价 -->
 			<el-form-item label="设置折扣">
 				<label>满 </label>
