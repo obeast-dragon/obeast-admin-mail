@@ -27,14 +27,14 @@
 				<el-input v-model="scope.row.price"></el-input>
 			</template>
 		</el-table-column>
-		<el-table-column label="操作" width="80">
+		<el-table-column label="详情" width="80">
 			<template #default="scope">
-				<el-button type="primary" link :icon="View" @click="openDrawer(scope.$index,scope.row)">查看</el-button>
+				<el-button type="primary" link :icon="Edit" @click="openDrawer(scope.$index, scope.row)">编辑</el-button>
 			</template>
 		</el-table-column>
 	</el-table>
 	<SkuInfoDrawer ref="drawerRef" />
-	<div style="margin-top: 20px;">
+	<div style="margin-top: 20px">
 		<el-button type="primary" @click="rollbackStepClick">上一步</el-button>
 		<el-button type="success" @click="nextStepClick">下一步</el-button>
 	</div>
@@ -42,7 +42,8 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { View } from "@element-plus/icons-vue";
+import { Edit } from "@element-plus/icons-vue";
+import { ElMessageBox } from "element-plus";
 import SkuInfoDrawer from "@/views/mail/goods/spuAdd/components/SkuInfoDrawer.vue";
 
 // 接收父组件参数并设置默认值
@@ -52,8 +53,24 @@ interface SalesProps {
 const props = withDefaults(defineProps<SalesProps>(), {});
 
 const nextStepClick = () => {
-	console.log(props.basicForm);
-	// props.basicForm.activeStep = 4;
+	handleClose(() => {
+		console.log(props.basicForm);
+		// props.basicForm.activeStep = 4;
+	});
+};
+
+const handleClose = (done: () => void) => {
+	ElMessageBox.confirm("保存需要一段时间，是否继续？", "提示", {
+		type: "warning",
+		confirmButtonText: "保存",
+		cancelButtonText: "取消"
+	})
+		.then(() => {
+			done();
+		})
+		.catch(() => {
+			// catch error
+		});
 };
 
 const rollbackStepClick = () => {
@@ -63,8 +80,8 @@ const rollbackStepClick = () => {
 
 const resetFrom = () => {
 	props.basicForm.tableAttrColumn = [];
-	props.basicForm.spu.skus = []
-}
+	props.basicForm.spu.skus = [];
+};
 
 // 打开 drawer
 const drawerRef = ref<InstanceType<typeof SkuInfoDrawer> | null>(null);
@@ -76,7 +93,6 @@ const openDrawer = (rowIndex: number, rowData: Partial<any> = {}) => {
 	};
 	drawerRef.value?.acceptParams(params);
 };
-
 </script>
 
 <style lang="scss" scoped></style>

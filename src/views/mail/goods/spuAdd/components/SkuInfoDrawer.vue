@@ -1,5 +1,5 @@
 <template>
-	<el-drawer v-model="drawerVisible" :destroy-on-close="true" size="600px" :title="`SKU详情`">
+	<el-drawer destroy-on-close v-model="drawerVisible" :show-close="false" size="600px" :title="`SKU详情`">
 		<el-form label-width="100px" label-suffix=" :" :model="drawerProps.rowData">
 			<!-- 折扣，满减，会员价 -->
 			<el-form-item label="设置折扣">
@@ -93,7 +93,7 @@
 			</div>
 		</el-form>
 		<template #footer>
-			<el-button type="primary" @click="drawerVisible = false">确定</el-button>
+			<el-button type="primary" @click="confirmClick">确定</el-button>
 		</template>
 	</el-drawer>
 </template>
@@ -103,8 +103,10 @@ import { ref } from "vue";
 import BtnUpload from "@/components/Upload/Btn.vue";
 
 const uploadBefore = () => {
-	drawerProps.value.rowData.images.push({ url: "", defaultImg: 0 });
-}
+	drawerProps.value.basicForm.spu.skus.forEach((item: any) => {
+		item.images.push({ url: "", defaultImg: 0 });
+	});
+};
 
 interface DrawerProps {
 	rowData: Partial<any>;
@@ -136,6 +138,11 @@ const checkDefaultImg = (row: any, index: number, img: string) => {
 const acceptParams = (params: DrawerProps) => {
 	drawerProps.value = params;
 	drawerVisible.value = true;
+};
+
+const confirmClick = () => {
+	drawerProps.value.basicForm.spu.skus[drawerProps.value.rowIndex] = drawerProps.value.rowData
+	drawerVisible.value = false;
 };
 
 defineExpose({
