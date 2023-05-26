@@ -72,7 +72,7 @@ const nextStepClick = () => {
 		if (item.attrValues !== "") {
 			if (Array.isArray(item.attrValues)) {
 				if (item.attrValues.length > 0) {
-					let reduceValue =  item.attrValues.reduce((total: string, currentValue: string) => {
+					let reduceValue = item.attrValues.reduce((total: string, currentValue: string) => {
 						return total + ";" + currentValue;
 					});
 					item.attrValues = reduceValue;
@@ -84,8 +84,8 @@ const nextStepClick = () => {
 		}
 	});
 	props.basicForm.spu.baseAttrs = attrs;
-	console.log(attrs);
-	// props.basicForm.activeStep = 2;
+	console.log("props.basicForm.spu.baseAttrs", attrs);
+	props.basicForm.activeStep = 2;
 };
 
 const rollbackStepClick = () => {
@@ -96,7 +96,7 @@ const rollbackStepClick = () => {
 
 const selectChange = (attrItem: BasicAttrItem, attrId: number) => {
 	attrItem.attrId = attrId;
-}
+};
 
 const initSpecification = async () => {
 	const { data } = await listAttrGroupDTOByCateGory(props.basicForm.spu.categoryId);
