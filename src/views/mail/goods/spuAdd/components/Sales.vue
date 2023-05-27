@@ -1,6 +1,6 @@
 <template>
 	<div class="sales-main">
-		<el-form ref="salesFormRef" :model="dynamicForm" label-width="120px" class="demo-dynamic">
+		<el-form ref="salesFormRef" :model="dynamicForm" label-width="120px" class="demo-dynamic"  @submit.prevent>
 			<el-form-item v-for="(item, index) in saleAttrsRef" :key="item.attrId" :label="item.attrName" :prop="item.attrName">
 				<div v-if="item.valueSelect">
 					<el-checkbox-group v-model="dynamicForm.salesAttrs[index].attrValue">
@@ -13,13 +13,14 @@
 				</div>
 				<div style="display: flex; width: 150px; margin-left: 20px">
 					<el-input
+						style="width: 50px"
 						v-if="inputVisibles[index]"
 						v-model="inputValue"
 						size="small"
 						@keyup.enter="handleInputConfirm(index)"
 						@blur="handleInputConfirm(index)"
 					/>
-					<el-button @click="showInput(index)">+自定义</el-button>
+					<el-button v-else @click="showInput(index)">+自定义</el-button>
 				</div>
 			</el-form-item>
 		</el-form>
@@ -94,7 +95,7 @@ const generateSkus = () => {
 	props.basicForm.saleAttrs.forEach((item: any) => {
 		attrTemp.push(item.attrValue);
 	});
-	
+
 	let descartesList = descartes(attrTemp);
 	console.log("descartesList", descartesList);
 
@@ -111,22 +112,22 @@ const generateSkus = () => {
 	// sku
 	descartesList.forEach((item: any) => {
 		let attrArray: any = []; //sku属性组
-        item.forEach((value: any, index: any) => {
-          //构造saleAttr信息
-          let saleAttrItem = {
-            attrId: props.basicForm.tableAttrColumn[index].attrId,
-            attrName: props.basicForm.tableAttrColumn[index].attrName,
-            attrValue: value
-          };
-          attrArray.push(saleAttrItem);
-        });
-		
+		item.forEach((value: any, index: any) => {
+			//构造saleAttr信息
+			let saleAttrItem = {
+				attrId: props.basicForm.tableAttrColumn[index].attrId,
+				attrName: props.basicForm.tableAttrColumn[index].attrName,
+				attrValue: value
+			};
+			attrArray.push(saleAttrItem);
+		});
+
 		//图片
 		let imgs: any = [];
 		props.basicForm.spu.goodsImgs.forEach(() => {
 			imgs.push({ url: "", defaultImg: 0 });
 		});
-		
+
 		// 会员价
 		let memberPrices: any = [];
 		if (props.basicForm.memberLevels.length > 0) {
