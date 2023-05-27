@@ -66,7 +66,7 @@ const columns: ColumnProps<SpuInfo.Entity>[] = [
 	},
 	{
 		prop: "categoryId",
-		label: "所属分类",
+		label: "所属分类Id",
 		enum: categoryTree,
 		search: {
 			el: "cascader",
@@ -77,7 +77,7 @@ const columns: ColumnProps<SpuInfo.Entity>[] = [
 	},
 	{
 		prop: "brandId",
-		label: "品牌",
+		label: "所属品牌Id",
 		enum: brandList,
 		search: {
 			el: "select",
@@ -86,7 +86,7 @@ const columns: ColumnProps<SpuInfo.Entity>[] = [
 		fieldNames: { label: "name", value: "brandId" },
 		render: scope => <>{scope.row.brandId}</>
 	},
-	{ prop: "weight", label: "重量(Kg)" },
+	{ prop: "weight", label: "重量", render: scope => <>{`${scope.row.weight} kg`}</> },
 	{
 		prop: "publishStatus",
 		label: "上架状态",
@@ -102,6 +102,8 @@ const columns: ColumnProps<SpuInfo.Entity>[] = [
 			}
 		}
 	},
+	{ prop: "createTime", label: "创建时间", width: 180 },
+	{ prop: "updateTime", label: "更新时间", width: 180 },
 	{ prop: "operation", label: "操作", fixed: "right", width: 200 }
 ];
 
