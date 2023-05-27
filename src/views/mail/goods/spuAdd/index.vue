@@ -10,13 +10,14 @@
 		<div class="form-box-parent">
 			<div class="form-box">
 				<div class="form-title">
-					<span style="font-size: 28px; font-weight: bolder">{{ basicForm.stepTitle[basicForm.activeStep] }}</span>
+					<span v-if="basicForm.activeStep <= 4" style="font-size: 28px; font-weight: bolder">{{ basicForm.stepTitle[basicForm.activeStep] }}</span>
+					<span v-else style="font-size: 28px; font-weight: bolder">{{ basicForm.stepTitle[basicForm.activeStep - 1] }}</span>
 				</div>
 				<BasicInfo :basic-form="basicForm" v-if="basicForm.activeStep === 0" />
 				<Specification :basic-form="basicForm" v-else-if="basicForm.activeStep === 1" />
 				<Sales :basic-form="basicForm" v-else-if="basicForm.activeStep === 2" />
 				<SkuInfo :basic-form="basicForm" v-else-if="basicForm.activeStep === 3" />
-				<SaveComplete :reset-form="resetForm" :basic-form="basicForm" v-else-if="basicForm.activeStep === 4" />
+				<SaveComplete :reset-form="resetForm" :basic-form="basicForm" v-else-if="basicForm.activeStep === 5" />
 			</div>
 		</div>
 	</div>

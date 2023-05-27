@@ -48,7 +48,9 @@ const addAgian = () => {
 	props.resetForm();
 	props.basicForm.activeStep = 0;
 };
-const toSkuInfoList = () => {};
+const toSkuInfoList = () => {
+	console.log(props.basicForm.activeStep);
+};
 </script>
 
 <style lang="scss" scoped></style>

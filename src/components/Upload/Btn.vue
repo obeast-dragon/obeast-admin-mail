@@ -1,6 +1,6 @@
 <template>
 	<input ref="uplaodFile" hidden type="file" name="upload" id="files" style="display: none" @change="uploadInput" />
-	<el-button @click="clickBtn">选择图集</el-button>
+	<el-button @click="clickBtn">点击上传</el-button>
 </template>
 
 <script setup lang="ts">

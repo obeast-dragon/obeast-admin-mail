@@ -57,7 +57,7 @@ const nextStepClick = () => {
 	handleClose(async () => {
 		console.log(props.basicForm.spu);
 		await saveSpuInfo(props.basicForm.spu);
-		props.basicForm.activeStep = 4;
+		props.basicForm.activeStep = 5;
 	});
 };
 
