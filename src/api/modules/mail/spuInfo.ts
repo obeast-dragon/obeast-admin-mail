@@ -4,7 +4,7 @@ import { ResPage } from "@/api/interface/common";
 import { SpuInfo } from "@/api/interface/mail/spuInfo";
 
 /**
- * 商品新增
+ * Spu新增
  * @param params 
  * @returns 
  */
@@ -13,7 +13,7 @@ export const saveSpuInfo = (params?: SpuInfo.Vo) => {
 };
 
 /**
- * @name 获取商品分页
+ * @name 获取Spu分页
  */
 export const spuInfoPages = (params?: any) => {
     return http.get<ResPage<SpuInfo.Entity[]>>(`${Server.Product}/spuInfo/page`, params, {
@@ -22,7 +22,7 @@ export const spuInfoPages = (params?: any) => {
 };
 
 /**
- * @name 更新上架状态商品
+ * @name 更新上架状态Spu
  */
 export const updatePublishStatus = (status: number, spuInfoId: number) => {
     return http.put(`${Server.Product}/spuInfo/update/publishStatus/${spuInfoId}/${status}`);

@@ -3,7 +3,7 @@
 		<el-form ref="formRef" :model="searchParam">
 			<Grid ref="gridRef" :collapsed="collapsed" :gap="[20, 0]" :cols="searchCol">
 				<GridItem v-for="(item, index) in columns" :key="item.prop" v-bind="getResponsive(item)" :index="index">
-					<el-form-item :label="`${item.label} :`">
+					<el-form-item :label="`${item.labelPrefix == null ? '' : item.labelPrefix}${item.label}${item.labelSufix == null ? ' :' : item.labelSufix }`">
 						<SearchFormItem :column="item" :searchParam="searchParam" />
 					</el-form-item>
 				</GridItem>

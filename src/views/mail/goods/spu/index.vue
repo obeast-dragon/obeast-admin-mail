@@ -21,7 +21,6 @@ import ProTable from "@/components/ProTable/index.vue";
 import SpuDrawer from "@/views/mail/goods/spu/components/SpuDrawer.vue";
 import { EditPen, ArrowUp, ArrowDown } from "@element-plus/icons-vue";
 import { SpuInfo } from "@/api/interface/mail/spuInfo";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { spuInfoPages, updatePublishStatus, specification } from "@/api/modules/mail/spuInfo";
 import { categoryTree } from "@/api/modules/mail/category";
 import { brandList } from "@/api/modules/mail/brand";
