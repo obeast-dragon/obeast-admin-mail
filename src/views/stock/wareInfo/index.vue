@@ -2,7 +2,7 @@
 	<div class="table-box">
 		<ProTable
 			ref="proTable"
-			title="岗位列表"
+			title="仓库列表"
 			:columns="columns"
 			:requestApi="getTableList"
 			:initParam="initParam"
@@ -72,9 +72,9 @@ const columns: ColumnProps<WareInfo.Entity>[] = [
 	{ prop: "operation", label: "操作", fixed: "right", width: 220 }
 ];
 
-// 删除岗位信息
+// 删除仓库信息
 const deleteWareInfoById = async (params: WareInfo.Entity) => {
-	await useHandleData(delWareInfo, { id: [params.id] }, `删除【${params.name}】岗位`);
+	await useHandleData(delWareInfo, { id: [params.id] }, `删除【${params.name}】仓库`);
 	proTable.value.getTableList();
 };
 

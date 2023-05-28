@@ -31,7 +31,7 @@
 							<el-dropdown-item>满减设置</el-dropdown-item>
 							<el-dropdown-item>折扣设置</el-dropdown-item>
 							<el-dropdown-item>会员价格</el-dropdown-item>
-							<el-dropdown-item>库存管理</el-dropdown-item>
+							<el-dropdown-item @click="wareSkuClick()">库存管理</el-dropdown-item>
 							<el-dropdown-item>优惠卷</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
@@ -41,9 +41,9 @@
 		<SkuDrawer ref="drawerRef" />
 	</div>
 </template>
-  
 <script setup lang="tsx" name="useProTable">
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
 import SkuDrawer from "@/views/mail/goods/list/components/SkuDrawer.vue";
@@ -54,6 +54,7 @@ import { categoryTree } from "@/api/modules/mail/category";
 import { brandList } from "@/api/modules/mail/brand";
 
 const proTable = ref();
+const router = useRouter();
 
 const dataCallback = (data: any) => {
 	return {
@@ -147,7 +148,7 @@ const columns: ColumnProps<SkuInfo.Entity>[] = [
 		enum: brandList,
 		search: {
 			el: "select",
-			props: { filterable: true, emitPath: false }
+			props: { filterable: true }
 		},
 		fieldNames: { label: "name", value: "brandId" },
 		isShow: false,
@@ -167,5 +168,9 @@ const openDrawer = async (title: string, rowData: Partial<SkuInfo.Entity> = {}) 
 		getTableList: proTable.value.getTableList
 	};
 	drawerRef.value?.acceptParams(params);
+};
+
+const wareSkuClick = () => {
+	router.replace("/stock/wareSku");
 };
 </script>

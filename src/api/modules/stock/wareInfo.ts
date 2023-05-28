@@ -9,6 +9,14 @@ import { WareInfo } from "@/api/interface/stock/wareInfo";
 export const wareInfoPages = (params?: any) => {
     return http.get<ResPage<WareInfo.Entity[]>>(`${Server.Ware}/wareInfo/page`, params);
 };
+
+/**
+ * @name 获取所有仓库
+ */
+export const wareInfoList = () => {
+    return http.get<WareInfo.Entity[]>(`${Server.Ware}/wareInfo/list`);
+};
+
 /**
  * @name 新增仓库属性
  */
