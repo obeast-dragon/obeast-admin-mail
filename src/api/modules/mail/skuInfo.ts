@@ -7,7 +7,6 @@ import { SkuInfo } from "@/api/interface/mail/skuInfo";
  * @name 获取Sku分页
  */
 export const skuInfoPages = (params?: any) => {
-    console.log(params);
     return http.get<ResPage<SkuInfo.Entity[]>>(`${Server.Product}/skuInfo/page`, params, {
         headers: { noLoading: true }
     });
