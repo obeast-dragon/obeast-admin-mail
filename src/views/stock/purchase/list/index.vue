@@ -2,23 +2,27 @@
 	<div class="table-box">
 		<ProTable
 			ref="proTable"
-			title="商品库存列表"
+			title="采购单列表"
 			:columns="columns"
 			:requestApi="getTableList"
 			:initParam="initParam"
 			:dataCallback="dataCallback"
 		>
 			<!-- 表格 header 按钮 -->
-			<template #tableHeader>
+			<template #tableHeader="scope">
 				<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
+				<el-button type="danger" :icon="Delete" plain :disabled="!scope.isSelected">
+					批量删除
+				</el-button>
 			</template>
 			<!-- 表格操作 -->
 			<template #operation="scope">
+				<el-button type="primary" link :icon="EditPen" @click="openDrawer('分配', scope.row)">分配</el-button>
 				<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-				<el-button type="primary" link :icon="Delete" @click="deleteWareSkuById(scope.row)">删除</el-button>
+				<el-button type="primary" link :icon="Delete" @click="deletePurchaseById(scope.row)">删除</el-button>
 			</template>
 		</ProTable>
-		<WareSkuDrawer ref="drawerRef" />
+		<ListDrawer ref="drawerRef" />
 		<ImportExcel ref="dialogRef" />
 	</div>
 </template>
@@ -29,16 +33,22 @@ import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
 import ImportExcel from "@/components/ImportExcel/index.vue";
-import WareSkuDrawer from "@/views/stock/wareSku/components/WareSkuDrawer.vue";
+import ListDrawer from "@/views/stock/purchase/list/components/ListDrawer.vue";
 import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
-import { wareSkuPages, addWareSku, updateWareSku, delWareSku } from "@/api/modules/stock/wareSku";
-import { wareInfoList } from "@/api/modules/stock/wareInfo";
-import { WareSku } from "@/api/interface/stock/wareSku";
-import { WareInfo } from "@/api/interface/stock/wareInfo";
+import { purchasePages, delPurchase, updatePurchase, addPurchase } from "@/api/modules/stock/purchase";
+import { Purchase } from "@/api/interface/stock/purchase";
 
 const proTable = ref();
 
-const initParam = reactive({ type: 1 });
+const initParam = reactive({ });
+
+const statusRef = ref([
+	{ label: "新建", value: "0" },
+	{ label: "已分配", value: "1" },
+	{ label: "已领取", value: "2" },
+	{ label: "已完成", value: "3" },
+	{ label: "有异常", value: "4" }
+]);
 
 const dataCallback = (data: any) => {
 	return {
@@ -50,65 +60,52 @@ const dataCallback = (data: any) => {
 };
 
 const getTableList = (params: any) => {
-	return wareSkuPages({
+	return purchasePages({
 		size: params.pageSize,
 		current: params.pageNum,
 		name: params.name
 	});
 };
 
-const wareInfosRef = ref<WareInfo.Entity[]>([]);
-const initWareInfoList = async () => {
- 	const res = await wareInfoList();
-	wareInfosRef.value = res.data;
-	return res;
-}
-
 // 表格配置项
-const columns: ColumnProps<WareSku.Entity>[] = [
+const columns: ColumnProps<Purchase.Entity>[] = [
 	{ type: "selection", fixed: "left", width: 40 },
 	// 以下为后端字段
-	{ prop: "id", label: "Id" },
+	{ prop: "id", label: "采购单Id" },
+	{ prop: "assigneeId", label: "采购人Id" },
+	{ prop: "assigneeName", label: "采购人名" },
+	{ prop: "phone", label: "联系方式" },
+	{ prop: "priority", label: "优先级" },
 	{
-		prop: "skuId",
-		label: "skuId",
+		prop: "status",
+		label: "状态",
+		enum: statusRef.value,
 		search: {
 			el: "input"
 		}
 	},
-	{
-		prop: "wareId",
-		label: "仓库Id",
-		enum: initWareInfoList,
-		search: {
-			el: "select",
-			props: { filterable: true }
-		},
-		fieldNames: { label: "name", value: "id" }
-
-	},
-	{ prop: "stock", label: "库存数量" },
-	{ prop: "skuName", label: "skuName" },
-	{ prop: "stockLocked", label: "锁定库存" },
+	{ prop: "wareId", label: "仓库Id" },
+	{ prop: "amount", label: "总金额" },
+	{ prop: "createTime", label: "创建日期", width: 200  },
+	{ prop: "updateTime", label: "创建日期", width: 200 },
 	{ prop: "operation", label: "操作", fixed: "right", width: 220 }
 ];
 
-// 删除商品库存信息
-const deleteWareSkuById = async (params: WareSku.Entity) => {
-	await useHandleData(delWareSku, { id: [params.id] }, `删除【${params.skuName}】商品库存`);
+// 删除采购单信息
+const deletePurchaseById = async (params: Purchase.Entity) => {
+	await useHandleData(delPurchase, { id: [params.id] }, `删除【${params.assigneeName}】采购单`);
 	proTable.value.getTableList();
 };
 
 // 打开 drawer(新增、查看、编辑)
-const drawerRef = ref<InstanceType<typeof WareSkuDrawer> | null>(null);
-const openDrawer = (title: string, rowData: Partial<WareSku.Entity> = {}) => {
+const drawerRef = ref<InstanceType<typeof ListDrawer> | null>(null);
+const openDrawer = (title: string, rowData: Partial<Purchase.Entity> = {}) => {
 	const params = {
 		title,
 		isView: title === "查看",
 		rowData: { ...rowData },
-		api: title === "新增" ? addWareSku : title === "编辑" ? updateWareSku : undefined,
-		getTableList: proTable.value.getTableList,
-		wareInfos: wareInfosRef.value
+		api: title === "新增" ? addPurchase : title === "编辑" ? updatePurchase : undefined,
+		getTableList: proTable.value.getTableList
 	};
 	drawerRef.value?.acceptParams(params);
 };

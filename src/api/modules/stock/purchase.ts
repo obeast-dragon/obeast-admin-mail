@@ -46,21 +46,21 @@ export const delPurchase = (params: any) => {
  * @name 获取采购单需求分页
  */
 export const demandPages = (params?: any) => {
-    return http.get<ResPage<Purchase.Demand[]>>(`${Server.Ware}/demand/page`, params);
+    return http.get<ResPage<Purchase.Demand[]>>(`${Server.Ware}/purchaseDetail/page`, params);
 };
 
 /**
  * @name 获取所有采购单需求
  */
 export const demandList = () => {
-    return http.get<Purchase.Demand[]>(`${Server.Ware}/demand/list`);
+    return http.get<Purchase.Demand[]>(`${Server.Ware}/purchaseDetail/list`);
 };
 
 /**
  * @name 新增采购单需求属性
  */
 export const addDemand = (params: Purchase.Demand) => {
-    return http.post<boolean>(`${Server.Ware}/demand/add`, params, {
+    return http.post<boolean>(`${Server.Ware}/purchaseDetail/add`, params, {
         headers: { noLoading: true }
     });
 };
@@ -69,7 +69,7 @@ export const addDemand = (params: Purchase.Demand) => {
  * @name 修改采购单需求属性
  */
 export const updateDemand = (params: Purchase.Entity) => {
-    return http.put<boolean>(`${Server.Ware}/demand/update`, params, {
+    return http.put<boolean>(`${Server.Ware}/purchaseDetail/update`, params, {
         headers: { noLoading: true }
     });
 };
@@ -78,5 +78,5 @@ export const updateDemand = (params: Purchase.Entity) => {
  * @name 删除采购单需求属性
  */
 export const delDemand = (params: any) => {
-    return http.delete<boolean>(`${Server.Ware}/demand/${params.id}`);
+    return http.delete<boolean>(`${Server.Ware}/purchaseDetail/${params.id}`);
 };
