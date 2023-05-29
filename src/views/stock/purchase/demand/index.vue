@@ -16,7 +16,7 @@
 					<template #dropdown>
 						<el-dropdown-menu>
 							<el-dropdown-item @click="batchDel">批量删除</el-dropdown-item>
-							<el-dropdown-item @click="mergePuchase">合并整单</el-dropdown-item>
+							<el-dropdown-item @click="mergePuchase(scope.selectedListIds)">合并整单</el-dropdown-item>
 						</el-dropdown-menu>
 					</template>
 				</el-dropdown>
@@ -158,11 +158,10 @@ const batchDel = (rowData: Partial<Purchase.Demand> = {}) => {
 }
 
 const dialogRef = ref<InstanceType<typeof DemandDialog> | null>(null);
-const mergePuchase = (rowData: Partial<Purchase.Demand> = {}) => {
-	console.log(rowData);
+const mergePuchase = (ids: string[]) => {
 	const params = {
-		rowData: { ...rowData },
-		getTableList: proTable.value.getTableList,
+		items: ids,
+		getTableList: proTable.value.getTableList
 	};
 	dialogRef.value?.acceptParams(params);
 }

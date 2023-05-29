@@ -11,10 +11,24 @@ export const purchasePages = (params?: any) => {
 };
 
 /**
+ * @name 查询所有未领取的采购单
+ */
+export const unclaimedList = () => {
+    return http.get<Purchase.Entity[]>(`${Server.Ware}/purchase/unclaimed/list`);
+};
+
+/**
  * @name 获取所有采购单
  */
 export const purchaseList = () => {
     return http.get<Purchase.Entity[]>(`${Server.Ware}/purchase/list`);
+};
+
+/**
+ * @name 合并采购需求
+ */
+export const purchaseMerge = (params: any) => {
+    return http.post(`${Server.Ware}/purchase/merge`, params);
 };
 
 /**

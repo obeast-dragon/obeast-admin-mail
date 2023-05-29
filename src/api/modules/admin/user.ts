@@ -73,6 +73,13 @@ export const deleteUser = (params: { id: number[] }) => {
 };
 
 /**
+ * @name 查询所有用户
+ */
+export const listUserObj = () => {
+	return http.get(`${Server.Admin}/user/listObj`);
+};
+
+/**
  * @name 登录模块
  */
 export const loginByPassword = (params: Login.From, randomStr: string) => {
