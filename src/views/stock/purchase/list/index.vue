@@ -17,13 +17,13 @@
 			</template>
 			<!-- 表格操作 -->
 			<template #operation="scope">
-				<el-button type="primary" link :icon="EditPen" @click="openDrawer('分配', scope.row)">分配</el-button>
+				<el-button type="primary" link :icon="Share" @click="sharePuchase(scope.row)">分配</el-button>
 				<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
 				<el-button type="primary" link :icon="Delete" @click="deletePurchaseById(scope.row)">删除</el-button>
 			</template>
 		</ProTable>
 		<ListDrawer ref="drawerRef" />
-		<ImportExcel ref="dialogRef" />
+		<ListDialog ref="dialogRef" />
 	</div>
 </template>
 
@@ -32,9 +32,9 @@ import { ref, reactive } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
-import ImportExcel from "@/components/ImportExcel/index.vue";
 import ListDrawer from "@/views/stock/purchase/list/components/ListDrawer.vue";
-import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
+import ListDialog from "@/views/stock/purchase/list/components/ListDialog.vue";
+import { CirclePlus, Delete, EditPen, Share } from "@element-plus/icons-vue";
 import { purchasePages, delPurchase, updatePurchase, addPurchase } from "@/api/modules/stock/purchase";
 import { Purchase } from "@/api/interface/stock/purchase";
 
@@ -110,4 +110,12 @@ const openDrawer = (title: string, rowData: Partial<Purchase.Entity> = {}) => {
 	drawerRef.value?.acceptParams(params);
 };
 
+const dialogRef = ref<InstanceType<typeof ListDialog> | null>(null);
+const sharePuchase = (rowData: Partial<Purchase.Demand> = {}) => {
+	const params = {
+		rowData: { ...rowData },
+		getTableList: proTable.value.getTableList,
+	};
+	dialogRef.value?.acceptParams(params);
+}
 </script>

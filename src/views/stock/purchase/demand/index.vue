@@ -11,18 +11,24 @@
 			<!-- 表格 header 按钮 -->
 			<template #tableHeader="scope">
 				<el-button type="primary" :icon="CirclePlus" @click="openDrawer('新增')">新增</el-button>
-				<el-button type="danger" :icon="Delete" plain :disabled="!scope.isSelected">
-					批量操作
-				</el-button>
+				<el-dropdown style="margin-left: 10px;">
+					<el-button type="danger" :icon="Delete" plain :disabled="!scope.isSelected">批量操作</el-button>
+					<template #dropdown>
+						<el-dropdown-menu>
+							<el-dropdown-item @click="batchDel">批量删除</el-dropdown-item>
+							<el-dropdown-item @click="mergePuchase">合并整单</el-dropdown-item>
+						</el-dropdown-menu>
+					</template>
+				</el-dropdown>
 			</template>
 			<!-- 表格操作 -->
 			<template #operation="scope">
 				<el-button type="primary" link :icon="EditPen" @click="openDrawer('编辑', scope.row)">编辑</el-button>
-				<el-button type="primary" link :icon="Delete" @click="deleteWareSkuById(scope.row)">删除</el-button>
+				<el-button type="primary" link :icon="Delete" @click="remove(scope.row)">删除</el-button>
 			</template>
 		</ProTable>
 		<DemandDrawer ref="drawerRef" />
-		<ImportExcel ref="dialogRef" />
+		<DemandDialog ref="dialogRef" />
 	</div>
 </template>
 
@@ -31,8 +37,8 @@ import { ref, reactive } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import { useHandleData } from "@/hooks/useHandleData";
 import ProTable from "@/components/ProTable/index.vue";
-import ImportExcel from "@/components/ImportExcel/index.vue";
 import DemandDrawer from "@/views/stock/purchase/demand/components/DemandDrawer.vue";
+import DemandDialog from "@/views/stock/purchase/demand/components/DemandDialog.vue";
 import { CirclePlus, Delete, EditPen } from "@element-plus/icons-vue";
 import { wareInfoList } from "@/api/modules/stock/wareInfo";
 import { demandPages, delDemand, updateDemand, addDemand } from "@/api/modules/stock/purchase";
@@ -127,7 +133,7 @@ const columns: ColumnProps<Purchase.Demand>[] = [
 ];
 
 // 删除采购需求信息
-const deleteWareSkuById = async (params: Purchase.Demand) => {
+const remove = async (params: Purchase.Demand) => {
 	await useHandleData(delDemand, { id: [params.id] }, `删除【${params.id}】采购需求`);
 	proTable.value.getTableList();
 };
@@ -145,4 +151,19 @@ const openDrawer = (title: string, rowData: Partial<Purchase.Demand> = {}) => {
 	};
 	drawerRef.value?.acceptParams(params);
 };
+
+const batchDel = (rowData: Partial<Purchase.Demand> = {}) => {
+	console.log(rowData);
+
+}
+
+const dialogRef = ref<InstanceType<typeof DemandDialog> | null>(null);
+const mergePuchase = (rowData: Partial<Purchase.Demand> = {}) => {
+	console.log(rowData);
+	const params = {
+		rowData: { ...rowData },
+		getTableList: proTable.value.getTableList,
+	};
+	dialogRef.value?.acceptParams(params);
+}
 </script>
