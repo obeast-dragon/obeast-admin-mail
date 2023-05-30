@@ -1,7 +1,15 @@
 <template>
 	<el-dialog v-model="dialogVisible" title="合并整单" width="30%">
 		<el-select filterable v-model="params" value-key="userId" placeholder="请选择" size="large">
-			<el-option v-for="item in unclaimedListRef" :key="item.id" :label="item.id" :value="item.id" />
+			<el-option v-for="item in unclaimedListRef" :key="item.id" :label="item.id" :value="item.id">
+				<div v-if="item.assigneeName !== ''">
+					<span style="float: left">{{ item.id }}</span>
+					<span style="float: right; color: var(--el-text-color-secondary); font-size: 13px">{{ item.assigneeName }}</span>
+				</div>
+				<div v-else>
+					<span>{{ item.id }}</span>
+				</div>
+			</el-option>
 		</el-select>
 		<template #footer>
 			<span class="dialog-footer">
@@ -14,8 +22,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { unclaimedList, purchaseMerge } from "@/api/modules/stock/purchase";
 import { Purchase } from "@/api/interface/stock/purchase";
+import { ElMessageBox } from "element-plus";
 
 // 接收父组件传过来的参数
 const acceptParams = (params: DialogProps) => {
@@ -24,13 +34,28 @@ const acceptParams = (params: DialogProps) => {
 	initUnclaimedList();
 };
 
-const confirmClick = () => {
+const confirmClick = async () => {
+	if (params.value === undefined) {
+		handleClose();
+	} else {
+		await purchaseMerge({
+			purchaseId: params.value,
+			items: dialogProps.value.items
+		});
+		params.value = {};
+	}
 	dialogVisible.value = false;
-	purchaseMerge({
-		purchaseId:  params.value,
-		items: dialogProps.value.items
-	})
-	params.value = {};
+};
+
+const handleClose = () => {
+	ElMessageBox.confirm("未选择采购单，此操作会自动新增采购单是否继续?")
+		.then(async () => {
+			await purchaseMerge({
+				purchaseId: params.value,
+				items: dialogProps.value.items
+			});
+		})
+		.catch(() => {});
 };
 
 const params = ref<{

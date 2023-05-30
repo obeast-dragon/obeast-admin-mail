@@ -82,12 +82,26 @@ const columns: ColumnProps<Purchase.Entity>[] = [
 		enum: statusRef.value,
 		search: {
 			el: "input"
+		},
+		render: scope => {
+			switch (scope.row.status) {
+				case 0:
+					return <el-tag type="">新建</el-tag>;
+				case 1:
+					return <el-tag type="info">已分配</el-tag>;
+				case 2:
+					return <el-tag type="">已领取</el-tag>;
+				case 3:
+					return <el-tag type="success">已完成</el-tag>;
+				case 4:
+					return <el-tag type="danger">有异常</el-tag>;
+			}
 		}
 	},
 	{ prop: "wareId", label: "仓库Id" },
 	{ prop: "amount", label: "总金额" },
 	{ prop: "createTime", label: "创建日期", width: 200  },
-	{ prop: "updateTime", label: "创建日期", width: 200 },
+	{ prop: "updateTime", label: "更新日期", width: 200 },
 	{ prop: "operation", label: "操作", fixed: "right", width: 220 }
 ];
 
