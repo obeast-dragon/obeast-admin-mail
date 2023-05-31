@@ -20,7 +20,6 @@
 								:placeholder="`请输入${domain.attrName}`"
 								style="width: 240px"
 								v-if="domain.valueSelect !== ''"
-								@change="selectChange(basicAttrRefs[index][domainIndex], domain)"
 							>
 								<el-option
 									v-for="(value, valueKey) in domain.valueSelect.split(';')"
@@ -61,7 +60,6 @@ import { listAttrGroupDTOByCateGory } from "@/api/modules/mail/attrGroup";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { listBySpuId } from "@/api/modules/mail/spuAttrValue";
 import { SpuInfo } from "@/api/interface/mail/spuInfo";
-import { MailAttr } from "@/api/interface/mail/attr";
 
 const attrGroupDTOsRef = ref<MailAttrGroup.AttrGroupDTO[]>([]);
 
@@ -90,36 +88,24 @@ const basicAttrRefs = ref([]);
 const initData = async () => {
 	const { data } = await listAttrGroupDTOByCateGory(dialogProps.value.rowData.categoryId);
 	attrGroupDTOsRef.value = data;
-	let flatArr = flatAttrDTO(data);
-	initBasicAttrRefs(data, flatArr);
+	initBasicAttrRefs(data);
 };
 
 /**
  * 初始化 BasicAttrRefs
  * @param data
  */
-const initBasicAttrRefs = (data: MailAttrGroup.AttrGroupDTO[], flatArr: MailAttr.Entity[]) => {
+const initBasicAttrRefs = (data: MailAttrGroup.AttrGroupDTO[]) => {
 	data.forEach(item => {
 		let attrTemps: any = [];
 		item.attrs.forEach(attr => {
-			let flat = flatArr.find(t => attr.attrId === t.attrId);
-			if (flat !== undefined) {
-				attrTemps.push({
-					showDesc: 0,
-					attrValue: attr.valueSelect,
-					attrId: attr.attrId,
-					attrSort: 0,
-					attrName: ""
-				});
-			} else {
-				attrTemps.push({
+			attrTemps.push({
 					showDesc: 0,
 					attrValue: "",
 					attrId: attr.attrId,
 					attrSort: 0,
 					attrName: ""
 				});
-			}
 		});
 		basicAttrRefs.value.push(attrTemps);
 	});
@@ -129,29 +115,24 @@ const initBasicAttrRefs = (data: MailAttrGroup.AttrGroupDTO[], flatArr: MailAttr
  * 扁平成一维数组
  * @param attrGroupDTOs
  */
-const flatAttrDTO = (attrGroupDTOs: MailAttrGroup.AttrGroupDTO[]) => {
-	let arr: MailAttr.Entity[] = [];
-	attrGroupDTOs.forEach(item => {
-		arr = [...arr, ...item.attrs];
-	});
-	echoflat(arr);
-	return arr;
-};
+// const flatAttrDTO = (attrGroupDTOs: MailAttrGroup.AttrGroupDTO[]) => {
+// 	let arr: MailAttr.Entity[] = [];
+// 	attrGroupDTOs.forEach(item => {
+// 		arr = [...arr, ...item.attrs];
+// 	});
+// 	// echoflat(arr);
+// 	return arr;
+// };
 
-const echoflat = async (flatArr: MailAttr.Entity[]) => {
-	const { data } = await listBySpuId({ spuId: dialogProps.value.rowData.id });
-	data.forEach(item => {
-		let entity = flatArr.find(flat => item.attrId === flat.attrId);
-		if (entity !== undefined) {
-			entity.valueSelect = item.attrValue;
-		}
-	});
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const selectChange = (attrItem: any, attrDomain: any) => {
-	console.log();
-};
+// const echoflat = async (flatArr: MailAttr.Entity[]) => {
+// 	const { data } = await listBySpuId({ spuId: dialogProps.value.rowData.id });
+// 	data.forEach(item => {
+// 		let entity = flatArr.find(flat => item.attrId === flat.attrId);
+// 		if (entity !== undefined) {
+// 			entity.valueSelect = item.attrValue;
+// 		}
+// 	});
+// };
 
 defineExpose({
 	acceptParams
