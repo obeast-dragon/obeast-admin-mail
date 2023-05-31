@@ -5,24 +5,24 @@
 				<el-tab-pane :key="index" v-for="(item, index) in attrGroupDTOsRef" :label="item.attrGroup.attrGroupName">
 					<el-form ref="formRef" label-width="150px">
 						<el-form-item
-							v-for="(domain, domainIndex) in item.attrs"
-							:key="domain.attrId"
-							:label="domain.attrName"
-							:prop="domain.attrName"
+							v-for="(arr, domainIndex) in item.attrs"
+							:key="arr.attrId"
+							:label="arr.attrName"
+							:prop="arr.attrName"
 						>
 							<el-select
 								v-model="basicAttrRefs[index][domainIndex].attrValue"
-								:multiple="domain.valueType === 1"
+								:multiple="arr.valueType === 1"
 								collapse-tags
 								filterable
 								allow-create
 								:max-collapse-tags="1"
-								:placeholder="`请输入${domain.attrName}`"
+								:placeholder="`请输入${arr.attrName}`"
 								style="width: 240px"
-								v-if="domain.valueSelect !== ''"
+								v-if="arr.valueSelect !== ''"
 							>
 								<el-option
-									v-for="(value, valueKey) in domain.valueSelect.split(';')"
+									v-for="(value, valueKey) in arr.valueSelect.split(';')"
 									:key="valueKey"
 									:label="value"
 									:value="value"
