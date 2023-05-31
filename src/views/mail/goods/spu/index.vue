@@ -7,10 +7,10 @@
 					>上架</el-button
 				>
 				<el-button v-else type="warning" link :icon="ArrowDown" @click="publishStatus(0, scope.row)">下架</el-button>
-				<el-button type="primary" link :icon="EditPen" @click="openDrawer('规格', scope.row)">规格</el-button>
+				<el-button type="primary" link :icon="EditPen" @click="openDialog('规格', scope.row)">规格</el-button>
 			</template>
 		</ProTable>
-		<SpuDrawer ref="drawerRef" />
+		<SpuDialog ref="dialogRef" />
 	</div>
 </template>
 
@@ -18,7 +18,7 @@
 import { ref } from "vue";
 import { ColumnProps } from "@/components/ProTable/interface";
 import ProTable from "@/components/ProTable/index.vue";
-import SpuDrawer from "@/views/mail/goods/spu/components/SpuDrawer.vue";
+import SpuDialog from "@/views/mail/goods/spu/components/SpuDialog.vue";
 import { EditPen, ArrowUp, ArrowDown } from "@element-plus/icons-vue";
 import { SpuInfo } from "@/api/interface/mail/spuInfo";
 import { spuInfoPages, updatePublishStatus, specification } from "@/api/modules/mail/spuInfo";
@@ -112,14 +112,14 @@ const publishStatus = async (status: number, rowData: Partial<SpuInfo.Entity> = 
 }
 
 // 打开 drawer(新增、查看、编辑)
-const drawerRef = ref<InstanceType<typeof SpuDrawer> | null>(null);
-const openDrawer = async (title: string, rowData: Partial<SpuInfo.Entity> = {}) => {
+const dialogRef = ref<InstanceType<typeof SpuDialog> | null>(null);
+const openDialog = async (title: string, rowData: Partial<SpuInfo.Entity> = {}) => {
 	const params = {
 		title,
 		rowData: { ...rowData },
 		api: title === "规格" ? specification :  undefined,
 		getTableList: proTable.value.getTableList
 	};
-	drawerRef.value?.acceptParams(params);
+	dialogRef.value?.acceptParams(params);
 };
 </script>

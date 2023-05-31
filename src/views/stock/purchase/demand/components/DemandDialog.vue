@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { unclaimedList, purchaseMerge } from "@/api/modules/stock/purchase";
 import { Purchase } from "@/api/interface/stock/purchase";
 import { ElMessageBox } from "element-plus";
