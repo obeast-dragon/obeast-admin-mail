@@ -1,17 +1,17 @@
 <template>
-	<el-dialog v-model="dialogVisible" title="规格参数维护" width="50%">
+	<el-dialog v-model="dialogVisible" title="规格参数维护" width="60%">
 		<div>
 			<el-tabs tab-position="left" style="height: 200px">
 				<el-tab-pane :key="index" v-for="(item, index) in attrGroupDTOsRef" :label="item.attrGroup.attrGroupName">
 					<el-form ref="formRef" label-width="150px">
 						<el-form-item
-							v-for="(arr, domainIndex) in item.attrs"
+							v-for="(arr, attrIndex) in item.attrs"
 							:key="arr.attrId"
 							:label="arr.attrName"
 							:prop="arr.attrName"
 						>
 							<el-select
-								v-model="basicAttrRefs[index][domainIndex].attrValue"
+								v-model="basicAttrRefs[index][attrIndex].attrValue"
 								:multiple="arr.valueType === 1"
 								collapse-tags
 								filterable
@@ -29,13 +29,13 @@
 								/>
 							</el-select>
 							<div v-else>
-								<el-input v-model="basicAttrRefs[index][domainIndex].attrValue" />
+								<el-input v-model="basicAttrRefs[index][attrIndex].attrValue" />
 							</div>
 							<el-checkbox
 								style="margin-left: 10px"
 								:true-label="1"
 								:false-label="0"
-								v-model="basicAttrRefs[index][domainIndex].showDesc"
+								v-model="basicAttrRefs[index][attrIndex].showDesc"
 								label="快速展示"
 								size="small"
 							/>
@@ -47,7 +47,7 @@
 		<template #footer>
 			<span class="dialog-footer">
 				<el-button @click="dialogVisible = false">取消</el-button>
-				<el-button type="primary" @click="() => {}">确定</el-button>
+				<el-button type="primary" @click="comfilm">确定</el-button>
 			</span>
 		</template>
 	</el-dialog>
@@ -62,6 +62,10 @@ import { listBySpuId } from "@/api/modules/mail/spuAttrValue";
 import { SpuInfo } from "@/api/interface/mail/spuInfo";
 
 const attrGroupDTOsRef = ref<MailAttrGroup.AttrGroupDTO[]>([]);
+
+const comfilm = () => {
+	console.log(basicAttrRefs.value);
+}
 
 // 接收父组件传过来的参数
 const acceptParams = (params: DialogProps) => {
